@@ -20,7 +20,8 @@ using System.Threading;
 
 using E.Deezer;
 
-using E.ExploreDeezer.Services;
+using E.ExploreDeezer.Mvvm;
+using E.ExploreDeezer.ViewModels.Home;
 
 namespace E.ExploreDeezer
 {
@@ -30,29 +31,16 @@ namespace E.ExploreDeezer
     public partial class MainWindow : Window
     {
         private readonly IDeezerSession session;
-
-
-        private readonly GenreService genreService;
+        private readonly IPlatformServices platformServices;
 
         public MainWindow()
         {
             InitializeComponent();
 
             this.session = new DeezerSession(new HttpClientHandler());
+            this.platformServices = new WPFPlatformServices(this.Dispatcher);
 
-            this.genreService = new GenreService(this.session);
-
-
-
-            var genre = this.genreService.GetCommonGenreAsync()
-                                         .Result;
-
-            System.Diagnostics.Debug.WriteLine("Genre Ids:");
-            foreach(var g in genre)
-            {
-                System.Diagnostics.Debug.WriteLine("> {0}", g.Id);
-            }
-
+            this.DataContext = new WhatsNewViewModel(this.session, this.platformServices);
         }
     }
 }

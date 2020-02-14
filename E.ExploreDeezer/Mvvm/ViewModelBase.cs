@@ -14,7 +14,6 @@ namespace E.ExploreDeezer.Mvvm
         private static CancellationToken PRE_CANCELLED_TOKEN = new CancellationToken(canceled: true);
 
         private readonly object lockObject;
-        private readonly IPlatformServices platformServices;
         private readonly CancellationTokenSource cancellationTokenSource;
 
 
@@ -35,7 +34,7 @@ namespace E.ExploreDeezer.Mvvm
 
         public void SetProperty<T>(ref T storage, T newValue, [CallerMemberName] string propertyName = null)
         {
-            if (!storage.Equals(newValue))
+            if (storage == null || !storage.Equals(newValue))
             {
                 storage = newValue;
                 RaisePropertyChangedSafe(propertyName);
@@ -45,7 +44,9 @@ namespace E.ExploreDeezer.Mvvm
 
         private void RaisePropertyChangedSafe(string propertyName)
         {
-            this.platformServices.MainThreadDispatcher.ExecuteOnMainThread(() =>
+            this.PlatformServices
+                .MainThreadDispatcher
+                .ExecuteOnMainThread(() =>
             {
                 if (!this.CancellationToken.IsCancellationRequested)
                 {
