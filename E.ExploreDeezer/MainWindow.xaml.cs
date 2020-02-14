@@ -13,6 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
+using System.Net.Http;
+using System.Threading;
+
+
+using E.Deezer;
+
+using E.ExploreDeezer.Services;
+
 namespace E.ExploreDeezer
 {
     /// <summary>
@@ -20,9 +29,30 @@ namespace E.ExploreDeezer
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IDeezerSession session;
+
+
+        private readonly GenreService genreService;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            this.session = new DeezerSession(new HttpClientHandler());
+
+            this.genreService = new GenreService(this.session);
+
+
+
+            var genre = this.genreService.GetCommonGenreAsync()
+                                         .Result;
+
+            System.Diagnostics.Debug.WriteLine("Genre Ids:");
+            foreach(var g in genre)
+            {
+                System.Diagnostics.Debug.WriteLine("> {0}", g.Id);
+            }
+
         }
     }
 }
