@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
 
 
 using System.Net.Http;
@@ -41,6 +42,10 @@ namespace E.ExploreDeezer
             this.platformServices = new WPFPlatformServices(this.Dispatcher);
 
             this.DataContext = new WhatsNewViewModel(this.session, this.platformServices);
+
         }
+
+        public IWhatsNewViewModel ViewModel => this.DataContext as IWhatsNewViewModel;
+
     }
 }
