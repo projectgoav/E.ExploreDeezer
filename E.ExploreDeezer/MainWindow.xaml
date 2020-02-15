@@ -7,8 +7,13 @@
         xmlns:views="clr-namespace:E.ExploreDeezer.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    
+    
+    
+    
+    
     <Grid>
-        
+              
         <TabControl x:Name="ContentTabControl">
             <TabItem Header="New Releases">
 
@@ -18,7 +23,7 @@
 
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="5"/>
+                                <WrapPanel Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
@@ -39,7 +44,7 @@
 
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid  Columns="5"/>
+                                <WrapPanel Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
