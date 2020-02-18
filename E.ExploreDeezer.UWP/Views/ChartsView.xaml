@@ -13,7 +13,7 @@
 
         <PivotItem Header="Albums">
             
-            <GridView x:Name="DeezerPicksGrid"
+            <GridView x:Name="AlbumChartGrid"
                       ItemsSource="{Binding Albums}">
 
                 <GridView.ItemsPanel>
@@ -33,7 +33,24 @@
         </PivotItem>
 
         <PivotItem Header="Artists">
-            <TextBlock Text="Artists" />
+            
+            <GridView x:Name="ArtistChartGrid"
+                      ItemsSource="{Binding Artists}">
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:ArtistGridCell />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+            </GridView>
+            
         </PivotItem>
 
         <PivotItem Header="Playlists">

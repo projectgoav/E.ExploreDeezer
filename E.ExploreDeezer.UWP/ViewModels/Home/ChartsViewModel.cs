@@ -14,8 +14,10 @@ namespace E.ExploreDeezer.ViewModels.Home
                                         IDisposable
     {
         EContentFetchStatus AlbumsFetchStatus { get; }
+        EContentFetchStatus ArtistFetchStatus { get; }
 
         IEnumerable<IAlbumViewModel> Albums { get; }
+        IEnumerable<IArtistViewModel> Artists { get; }
     }
 
     internal class ChartsViewModel : ViewModelBase,
@@ -28,7 +30,10 @@ namespace E.ExploreDeezer.ViewModels.Home
         private readonly IDeezerSession session;
 
         private EContentFetchStatus albumsStatus;
+        private EContentFetchStatus artistStatus;
+
         private IEnumerable<IAlbumViewModel> albums;
+        private IEnumerable<IArtistViewModel> artists;
 
         public ChartsViewModel(IDeezerSession session,
                                IPlatformServices platformServices)
@@ -48,16 +53,29 @@ namespace E.ExploreDeezer.ViewModels.Home
             private set => SetProperty(ref this.albumsStatus, value);
         }
 
+        public EContentFetchStatus ArtistFetchStatus
+        {
+            get => this.artistStatus;
+            private set => SetProperty(ref this.artistStatus, value);
+        }
+
         public IEnumerable<IAlbumViewModel> Albums
         {
             get => this.albums;
             private set => SetProperty(ref this.albums, value);
         }
 
+        public IEnumerable<IArtistViewModel> Artists
+        {
+            get => this.artists;
+            private set => SetProperty(ref this.artists, value);
+        }
+
 
         private void FetchContents()
         {
             this.AlbumsFetchStatus = EContentFetchStatus.Loading;
+            this.ArtistFetchStatus = EContentFetchStatus.Loading;
 
             this.session.Charts.GetCharts(this.CancellationToken, 0, MAX_ITEM_COUNT)
                               .ContinueWith(t =>
@@ -74,10 +92,17 @@ namespace E.ExploreDeezer.ViewModels.Home
                                       var albums = chart.Albums.Select(x => new AlbumViewModel(x))
                                                                .ToList();
 
+                                      var artists = chart.Artists.Select(x => new ArtistViewModel(x))
+                                                                 .ToList();
+
                                       this.Albums = albums;
+                                      this.Artists = artists;
 
                                       this.AlbumsFetchStatus = albums.Count == 0 ? EContentFetchStatus.Empty
                                                                                  : EContentFetchStatus.Available;
+
+                                      this.ArtistFetchStatus = artists.Count == 0 ? EContentFetchStatus.Empty
+                                                                                  : EContentFetchStatus.Available;
                                   }
                               },
                               this.CancellationToken,
