@@ -131,6 +131,7 @@
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="UWPPlatformServices.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\Home\ChartsViewModel.cs" />
     <Compile Include="ViewModels\Home\WhatsNewViewModel.cs" />
     <Compile Include="ViewModels\Status.cs" />
     <Compile Include="Views\ChartsView.xaml.cs">

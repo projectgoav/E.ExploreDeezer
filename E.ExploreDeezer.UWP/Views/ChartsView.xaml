@@ -5,13 +5,31 @@
     xmlns:local="using:E.ExploreDeezer.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Pivot>
 
         <PivotItem Header="Albums">
-            <TextBlock Text="Albums" />
+            
+            <GridView x:Name="DeezerPicksGrid"
+                      ItemsSource="{Binding Albums}">
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:AlbumGridCell />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+            </GridView>
+            
         </PivotItem>
 
         <PivotItem Header="Artists">

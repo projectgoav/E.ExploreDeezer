@@ -132,8 +132,8 @@ namespace E.ExploreDeezer.ViewModels.Home
         {
             if (disposing)
             {
-                this.NewAlbums = null;
-                this.DeezerPicks = null;
+                this.NewAlbums = Array.Empty<IAlbumViewModel>();
+                this.DeezerPicks = Array.Empty<IAlbumViewModel>();
             }
 
             base.Dispose(disposing);
