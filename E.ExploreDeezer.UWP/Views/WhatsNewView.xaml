@@ -5,17 +5,69 @@
     xmlns:local="using:E.ExploreDeezer.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Pivot>
 
         <PivotItem Header="New Albums">
-            <TextBlock Text="New Albums" />
+
+            <Grid>
+
+                <!--
+                <ProgressRing x:Name="NewAlbumsSpinner"      
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              IsActive="True"
+                              Width="64"
+                              Height="64"/>
+
+                <TextBlock x:Name="NewAlbumsEmpty"
+                           Text="Empty"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center" />
+                -->
+
+                <GridView x:Name="NewAlbumGrid"
+                          ItemsSource="{Binding NewAlbums}">
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                    
+                </GridView>
+
+            </Grid>
+            
         </PivotItem>
 
         <PivotItem Header="Deezer Picks">
-            <TextBlock Text="Deezer Picks" />
+            
+            <GridView x:Name="DeezerPicksGrid"
+                          ItemsSource="{Binding DeezerPicks}">
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:AlbumGridCell />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+            </GridView>
         </PivotItem>
 
     </Pivot>

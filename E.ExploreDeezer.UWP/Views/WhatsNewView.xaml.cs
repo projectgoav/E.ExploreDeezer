@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.ViewModels.Home;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace E.ExploreDeezer.UWP.Views
@@ -25,6 +27,26 @@ namespace E.ExploreDeezer.UWP.Views
         public WhatsNewView()
         {
             this.InitializeComponent();
+        }
+
+        public IWhatsNewViewModel ViewModel => this.DataContext as IWhatsNewViewModel;
+
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            this.DataContext = new WhatsNewViewModel(ServiceRegistry.DeezerSession,
+                                                     ServiceRegistry.PlatformServices);                              
+        }
+
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            this.ViewModel.Dispose();
+
+            this.DataContext = null;
         }
     }
 }

@@ -28,7 +28,6 @@ namespace E.ExploreDeezer.UWP
 
         private static readonly Dictionary<string, Type> navLookup = new Dictionary<string, Type>()
         {
-            { NEW_MENU_TAG, typeof(Views.WhatsNewView) },
             { CHART_MENU_TAG, typeof(Views.ChartsView) },
             { GENRE_MENU_TAG, typeof(Views.GenreView) },
         };
@@ -37,6 +36,8 @@ namespace E.ExploreDeezer.UWP
         public MainPage()
         {
             this.InitializeComponent();
+
+            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher));
 
             this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
         }
@@ -50,9 +51,16 @@ namespace E.ExploreDeezer.UWP
                 string tagValue = args.SelectedItemContainer.Tag
                                                             .ToString();
 
+                object viewModelParams = null;
+
                 switch(tagValue)
                 {
                     case NEW_MENU_TAG:
+                        {
+                            newPageType = typeof(Views.WhatsNewView);
+                            viewModelParams = null;
+                            break;
+                        }
                     case CHART_MENU_TAG:
                     case GENRE_MENU_TAG:
                         newPageType = navLookup[tagValue];
@@ -65,7 +73,7 @@ namespace E.ExploreDeezer.UWP
 
                 if (newPageType != null)
                 {
-                    this.ContentView.Navigate(newPageType, null, args.RecommendedNavigationTransitionInfo);
+                    this.ContentView.Navigate(newPageType, viewModelParams, args.RecommendedNavigationTransitionInfo);
                 }
             }
         }
