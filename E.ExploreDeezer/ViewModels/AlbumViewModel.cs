@@ -12,6 +12,7 @@ namespace E.ExploreDeezer.ViewModels
         string ArtistName { get; }
 
         //TODO: Artwork :)
+        string ArtworkUri { get; }
 
         bool IsPresent { get; }
     }
@@ -25,12 +26,14 @@ namespace E.ExploreDeezer.ViewModels
 
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
+            this.ArtworkUri = album?.CoverArtwork.Medium;
         }
 
 
         //IAlbumViewModel
         public string Title { get; }
         public string ArtistName { get; }
+        public string ArtworkUri { get; }
 
         public bool IsPresent { get; }
 

@@ -17,13 +17,37 @@
         <TabControl x:Name="ContentTabControl">
             <TabItem Header="New Releases">
 
+
+                <ListView ItemsSource="{Binding NewAlbums}">
+
+                    <ListView.View>
+                        <GridView />
+                    </ListView.View>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <views:AlbumContainer />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    
+                    
+                </ListView>
+
+                
+                
+               
+                <!--
+                
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+ 
                     <ItemsControl x:Name="NewAlbumsItemControl"
-                                  ItemsSource="{Binding NewAlbums}">
+                                  ItemsSource="{Binding NewAlbums}"
+                                  VirtualizingPanel.VirtualizationMode="Recycling">
 
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
+                                <WrapPanel Orientation="Horizontal"
+                                           VirtualizingPanel.IsVirtualizing="True"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
@@ -35,16 +59,21 @@
 
                     </ItemsControl>
                 </ScrollViewer>
+                
+                -->
 
             </TabItem>
             <TabItem Header="Deezer Selection">
 
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-                    <ItemsControl ItemsSource="{Binding DeezerPicks}">
+                    
+                    <ItemsControl ItemsSource="{Binding DeezerPicks}"
+                                  VirtualizingPanel.VirtualizationMode="Recycling">
 
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" />
+                                <WrapPanel Orientation="Horizontal"
+                                           VirtualizingPanel.IsVirtualizing="True" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 

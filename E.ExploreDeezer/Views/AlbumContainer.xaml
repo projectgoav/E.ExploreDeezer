@@ -17,11 +17,11 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Rectangle Grid.Row="0"
-                   Fill="CornflowerBlue"
-                   Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"/>
+        <Image x:Name="Artwork"
+               Grid.Row="0"
+               Width="200"
+               Height="200"/>
         
-     
         <TextBlock Grid.Row="1"
                    ClipToBounds="True"
                    Text="{Binding Title, FallbackValue=Title}"
