@@ -15,9 +15,13 @@ namespace E.ExploreDeezer.ViewModels.Home
     {
         EContentFetchStatus AlbumsFetchStatus { get; }
         EContentFetchStatus ArtistFetchStatus { get; }
+        EContentFetchStatus PlaylistsFetchStatus { get; }
+        EContentFetchStatus TracksFetchStatus { get; }
 
         IEnumerable<IAlbumViewModel> Albums { get; }
         IEnumerable<IArtistViewModel> Artists { get; }
+        IEnumerable<IPlaylistViewModel> Playlists { get; }
+        IEnumerable<ITrackViewModel> Tracks { get; }
     }
 
     internal class ChartsViewModel : ViewModelBase,
@@ -31,9 +35,13 @@ namespace E.ExploreDeezer.ViewModels.Home
 
         private EContentFetchStatus albumsStatus;
         private EContentFetchStatus artistStatus;
+        private EContentFetchStatus playlistStatus;
+        private EContentFetchStatus tracksStatus;
 
         private IEnumerable<IAlbumViewModel> albums;
         private IEnumerable<IArtistViewModel> artists;
+        private IEnumerable<IPlaylistViewModel> playlists;
+        private IEnumerable<ITrackViewModel> tracks;
 
         public ChartsViewModel(IDeezerSession session,
                                IPlatformServices platformServices)
@@ -59,6 +67,18 @@ namespace E.ExploreDeezer.ViewModels.Home
             private set => SetProperty(ref this.artistStatus, value);
         }
 
+        public EContentFetchStatus PlaylistsFetchStatus
+        {
+            get => this.playlistStatus;
+            private set => SetProperty(ref this.playlistStatus, value);
+        }
+
+        public EContentFetchStatus TracksFetchStatus
+        {
+            get => this.tracksStatus;
+            private set => SetProperty(ref this.tracksStatus, value);
+        }
+
         public IEnumerable<IAlbumViewModel> Albums
         {
             get => this.albums;
@@ -69,6 +89,18 @@ namespace E.ExploreDeezer.ViewModels.Home
         {
             get => this.artists;
             private set => SetProperty(ref this.artists, value);
+        }
+
+        public IEnumerable<IPlaylistViewModel> Playlists
+        {
+            get => this.playlists;
+            private set => SetProperty(ref this.playlists, value);
+        }
+
+        public IEnumerable<ITrackViewModel> Tracks
+        {
+            get => this.tracks;
+            private set => SetProperty(ref this.tracks, value);
         }
 
 
@@ -95,14 +127,28 @@ namespace E.ExploreDeezer.ViewModels.Home
                                       var artists = chart.Artists.Select(x => new ArtistViewModel(x))
                                                                  .ToList();
 
+                                      var playlists = chart.Playlists.Select(x => new PlaylistViewModel(x))
+                                                                     .ToList();
+
+                                      var tracks = chart.Tracks.Select(x => new TrackViewModel(x))
+                                                               .ToList();
+
                                       this.Albums = albums;
                                       this.Artists = artists;
+                                      this.Playlists = playlists;
+                                      this.Tracks = tracks;
 
                                       this.AlbumsFetchStatus = albums.Count == 0 ? EContentFetchStatus.Empty
                                                                                  : EContentFetchStatus.Available;
 
                                       this.ArtistFetchStatus = artists.Count == 0 ? EContentFetchStatus.Empty
                                                                                   : EContentFetchStatus.Available;
+
+                                      this.PlaylistsFetchStatus = playlists.Count == 0 ? EContentFetchStatus.Empty
+                                                                                      : EContentFetchStatus.Available;
+
+                                      this.TracksFetchStatus = tracks.Count == 0 ? EContentFetchStatus.Empty
+                                                                                 : EContentFetchStatus.Available;
                                   }
                               },
                               this.CancellationToken,
@@ -116,6 +162,9 @@ namespace E.ExploreDeezer.ViewModels.Home
             if (disposing)
             {
                 this.Albums = Array.Empty<IAlbumViewModel>();
+                this.Artists = Array.Empty<IArtistViewModel>();
+                this.Playlists = Array.Empty<IPlaylistViewModel>();
+                this.Tracks = Array.Empty<ITrackViewModel>();
             }
 
             base.Dispose(disposing);

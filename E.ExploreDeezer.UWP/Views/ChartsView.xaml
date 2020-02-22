@@ -54,11 +54,39 @@
         </PivotItem>
 
         <PivotItem Header="Playlists">
-            <TextBlock Text="Playlists" />
+
+            <GridView x:Name="PlaylistsChartGrid"
+                      ItemsSource="{Binding Playlists}">
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:PlaylistGridCell />
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+
+            </GridView>
+
         </PivotItem>
 
         <PivotItem Header="Tracks">
-            <TextBlock Text="Tracks" />
+
+            <ListView x:Name="TracksListGrid"
+                      ItemsSource="{Binding Tracks}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <controls:TrackListCell />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                
+            </ListView>
+            
         </PivotItem>
 
     </Pivot>

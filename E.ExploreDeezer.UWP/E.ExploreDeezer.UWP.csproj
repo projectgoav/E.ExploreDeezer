@@ -125,6 +125,12 @@
     <Compile Include="Controls\ArtistGridCell.xaml.cs">
       <DependentUpon>ArtistGridCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlaylistGridCell.xaml.cs">
+      <DependentUpon>PlaylistGridCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackListCell.xaml.cs">
+      <DependentUpon>TrackListCell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -137,7 +143,9 @@
     <Compile Include="ViewModels\ArtistViewModel.cs" />
     <Compile Include="ViewModels\Home\ChartsViewModel.cs" />
     <Compile Include="ViewModels\Home\WhatsNewViewModel.cs" />
+    <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\Status.cs" />
+    <Compile Include="ViewModels\TrackViewModel.cs" />
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
@@ -173,6 +181,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ArtistGridCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlaylistGridCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackListCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
