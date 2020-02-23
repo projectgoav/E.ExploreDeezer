@@ -125,6 +125,9 @@
     <Compile Include="Controls\ArtistGridCell.xaml.cs">
       <DependentUpon>ArtistGridCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GenreCell.xaml.cs">
+      <DependentUpon>GenreCell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlaylistGridCell.xaml.cs">
       <DependentUpon>PlaylistGridCell.xaml</DependentUpon>
     </Compile>
@@ -141,7 +144,9 @@
     <Compile Include="UWPPlatformServices.cs" />
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\ArtistViewModel.cs" />
+    <Compile Include="ViewModels\GenreViewModel.cs" />
     <Compile Include="ViewModels\Home\ChartsViewModel.cs" />
+    <Compile Include="ViewModels\Home\GenreListViewModel.cs" />
     <Compile Include="ViewModels\Home\WhatsNewViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\Status.cs" />
@@ -181,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ArtistGridCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GenreCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
