@@ -8,6 +8,7 @@ namespace E.ExploreDeezer.ViewModels
 {
     public interface IAlbumViewModel
     {
+        ulong ItemId { get; }
         string Title { get; }
         string ArtistName { get; }
 
@@ -24,6 +25,7 @@ namespace E.ExploreDeezer.ViewModels
         {
             this.IsPresent = album != null;
 
+            this.ItemId = album?.Id ?? 0;
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
             this.ArtworkUri = album?.CoverArtwork.Medium;
@@ -31,6 +33,7 @@ namespace E.ExploreDeezer.ViewModels
 
 
         //IAlbumViewModel
+        public ulong ItemId { get; }
         public string Title { get; }
         public string ArtistName { get; }
         public string ArtworkUri { get; }

@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.ViewModels;
 using E.ExploreDeezer.ViewModels.Home;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -35,18 +36,43 @@ namespace E.ExploreDeezer.UWP.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             this.DataContext = new WhatsNewViewModel(ServiceRegistry.DeezerSession,
-                                                     ServiceRegistry.PlatformServices);                              
+                                                     ServiceRegistry.PlatformServices);
+
+            this.NewAlbumGrid.SelectionChanged += GridSelectionChanged;
+            this.DeezerPicksGrid.SelectionChanged += GridSelectionChanged;
         }
-
-
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
 
+            this.NewAlbumGrid.SelectionChanged -= GridSelectionChanged;
+            this.DeezerPicksGrid.SelectionChanged -= GridSelectionChanged;
+
             this.ViewModel.Dispose();
 
             this.DataContext = null;
+        }
+
+
+
+        private void GridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            IAlbumViewModel selectedItem = null;
+
+            if (sender == this.NewAlbumGrid)
+                selectedItem = this.ViewModel.NewAlbums.ElementAt(this.NewAlbumGrid.SelectedIndex);
+
+            else if (sender == this.DeezerPicksGrid)
+                selectedItem = this.ViewModel.DeezerPicks.ElementAt(this.DeezerPicksGrid.SelectedIndex);
+
+            else
+                return; // TODO
+
+            // TODO : Centralise the navigation somewhere?
+            var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+
+            ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
         }
     }
 }

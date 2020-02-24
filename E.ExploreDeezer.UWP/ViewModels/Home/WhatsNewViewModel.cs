@@ -19,6 +19,8 @@ namespace E.ExploreDeezer.ViewModels.Home
 
         IEnumerable<IAlbumViewModel> NewAlbums { get; }
         IEnumerable<IAlbumViewModel> DeezerPicks { get; }
+
+        ITracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel viewModel);
     }
 
     internal class WhatsNewViewModel : ViewModelBase,
@@ -71,6 +73,14 @@ namespace E.ExploreDeezer.ViewModels.Home
             private set => SetProperty(ref this.deezerPicks, value);
         }
 
+
+        public ITracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel viewModel)
+        {
+            if (!viewModel.IsPresent)
+                throw new ArgumentException();
+
+            return new TracklistViewModelParams(ETracklistViewModelType.Album, viewModel.ItemId);
+        }
 
 
         private void FetchContents()

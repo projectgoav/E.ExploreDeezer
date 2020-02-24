@@ -1,0 +1,12 @@
+
+Core/ViewModels:
+ ☐ Move viewmodels into a single core project
+ ☐ ViewModels shouldn't manage session etc, instead have a store and provide view over the top
+ ☐ Merge all item ViewModels into a single 'MediaItem' ViewModel @single-cell
+ ☐ Album ViewModel @tracklist
+ ☐ Artist ViewModel @tracklist
+
+Views:
+  ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
+  ☐ Album View @tracklist
+  ☐ Artist View @tracklist

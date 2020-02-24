@@ -150,12 +150,16 @@
     <Compile Include="ViewModels\Home\WhatsNewViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\Status.cs" />
+    <Compile Include="ViewModels\TracklistViewModel.cs" />
     <Compile Include="ViewModels\TrackViewModel.cs" />
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GenreView.xaml.cs">
       <DependentUpon>GenreView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TracklistView.xaml.cs">
+      <DependentUpon>TracklistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\WhatsNewView.xaml.cs">
       <DependentUpon>WhatsNewView.xaml</DependentUpon>
@@ -210,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GenreView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TracklistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

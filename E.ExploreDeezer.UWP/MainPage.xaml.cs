@@ -37,7 +37,11 @@ namespace E.ExploreDeezer.UWP
         {
             this.InitializeComponent();
 
-            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher));
+            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher),
+                                       this.ContentView);
+
+            this.ContentView.Navigated += OnNavigationOccurs;
+            this.MainNav.BackRequested += OnBackRequested;
 
             this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
         }
@@ -77,6 +81,22 @@ namespace E.ExploreDeezer.UWP
                 }
             }
         }
+
+
+        private void OnNavigationOccurs(object sender, NavigationEventArgs e)
+        {
+            this.MainNav.IsBackEnabled = this.ContentView.CanGoBack;
+        }
+
+
+        private void OnBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
+        {
+            if (this.ContentView.CanGoBack)
+            {
+                this.ContentView.GoBack();
+            }
+        }
+
 
     }
 }

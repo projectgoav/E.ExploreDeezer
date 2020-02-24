@@ -11,7 +11,8 @@
     <NavigationView x:Name="MainNav"
                     PaneTitle="Explore Deezer"
                     SelectionChanged="MainNavSelectionChanged"
-                    IsSettingsVisible="False">
+                    IsSettingsVisible="False"
+                    IsBackEnabled="True">
         <NavigationView.MenuItems>
             <NavigationViewItem Content="What's New" 
                                 Tag="new" />
