@@ -149,10 +149,10 @@ namespace E.ExploreDeezer.ViewModels
             {
                 case ETracklistViewModelType.Album:
                     fetchTask = this.session.Albums.GetAlbumTracks(this.AlbumViewModel.ItemId, this.CancellationToken);
-
                     this.session.Albums.GetById(this.AlbumViewModel.ItemId, this.CancellationToken)
                                        .ContinueWith(t =>
                                        {
+                                           //TODO: Actually handle failed states
                                            if (t.IsFaulted || t.IsCanceled)
                                                return;
 
