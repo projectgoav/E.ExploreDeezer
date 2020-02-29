@@ -18,6 +18,8 @@ namespace E.ExploreDeezer.ViewModels
         string CreatorName { get; }
 
         string ArtworkUri { get; }
+
+        string NumberOfTracks { get; }
     }
 
     internal class PlaylistViewModel : IPlaylistViewModel
@@ -31,6 +33,8 @@ namespace E.ExploreDeezer.ViewModels
             this.Title = playlist?.Title ?? string.Empty;
             this.CreatorName = playlist?.Creator?.Username ?? string.Empty;
             this.ArtworkUri = playlist?.Images?.Medium ?? string.Empty;
+
+            this.NumberOfTracks = playlist?.NumberOfTracks.ToString() ?? string.Empty;
         }
 
         // IPlaylistViewModel
@@ -43,5 +47,7 @@ namespace E.ExploreDeezer.ViewModels
         public string CreatorName { get; }
 
         public string ArtworkUri { get; }
+
+        public string NumberOfTracks { get; }
     }
 }

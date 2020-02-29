@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+
 using E.ExploreDeezer.ViewModels.Home;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -39,6 +40,8 @@ namespace E.ExploreDeezer.UWP.Views
 
             this.DataContext = new ChartsViewModel(ServiceRegistry.DeezerSession,
                                                    ServiceRegistry.PlatformServices);
+
+            SetupEvents();
         }
 
 
@@ -46,10 +49,49 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
+            RemoveEvents();
+
             this.ViewModel.Dispose();
 
             this.DataContext = null;
         }
 
+
+        private void SetupEvents()
+        {
+            this.AlbumChartGrid.SelectionChanged += OnGridSelectionChanged;
+            this.PlaylistsChartGrid.SelectionChanged += OnGridSelectionChanged;
+        }
+
+        private void RemoveEvents()
+        {
+            this.AlbumChartGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.PlaylistsChartGrid.SelectionChanged -= OnGridSelectionChanged;
+        }
+
+
+
+        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == this.AlbumChartGrid)
+            {
+                var selectedItem = this.ViewModel.Albums.ElementAt(this.AlbumChartGrid.SelectedIndex);
+                var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+
+                ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
+                return;
+            }
+            else if (sender == this.PlaylistsChartGrid)
+            {
+                var selectedItem = this.ViewModel.Playlists.ElementAt(this.PlaylistsChartGrid.SelectedIndex);
+                var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+
+                ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
+                return;
+
+            }
+            else
+                return; // TODO
+        }
     }
 }

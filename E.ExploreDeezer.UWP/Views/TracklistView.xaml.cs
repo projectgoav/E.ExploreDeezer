@@ -68,8 +68,16 @@ namespace E.ExploreDeezer.UWP.Views
             switch(this.ViewModel.Type)
             {
                 case ETracklistViewModelType.Album:
-                    this.pageHeader =  new Controls.AlbumTracklistHeader();
+                    this.pageHeader = new Controls.AlbumTracklistHeader();
                     this.pageHeader.DataContext = this.ViewModel.AlbumViewModel;
+
+                    this.HeaderFrame.Content = this.pageHeader;
+
+                    break;
+
+                case ETracklistViewModelType.Playlist:
+                    this.pageHeader = new Controls.PlaylistTracklistHeader();
+                    this.pageHeader.DataContext = this.ViewModel.PlaylistViewModel;
 
                     this.HeaderFrame.Content = this.pageHeader;
 

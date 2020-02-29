@@ -164,6 +164,17 @@ namespace E.ExploreDeezer.ViewModels
 
                 case ETracklistViewModelType.Playlist:
                     fetchTask = this.session.Playlists.GetTracks(this.PlaylistViewModel.ItemId, this.CancellationToken);
+
+                    this.session.Playlists.GetById(this.PlaylistViewModel.ItemId, this.CancellationToken)
+                                          .ContinueWith(t =>
+                                          {
+
+                                              if (t.IsFaulted || t.IsCanceled)
+                                                  return;
+
+                                              this.PlaylistViewModel = new PlaylistViewModel(t.Result);
+
+                                          }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
                     break;
 
                 default: //Exit case
