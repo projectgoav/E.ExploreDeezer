@@ -119,20 +119,26 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AlbumGridCell.xaml.cs">
+    <Compile Include="Controls\AlbumTracklistHeader.xaml.cs">
+      <DependentUpon>AlbumTracklistHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Cells\AlbumGridCell.xaml.cs">
       <DependentUpon>AlbumGridCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ArtistGridCell.xaml.cs">
+    <Compile Include="Controls\Cells\ArtistGridCell.xaml.cs">
       <DependentUpon>ArtistGridCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GenreCell.xaml.cs">
+    <Compile Include="Controls\Cells\GenreCell.xaml.cs">
       <DependentUpon>GenreCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PlaylistGridCell.xaml.cs">
+    <Compile Include="Controls\Cells\PlaylistGridCell.xaml.cs">
       <DependentUpon>PlaylistGridCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TrackListCell.xaml.cs">
+    <Compile Include="Controls\Cells\TrackListCell.xaml.cs">
       <DependentUpon>TrackListCell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TrackCell.xaml.cs">
+      <DependentUpon>TrackCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -185,23 +191,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\AlbumGridCell.xaml">
+    <Page Include="Controls\AlbumTracklistHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ArtistGridCell.xaml">
+    <Page Include="Controls\Cells\AlbumGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\GenreCell.xaml">
+    <Page Include="Controls\Cells\ArtistGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PlaylistGridCell.xaml">
+    <Page Include="Controls\Cells\GenreCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TrackListCell.xaml">
+    <Page Include="Controls\Cells\PlaylistGridCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Cells\TrackListCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -233,6 +247,9 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\Headers\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

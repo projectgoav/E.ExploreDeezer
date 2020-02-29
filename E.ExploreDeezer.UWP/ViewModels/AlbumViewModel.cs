@@ -12,6 +12,8 @@ namespace E.ExploreDeezer.ViewModels
         string Title { get; }
         string ArtistName { get; }
 
+        uint NumberOfTracks { get; }
+
         //TODO: Artwork :)
         string ArtworkUri { get; }
 
@@ -28,6 +30,7 @@ namespace E.ExploreDeezer.ViewModels
             this.ItemId = album?.Id ?? 0;
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
+            this.NumberOfTracks = album?.TrackCount ?? 0u;
             this.ArtworkUri = album?.CoverArtwork.Medium;
         }
 
@@ -35,6 +38,7 @@ namespace E.ExploreDeezer.ViewModels
         //IAlbumViewModel
         public ulong ItemId { get; }
         public string Title { get; }
+        public uint NumberOfTracks { get; }
         public string ArtistName { get; }
         public string ArtworkUri { get; }
 

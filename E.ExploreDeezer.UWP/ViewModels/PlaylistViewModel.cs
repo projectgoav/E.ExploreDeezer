@@ -12,6 +12,8 @@ namespace E.ExploreDeezer.ViewModels
     {
         bool IsPresent { get; }
 
+        ulong ItemId { get; }
+
         string Title { get; }
         string CreatorName { get; }
 
@@ -24,6 +26,8 @@ namespace E.ExploreDeezer.ViewModels
         {
             this.IsPresent = playlist != null;
 
+            this.ItemId = playlist?.Id ?? 0u;
+
             this.Title = playlist?.Title ?? string.Empty;
             this.CreatorName = playlist?.Creator?.Username ?? string.Empty;
             this.ArtworkUri = playlist?.Images?.Medium ?? string.Empty;
@@ -31,6 +35,8 @@ namespace E.ExploreDeezer.ViewModels
 
         // IPlaylistViewModel
         public bool IsPresent { get; }
+
+        public ulong ItemId { get; }
 
         public string Title { get; }
 

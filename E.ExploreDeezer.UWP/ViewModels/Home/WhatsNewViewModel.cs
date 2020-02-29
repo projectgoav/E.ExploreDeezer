@@ -79,7 +79,7 @@ namespace E.ExploreDeezer.ViewModels.Home
             if (!viewModel.IsPresent)
                 throw new ArgumentException();
 
-            return new TracklistViewModelParams(ETracklistViewModelType.Album, viewModel.ItemId);
+            return new TracklistViewModelParams(ETracklistViewModelType.Album, viewModel);
         }
 
 
