@@ -147,7 +147,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceRegistry.cs" />
     <Compile Include="UWPPlatformServices.cs" />
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>

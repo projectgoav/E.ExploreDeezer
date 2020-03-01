@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.Core;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace E.ExploreDeezer.UWP
@@ -37,8 +39,9 @@ namespace E.ExploreDeezer.UWP
         {
             this.InitializeComponent();
 
-            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher),
-                                       this.ContentView);
+            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher));
+            ServiceRegistry.Register<Frame>(this.ContentView);
+
 
             this.ContentView.Navigated += OnNavigationOccurs;
             this.MainNav.BackRequested += OnBackRequested;

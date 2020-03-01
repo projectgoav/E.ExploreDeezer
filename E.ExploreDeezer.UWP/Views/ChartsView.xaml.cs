@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 
+using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels.Home;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -38,8 +39,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = new ChartsViewModel(ServiceRegistry.DeezerSession,
-                                                   ServiceRegistry.PlatformServices);
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
 
             SetupEvents();
         }
@@ -78,7 +78,8 @@ namespace E.ExploreDeezer.UWP.Views
                 var selectedItem = this.ViewModel.Albums.ElementAt(this.AlbumChartGrid.SelectedIndex);
                 var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
 
-                ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
                 return;
             }
             else if (sender == this.PlaylistsChartGrid)
@@ -86,7 +87,8 @@ namespace E.ExploreDeezer.UWP.Views
                 var selectedItem = this.ViewModel.Playlists.ElementAt(this.PlaylistsChartGrid.SelectedIndex);
                 var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
 
-                ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
                 return;
 
             }

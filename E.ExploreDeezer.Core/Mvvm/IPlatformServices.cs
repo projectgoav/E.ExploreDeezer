@@ -8,6 +8,7 @@ namespace E.ExploreDeezer.Core.Mvvm
 {
     public interface IPlatformServices
     {
+        IPresenter Presenter { get; }
         IMainThreadDispatcher MainThreadDispatcher { get; }
     }
 
@@ -19,4 +20,8 @@ namespace E.ExploreDeezer.Core.Mvvm
     }
 
 
+    public interface IPresenter
+    {
+        void ShowViewModel(IViewModel viewModelToShow);
+    }
 }

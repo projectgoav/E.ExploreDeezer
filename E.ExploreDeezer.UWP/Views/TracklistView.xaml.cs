@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -39,9 +40,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = new TracklistViewModel(ServiceRegistry.DeezerSession,
-                                                      ServiceRegistry.PlatformServices,
-                                                      e.Parameter as ITracklistViewModelParams);
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel(e.Parameter as ITracklistViewModelParams);
 
             SetupUI();
 

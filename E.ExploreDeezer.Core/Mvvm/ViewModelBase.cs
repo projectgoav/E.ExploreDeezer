@@ -8,7 +8,13 @@ using System.Threading;
 
 namespace E.ExploreDeezer.Core.Mvvm
 {
-    internal abstract class ViewModelBase : INotifyPropertyChanged,
+    public interface IViewModel : INotifyPropertyChanged
+    {
+
+    }
+
+
+    internal abstract class ViewModelBase : IViewModel,
                                             IDisposable
     {
         private static CancellationToken PRE_CANCELLED_TOKEN = new CancellationToken(canceled: true);

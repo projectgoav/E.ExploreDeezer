@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.ViewModels.Home;
 
@@ -35,8 +36,7 @@ namespace E.ExploreDeezer.UWP.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.DataContext = new WhatsNewViewModel(ServiceRegistry.DeezerSession,
-                                                     ServiceRegistry.PlatformServices);
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
 
             this.NewAlbumGrid.SelectionChanged += GridSelectionChanged;
             this.DeezerPicksGrid.SelectionChanged += GridSelectionChanged;
@@ -72,7 +72,8 @@ namespace E.ExploreDeezer.UWP.Views
             // TODO : Centralise the navigation somewhere?
             var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
 
-            ServiceRegistry.ApplicationFrame.Navigate(typeof(TracklistView), p);
+            ServiceRegistry.GetService<Frame>()
+                           .Navigate(typeof(TracklistView), p);
         }
     }
 }

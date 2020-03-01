@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-
+using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.ViewModels.Home;
 
@@ -39,8 +39,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = new GenreListViewModel(ServiceRegistry.DeezerSession,
-                                                      ServiceRegistry.PlatformServices);
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateGenreListViewModel();
         }
 
 

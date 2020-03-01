@@ -25,6 +25,8 @@ namespace E.ExploreDeezer.UWP
         // IPlatformServices
         public IMainThreadDispatcher MainThreadDispatcher => this;
 
+        public IPresenter Presenter { get; } = null;
+
 
         // IMainThreadDispatcher
         public void ExecuteOnMainThread(Action action)
