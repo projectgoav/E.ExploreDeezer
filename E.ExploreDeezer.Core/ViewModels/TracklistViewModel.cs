@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using E.Deezer;
 using E.Deezer.Api;
 
-using E.ExploreDeezer.Mvvm;
+using E.ExploreDeezer.Core.Mvvm;
 
-namespace E.ExploreDeezer.ViewModels
+namespace E.ExploreDeezer.Core.ViewModels
 {
     public enum ETracklistViewModelType : byte
     {

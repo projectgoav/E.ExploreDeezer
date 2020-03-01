@@ -4,15 +4,15 @@ using System.Text;
 
 using System.Threading.Tasks;
 
-namespace E.ExploreDeezer.Mvvm
+namespace E.ExploreDeezer.Core.Mvvm
 {
-    internal interface IPlatformServices
+    public interface IPlatformServices
     {
         IMainThreadDispatcher MainThreadDispatcher { get; }
     }
 
 
-    internal interface IMainThreadDispatcher
+    public interface IMainThreadDispatcher
     {
         void ExecuteOnMainThread(Action action);
         Task ExecuteOnMainThreadAsync(Action action);

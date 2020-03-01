@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 using System.Threading;
 
-namespace E.ExploreDeezer.Mvvm
+namespace E.ExploreDeezer.Core.Mvvm
 {
     internal abstract class ViewModelBase : INotifyPropertyChanged,
                                             IDisposable

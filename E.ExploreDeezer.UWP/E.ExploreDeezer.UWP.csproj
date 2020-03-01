@@ -146,21 +146,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mvvm\IPlatformServices.cs" />
     <Compile Include="ServiceRegistry.cs" />
     <Compile Include="UWPPlatformServices.cs" />
-    <Compile Include="ViewModels\AlbumViewModel.cs" />
-    <Compile Include="ViewModels\ArtistViewModel.cs" />
-    <Compile Include="ViewModels\GenreViewModel.cs" />
-    <Compile Include="ViewModels\Home\ChartsViewModel.cs" />
-    <Compile Include="ViewModels\Home\GenreListViewModel.cs" />
-    <Compile Include="ViewModels\Home\WhatsNewViewModel.cs" />
-    <Compile Include="ViewModels\PlaylistViewModel.cs" />
-    <Compile Include="ViewModels\Status.cs" />
-    <Compile Include="ViewModels\TracklistViewModel.cs" />
-    <Compile Include="ViewModels\TrackViewModel.cs" />
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
@@ -257,6 +245,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\Headers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\E.ExploreDeezer.Core\E.ExploreDeezer.Core.csproj">
+      <Project>{801dc25e-4adf-4d28-87b7-4340589d46e7}</Project>
+      <Name>E.ExploreDeezer.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

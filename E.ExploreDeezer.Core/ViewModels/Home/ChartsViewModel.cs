@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using E.Deezer;
-using E.ExploreDeezer.Mvvm;
+using E.ExploreDeezer.Core.Mvvm;
 
-namespace E.ExploreDeezer.ViewModels.Home
+namespace E.ExploreDeezer.Core.ViewModels.Home
 {
     public interface IChartsViewModel : INotifyPropertyChanged,
                                         IDisposable

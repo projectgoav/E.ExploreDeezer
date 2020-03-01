@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using E.ExploreDeezer.Mvvm;
+using E.ExploreDeezer.Core.Mvvm;
 using Windows.UI.Core;
 
 namespace E.ExploreDeezer.UWP

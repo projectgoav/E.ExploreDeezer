@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace E.ExploreDeezer.ViewModels
+namespace E.ExploreDeezer.Core.ViewModels
 {
     public enum EContentFetchStatus
     {

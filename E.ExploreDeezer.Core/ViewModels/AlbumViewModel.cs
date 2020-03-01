@@ -4,7 +4,7 @@ using System.Text;
 
 using E.Deezer.Api;
 
-namespace E.ExploreDeezer.ViewModels
+namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IAlbumViewModel
     {

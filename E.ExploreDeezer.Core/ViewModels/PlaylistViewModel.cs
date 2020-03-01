@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using E.Deezer.Api;
 
-namespace E.ExploreDeezer.ViewModels
+namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IPlaylistViewModel
     {

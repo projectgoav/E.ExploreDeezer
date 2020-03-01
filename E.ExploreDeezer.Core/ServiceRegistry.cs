@@ -5,14 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Net.Http;
-using Windows.UI.Xaml.Controls;
 
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
 
-namespace E.ExploreDeezer.UWP
+namespace E.ExploreDeezer.Core
 {
+    //TODO: FIX ME
+    internal class Frame
+    { }
+
+
     internal static class ServiceRegistry
     {
         public static void Initialise(IPlatformServices platformServices,
