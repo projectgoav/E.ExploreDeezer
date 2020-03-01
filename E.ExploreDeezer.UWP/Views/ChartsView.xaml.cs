@@ -39,7 +39,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateChartsViewModel();
 
             SetupEvents();
         }
