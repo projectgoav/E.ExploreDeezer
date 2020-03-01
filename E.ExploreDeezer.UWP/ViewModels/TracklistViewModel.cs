@@ -192,7 +192,8 @@ namespace E.ExploreDeezer.ViewModels
                     return;
                 }
 
-                var tracks = t.Result.Select(x => new TrackViewModel(x))
+                var tracks = t.Result.Select(x => new TrackViewModel(x, this.Type == ETracklistViewModelType.Playlist ? ETrackLHSMode.Artwork 
+                                                                                                                      : ETrackLHSMode.Number))
                                      .ToList();
 
                 this.Tracks = tracks;

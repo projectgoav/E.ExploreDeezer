@@ -24,6 +24,25 @@ namespace E.ExploreDeezer.UWP.Controls
         public TrackCell()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += (s, e) =>
+            {
+                if (this.ViewModel == null)
+                    return;
+
+                switch(this.ViewModel.LHSMode)
+                {
+                    case ETrackLHSMode.Number:
+                        this.TrackNumberLabel.Visibility = Visibility.Visible;
+                        this.TrackImage.Visibility = Visibility.Collapsed;
+                        break;
+
+                    case ETrackLHSMode.Artwork:
+                        this.TrackImage.Visibility = Visibility.Visible;
+                        this.TrackNumberLabel.Visibility = Visibility.Collapsed;
+                        break;
+                }
+            };
         }
 
 
