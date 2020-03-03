@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace E.ExploreDeezer.Core
 {
@@ -32,8 +33,8 @@ namespace E.ExploreDeezer.Core
     {
         private readonly Reducer<TState> reducer;
         private readonly object lockObject;
-        private readonly IObservable<TState> storeObservable;
         private readonly IEnumerable<Middleware> middlewares;
+        private readonly BehaviorSubject<TState> storeSubject;
 
 
         public Store(TState initialState, Reducer<TState> reducer, IEnumerable<Middleware> middlewares)
@@ -44,9 +45,7 @@ namespace E.ExploreDeezer.Core
             this.CurrentState = initialState;
 
             this.lockObject = new object();
-            this.storeObservable = Observable.FromEventPattern<OnStateChangedHandler<TState>, TState>(h => this.OnStateChanged += h,
-                                                                                                      h => this.OnStateChanged -= h)
-                                             .Select(x => x.EventArgs);
+            this.storeSubject = new BehaviorSubject<TState>(this.CurrentState);
         }
 
 
@@ -66,7 +65,7 @@ namespace E.ExploreDeezer.Core
 
         // IObserable
         public IDisposable Subscribe(IObserver<TState> observer)
-            => this.storeObservable.Subscribe(observer);
+            => this.storeSubject.Subscribe(observer);
 
 
         public event OnActionDispatchedHandler OnActionDispatched;
@@ -93,6 +92,8 @@ namespace E.ExploreDeezer.Core
             }
 
             // Execute outside the lock to allow progress to continue
+            this.storeSubject.OnNext(this.CurrentState);
+
             OnStateChanged?.Invoke(this.CurrentState);
         }
     }

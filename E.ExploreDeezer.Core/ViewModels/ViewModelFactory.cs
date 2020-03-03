@@ -5,6 +5,7 @@ using System.Text;
 using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.ViewModels.Home;
+using E.ExploreDeezer.Core.NewReleases.ViewModels;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {

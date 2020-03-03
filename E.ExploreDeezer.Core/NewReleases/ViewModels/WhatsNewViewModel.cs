@@ -5,11 +5,15 @@ using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 
+using System.Reactive.Linq;
+
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.NewReleases.Store;
 
-namespace E.ExploreDeezer.Core.ViewModels.Home
+namespace E.ExploreDeezer.Core.NewReleases.ViewModels
 {
     public interface IWhatsNewViewModel : INotifyPropertyChanged,
                                           IDisposable
@@ -31,6 +35,7 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         private const uint MAX_ITEM_COUNT = 50;
 
         private readonly IDeezerSession session;
+        private readonly IDisposable storeSubscription;
 
         private IEnumerable<IAlbumViewModel> newAlbums;
         private IEnumerable<IAlbumViewModel> deezerPicks;
@@ -43,6 +48,13 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
             : base(platformServices)
         {
             this.session = session;
+
+            this.storeSubscription = ServiceRegistry.Store
+                                                    .Select(state => state.NewReleases)
+                                                    .DistinctUntilChanged()
+                                                    .Subscribe(UpdateViewModel);
+
+            ServiceRegistry.NewReleasesManager.FetchNewReleases();
 
             FetchContents();
         }
@@ -85,32 +97,7 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
 
         private void FetchContents()
         {
-            this.NewAlbumsFetchStatus = EContentFetchStatus.Loading;
             this.DeezerPicksFetchStatus = EContentFetchStatus.Loading;
-
-            this.session.Genre.GetNewReleasesForGenre(DEFAULT_GENRE_ID, this.CancellationToken, 0, MAX_ITEM_COUNT)
-                              .ContinueWith(t =>
-                              {
-                                  if (t.IsFaulted || t.IsCanceled)
-                                  {
-                                      this.NewAlbums = Array.Empty<IAlbumViewModel>();
-                                      this.NewAlbumsFetchStatus = EContentFetchStatus.Error;
-                                  }
-                                  else
-                                  {
-                                      var contents = t.Result
-                                                      .Select(x => new AlbumViewModel(x))
-                                                      .ToList();
-
-                                      this.NewAlbums = contents;
-
-                                      this.NewAlbumsFetchStatus = contents.Count == 0 ? EContentFetchStatus.Empty
-                                                                                      : EContentFetchStatus.Available;
-                                  }
-                              },
-                              this.CancellationToken,
-                              TaskContinuationOptions.ExecuteSynchronously,
-                              TaskScheduler.Default);
 
             this.session.Genre.GetDeezerSelectionForGenre(DEFAULT_GENRE_ID, this.CancellationToken, 0, MAX_ITEM_COUNT)
                               .ContinueWith(t =>
@@ -138,10 +125,26 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         }
 
 
+        private void UpdateViewModel(NewReleaseState state)
+        {
+            try
+            {
+                this.NewAlbums = state.NewReleases;
+                this.NewAlbumsFetchStatus = state.NewReleaseFetchStatus;
+            }
+            catch (Exception e)
+            {
+                //TODO: Log something please...
+            }
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.storeSubscription.Dispose();
+
                 this.NewAlbums = Array.Empty<IAlbumViewModel>();
                 this.DeezerPicks = Array.Empty<IAlbumViewModel>();
             }

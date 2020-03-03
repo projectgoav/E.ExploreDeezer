@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E.ExploreDeezer", "E.Explor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E.ExploreDeezer.UWP", "E.ExploreDeezer.UWP\E.ExploreDeezer.UWP.csproj", "{EF369F4A-16C4-482E-849D-FECB6B234B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E.ExploreDeezer.Core", "E.ExploreDeezer.Core\E.ExploreDeezer.Core.csproj", "{801DC25E-4ADF-4D28-87B7-4340589D46E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E.ExploreDeezer.Core", "E.ExploreDeezer.Core\E.ExploreDeezer.Core.csproj", "{801DC25E-4ADF-4D28-87B7-4340589D46E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
