@@ -13,6 +13,8 @@ namespace E.ExploreDeezer.Core.NewReleases
     public interface INewReleaseManager
     {
         void FetchNewReleases();
+
+        void FetchDeezerPicks();
     }
 
 
@@ -27,6 +29,7 @@ namespace E.ExploreDeezer.Core.NewReleases
         private readonly CancellationTokenSource cancellationTokenSource;
 
         private bool fetchedNewReleases;
+        private bool fetchedDeezerPicks;
 
         public NewReleaseManager(IStore<AppState> store,
                                  IDeezerSession session)
@@ -65,6 +68,35 @@ namespace E.ExploreDeezer.Core.NewReleases
                                       this.store.Dispatch(new SetNewReleaseFetchSuccess(t.Result));
                                   }
                               }, 
+                              this.cancellationTokenSource.Token,
+                              TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously,
+                              TaskScheduler.Default);
+        }
+
+        public void FetchDeezerPicks()
+        {
+            lock(this.lockObject)
+            {
+                if (fetchedDeezerPicks)
+                    return;
+
+                this.fetchedDeezerPicks = true;
+            }
+
+            this.session.Genre.GetDeezerSelectionForGenre(DEFAULT_GENRE_ID, this.cancellationTokenSource.Token, 0, 50)
+                              .ContinueWith(t =>
+                              {
+                                  if (t.IsFaulted)
+                                  {
+                                      this.store.Dispatch(new SetDeezerPicksFetchFailure(t.Exception
+                                                                                          .GetBaseException()
+                                                                                          .Message));
+                                  }
+                                  else
+                                  {
+                                      this.store.Dispatch(new SetDeezerPicksFetchSuccess(t.Result));
+                                  }
+                              },
                               this.cancellationTokenSource.Token,
                               TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously,
                               TaskScheduler.Default);

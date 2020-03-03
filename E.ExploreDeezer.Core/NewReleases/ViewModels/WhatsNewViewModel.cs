@@ -55,8 +55,7 @@ namespace E.ExploreDeezer.Core.NewReleases.ViewModels
                                                     .Subscribe(UpdateViewModel);
 
             ServiceRegistry.NewReleasesManager.FetchNewReleases();
-
-            FetchContents();
+            ServiceRegistry.NewReleasesManager.FetchDeezerPicks();
         }
 
 
@@ -95,42 +94,15 @@ namespace E.ExploreDeezer.Core.NewReleases.ViewModels
         }
 
 
-        private void FetchContents()
-        {
-            this.DeezerPicksFetchStatus = EContentFetchStatus.Loading;
-
-            this.session.Genre.GetDeezerSelectionForGenre(DEFAULT_GENRE_ID, this.CancellationToken, 0, MAX_ITEM_COUNT)
-                              .ContinueWith(t =>
-                              {
-                                  if (t.IsFaulted || t.IsCanceled)
-                                  {
-                                      this.DeezerPicks = Array.Empty<IAlbumViewModel>();
-                                      this.DeezerPicksFetchStatus = EContentFetchStatus.Error;
-                                  }
-                                  else
-                                  {
-                                      var contents = t.Result
-                                                      .Select(x => new AlbumViewModel(x))
-                                                      .ToList();
-
-                                      this.DeezerPicks = contents;
-
-                                      this.DeezerPicksFetchStatus = contents.Count == 0 ? EContentFetchStatus.Empty
-                                                                                        : EContentFetchStatus.Available;
-                                  }
-                              },
-                              this.CancellationToken,
-                              TaskContinuationOptions.ExecuteSynchronously,
-                              TaskScheduler.Default);
-        }
-
-
         private void UpdateViewModel(NewReleaseState state)
         {
             try
             {
                 this.NewAlbums = state.NewReleases;
                 this.NewAlbumsFetchStatus = state.NewReleaseFetchStatus;
+
+                this.DeezerPicks = state.DeezerPicks;
+                this.DeezerPicksFetchStatus = state.DeezerPicksFetchStatus;
             }
             catch (Exception e)
             {
