@@ -10,29 +10,59 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-    <Pivot>
+    <StackPanel Orientation="Vertical">
 
-        <PivotItem Header="Genre">
+        <TextBlock Text="Genre"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
 
-            <GridView x:Name="GenreGrid"
-                      ItemsSource="{Binding GenreList}">
+        <GridView x:Name="GenreGrid"
+                  Margin="10, 0, 10, 0"
+                  ItemsSource="{Binding GenreList}">
 
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
 
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:GenreCell />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <controls:GenreCell />
+                </DataTemplate>
+            </GridView.ItemTemplate>
 
-            </GridView>
+        </GridView>
 
-        </PivotItem>
+        <!--
+        
+        <Pivot>
+
+            <PivotItem Header="Genre">
+
+                <GridView x:Name="GenreGrid"
+                          ItemsSource="{Binding GenreList}">
+
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:GenreCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                </GridView>
+
+            </PivotItem>
       
-    </Pivot>
-    
+        </Pivot> 
+        
+        -->
+
+    </StackPanel>
+
 </Page>

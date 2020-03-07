@@ -9,85 +9,95 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Pivot>
 
-        <PivotItem Header="Albums">
+    <StackPanel Orientation="Vertical">
+
+        <TextBlock Text="Charts"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
+
+        <Pivot>
+
+            <PivotItem Header="Albums">
             
-            <GridView x:Name="AlbumChartGrid"
-                      ItemsSource="{Binding Albums}">
+                <GridView x:Name="AlbumChartGrid"
+                          ItemsSource="{Binding Albums}">
 
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:AlbumGridCell />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-            </GridView>
+                </GridView>
             
-        </PivotItem>
+            </PivotItem>
 
-        <PivotItem Header="Artists">
+            <PivotItem Header="Artists">
             
-            <GridView x:Name="ArtistChartGrid"
-                      ItemsSource="{Binding Artists}">
+                <GridView x:Name="ArtistChartGrid"
+                          ItemsSource="{Binding Artists}">
 
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:ArtistGridCell />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ArtistGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-            </GridView>
+                </GridView>
             
-        </PivotItem>
+            </PivotItem>
 
-        <PivotItem Header="Playlists">
+            <PivotItem Header="Playlists">
 
-            <GridView x:Name="PlaylistsChartGrid"
-                      ItemsSource="{Binding Playlists}">
+                <GridView x:Name="PlaylistsChartGrid"
+                          ItemsSource="{Binding Playlists}">
 
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:PlaylistGridCell />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:PlaylistGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-            </GridView>
+                </GridView>
 
-        </PivotItem>
+            </PivotItem>
 
-        <PivotItem Header="Tracks">
+            <PivotItem Header="Tracks">
 
-            <ListView x:Name="TracksListGrid"
-                      ItemsSource="{Binding Tracks}">
+                <ListView x:Name="TracksListGrid"
+                          ItemsSource="{Binding Tracks}">
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:TrackListCell />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TrackListCell />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 
-            </ListView>
+                </ListView>
             
-        </PivotItem>
+            </PivotItem>
 
-    </Pivot>
+        </Pivot>
+
+    </StackPanel>
+
 </Page>

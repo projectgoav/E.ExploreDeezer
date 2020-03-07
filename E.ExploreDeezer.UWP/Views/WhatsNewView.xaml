@@ -9,28 +9,57 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Pivot>
+    <StackPanel Orientation="Vertical">
 
-        <PivotItem Header="New Albums">
+        <TextBlock Text="What's New"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
 
-            <Grid>
+        <Pivot>
 
-                <!--
-                <ProgressRing x:Name="NewAlbumsSpinner"      
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
-                              IsActive="True"
-                              Width="64"
-                              Height="64"/>
+            <PivotItem Header="New Albums">
 
-                <TextBlock x:Name="NewAlbumsEmpty"
-                           Text="Empty"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center" />
-                -->
+                <Grid>
 
-                <GridView x:Name="NewAlbumGrid"
-                          ItemsSource="{Binding NewAlbums}">
+                    <!--
+                    <ProgressRing x:Name="NewAlbumsSpinner"      
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  IsActive="True"
+                                  Width="64"
+                                  Height="64"/>
+
+                    <TextBlock x:Name="NewAlbumsEmpty"
+                               Text="Empty"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                    -->
+
+                    <GridView x:Name="NewAlbumGrid"
+                              ItemsSource="{Binding NewAlbums}">
+
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:AlbumGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    
+                    </GridView>
+
+                </Grid>
+            
+            </PivotItem>
+
+            <PivotItem Header="Deezer Picks">
+            
+                <GridView x:Name="DeezerPicksGrid"
+                              ItemsSource="{Binding DeezerPicks}">
 
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -43,33 +72,13 @@
                             <controls:AlbumGridCell />
                         </DataTemplate>
                     </GridView.ItemTemplate>
-                    
+
                 </GridView>
-
-            </Grid>
             
-        </PivotItem>
+            </PivotItem>
 
-        <PivotItem Header="Deezer Picks">
-            
-            <GridView x:Name="DeezerPicksGrid"
-                          ItemsSource="{Binding DeezerPicks}">
-
-                <GridView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ItemsWrapGrid Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </GridView.ItemsPanel>
-
-                <GridView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:AlbumGridCell />
-                    </DataTemplate>
-                </GridView.ItemTemplate>
-
-            </GridView>
-            
-        </PivotItem>
-
-    </Pivot>
+        </Pivot>
+        
+    </StackPanel>
+    
 </Page>

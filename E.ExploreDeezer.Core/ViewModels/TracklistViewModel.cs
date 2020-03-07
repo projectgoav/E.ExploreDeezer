@@ -24,6 +24,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         // Need something to display details about the actual item (album or playlist)
         ETracklistViewModelType Type { get; }
 
+        string PageTitle { get; }
         IAlbumViewModel AlbumViewModel { get; }
         IPlaylistViewModel PlaylistViewModel { get; }
 
@@ -110,6 +111,9 @@ namespace E.ExploreDeezer.Core.ViewModels
 
 
         // ITracklistViewModel
+        public string PageTitle => this.AlbumViewModel?.Title ?? this.PlaylistViewModel?.Title ?? string.Empty;
+
+
         public ETracklistViewModelType Type { get; }
 
         public IAlbumViewModel AlbumViewModel 
