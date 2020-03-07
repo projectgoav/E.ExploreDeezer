@@ -31,6 +31,9 @@ namespace E.ExploreDeezer.Core.ViewModels
         EContentFetchStatus FetchStatus { get; }
 
         IEnumerable<ITrackViewModel> Tracks { get; }
+
+
+        IInformationViewModel InformationViewModel { get; }
     }
 
 
@@ -91,6 +94,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         private IAlbumViewModel albumViewModel;
         private IPlaylistViewModel playlistViewModel;
+        private IInformationViewModel informationViewModel;
 
 
         public TracklistViewModel(IDeezerSession session,
@@ -142,6 +146,13 @@ namespace E.ExploreDeezer.Core.ViewModels
         }
 
 
+        public IInformationViewModel InformationViewModel
+        {
+            get => this.informationViewModel;
+            private set => SetProperty(ref this.informationViewModel, value);
+        }
+
+
 
         private void FetchContent()
         {
@@ -162,6 +173,8 @@ namespace E.ExploreDeezer.Core.ViewModels
 
                                            this.AlbumViewModel = new AlbumViewModel(t.Result);
 
+                                           this.InformationViewModel = new InformationViewModel(this.AlbumViewModel, this.PlatformServices);
+
                                        }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 
                     break;
@@ -177,6 +190,8 @@ namespace E.ExploreDeezer.Core.ViewModels
                                                   return;
 
                                               this.PlaylistViewModel = new PlaylistViewModel(t.Result);
+
+                                              this.InformationViewModel = new InformationViewModel(this.PlaylistViewModel, this.PlatformServices);
 
                                           }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
                     break;

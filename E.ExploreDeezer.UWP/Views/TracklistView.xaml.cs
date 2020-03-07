@@ -25,8 +25,6 @@ namespace E.ExploreDeezer.UWP.Views
     /// </summary>
     public sealed partial class TracklistView : Page
     {
-        private UserControl pageHeader;
-
         public TracklistView()
         {
             this.InitializeComponent();
@@ -42,58 +40,8 @@ namespace E.ExploreDeezer.UWP.Views
 
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel(e.Parameter as ITracklistViewModelParams);
 
-            SetupUI();
-
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
-
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-
-            TearDownUI();
-
-            this.ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
-
-            this.ViewModel.Dispose();
-
-            this.DataContext = null;
-        }
-
-
-        private void SetupUI()
-        {
-            switch(this.ViewModel.Type)
-            {
-                case ETracklistViewModelType.Album:
-                    this.pageHeader = new Controls.AlbumTracklistHeader();
-                    this.pageHeader.DataContext = this.ViewModel.AlbumViewModel;
-
-                    this.HeaderFrame.Content = this.pageHeader;
-
-                    break;
-
-                case ETracklistViewModelType.Playlist:
-                    this.pageHeader = new Controls.PlaylistTracklistHeader();
-                    this.pageHeader.DataContext = this.ViewModel.PlaylistViewModel;
-
-                    this.HeaderFrame.Content = this.pageHeader;
-
-                    break;
-            }
-        }
-
-        private void TearDownUI()
-        {
-            this.HeaderFrame.Content = null;
-
-            if (this.pageHeader != null)
-            {
-                this.pageHeader.DataContext = null;
-            }
-        }
-
 
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -102,19 +50,9 @@ namespace E.ExploreDeezer.UWP.Views
             {
                 case nameof(ITracklistViewModel.AlbumViewModel):
 
-                    if (this.ViewModel.Type == ETracklistViewModelType.Album && this.pageHeader != null)
-                    {
-                        this.pageHeader.DataContext = this.ViewModel.AlbumViewModel;
-                    }
-
                     break;
 
                 case nameof(ITracklistViewModel.PlaylistViewModel):
-
-                    if (this.ViewModel.Type == ETracklistViewModelType.Playlist && this.pageHeader != null)
-                    {
-                        this.pageHeader.DataContext = this.ViewModel.PlaylistViewModel;
-                    }
 
                     break;
             }
