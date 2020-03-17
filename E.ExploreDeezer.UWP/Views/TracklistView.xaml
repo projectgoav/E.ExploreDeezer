@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
+    xmlns:vm="using:E.ExploreDeezer.Core.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -40,11 +41,35 @@
                 
                 <!-- Information (Title could be Album Info / Playlist Info -->
                 
-                <!--
                 <PivotItem Header="Information">
-                                        
+
+                    <StackPanel Orientation="Vertical">
+
+                        <TextBlock Text="{Binding InformationViewModel.Header}" />
+
+                        <TextBlock Text="{Binding InformationViewModel.SubHeader}" />
+
+                        <ItemsControl x:Name="InfoList">
+
+                            <ItemsControl.ItemTemplate>
+
+                                <DataTemplate x:Name="InfoListTextCell">
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Label}" />
+                                        <TextBlock Text="{Binding Value}" />
+                                    </StackPanel>
+
+                                </DataTemplate>
+                                
+                            </ItemsControl.ItemTemplate>
+                            
+                        </ItemsControl>
+                        
+                    </StackPanel>
+                    
                 </PivotItem>
-                -->
+
 
                 
                 <!-- Related content -->

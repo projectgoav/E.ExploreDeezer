@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Margin="3">
+    <Grid Margin="5">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
@@ -26,8 +26,14 @@
                     Orientation="Vertical"
                     Padding="5,0,0,0">
 
-            <TextBlock Text="{Binding Title}" />
-            <TextBlock Text="{Binding Artist}" />
+            <TextBlock Text="{Binding Title}"
+                       MaxLines="2"
+                       TextWrapping="WrapWholeWords"
+                       TextTrimming="WordEllipsis"/>
+            
+            <TextBlock Text="{Binding Artist}"
+                       TextWrapping="NoWrap"
+                       TextTrimming="CharacterEllipsis"/>
 
         </StackPanel>
         

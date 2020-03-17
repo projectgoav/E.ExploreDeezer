@@ -28,10 +28,14 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.IsPresent = album != null;
 
             this.ItemId = album?.Id ?? 0;
+
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
-            this.NumberOfTracks = album?.TrackCount ?? 0u;
+
             this.ArtworkUri = album?.CoverArtwork.Medium;
+
+            this.NumberOfTracks = album?.TrackCount ?? 0u;
+
         }
 
 

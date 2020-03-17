@@ -129,7 +129,15 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.Header = this.albumViewModel.Title;
             this.SubHeader = this.albumViewModel.ArtistName;
 
-            //TODO: Actual values boys
+            var infos = new List<InformationEntry>();
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Album Title", this.albumViewModel.Title));
+            infos.Add(new InformationEntry(EInformationType.Textual, "Album Artist", this.albumViewModel.ArtistName));
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Number of Tracks", this.albumViewModel.NumberOfTracks.ToString()));
+
+
+            this.Values = infos;
         }
 
         private void PopulatePlaylistInformation()
@@ -138,6 +146,16 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.Header = this.playlistViewModel.Title;
             this.SubHeader = this.playlistViewModel.CreatorName;
+
+            var infos = new List<InformationEntry>();
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Playlist Title", this.playlistViewModel.Title));
+            infos.Add(new InformationEntry(EInformationType.Textual, "Creator", this.playlistViewModel.CreatorName));
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Number of Tracks", this.playlistViewModel.NumberOfTracks.ToString()));
+
+
+            this.Values = infos;
         }
 
        

@@ -25,6 +25,36 @@ namespace E.ExploreDeezer.UWP.Views
     /// </summary>
     public sealed partial class TracklistView : Page
     {
+        private class TS : DataTemplateSelector
+        {
+            private readonly ItemsControl host;
+
+            public TS(ItemsControl host)
+            {
+                this.host = host;
+            }
+
+
+            protected override DataTemplate SelectTemplateCore(object item)
+            {
+                var obj =  item as InformationEntry;
+
+                if (obj.Type == EInformationType.Textual)
+                {
+                    var objj =  host.Resources["InfoListTextCell"];
+                    return objj as DataTemplate;
+                }
+
+                return base.SelectTemplateCore(item);
+            }
+
+            protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
+            {
+                return base.SelectTemplateCore(item, container);
+            }
+        }
+
+
         public TracklistView()
         {
             this.InitializeComponent();
@@ -41,6 +71,8 @@ namespace E.ExploreDeezer.UWP.Views
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel(e.Parameter as ITracklistViewModelParams);
 
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+
+            this.InfoList.ItemTemplateSelector = new TS(this.InfoList);
         }
 
 
@@ -54,6 +86,17 @@ namespace E.ExploreDeezer.UWP.Views
 
                 case nameof(ITracklistViewModel.PlaylistViewModel):
 
+                    break;
+
+                case nameof(ITracklistViewModel.InformationViewModel):
+                    if (this.ViewModel.InformationViewModel != null)
+                    {
+                        this.InfoList.ItemsSource = this.ViewModel.InformationViewModel.Values;
+                    }
+                    break;
+
+                case nameof(ITracklistViewModel.InformationViewModel.Values):
+                    this.InfoList.ItemsSource = this.ViewModel.InformationViewModel.Values;
                     break;
             }
         }
