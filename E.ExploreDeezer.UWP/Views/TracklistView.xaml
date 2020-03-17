@@ -7,9 +7,47 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
     xmlns:vm="using:E.ExploreDeezer.Core.ViewModels"
+    xmlns:views="using:E.ExploreDeezer.UWP.Views"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.Resources>
+        <views:InformationDataTemplateSelector x:Key="Doop" />
+
+        <DataTemplate x:Name="InfoListTextCell">
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,5,0,5">
+
+                <TextBlock Text="{Binding Label}" 
+                           Margin="0,0,5,0"
+                           Width="250"/>
+
+                <TextBlock Text="{Binding Value}" />
+
+            </StackPanel>
+
+        </DataTemplate>
+
+        <DataTemplate x:Name="InfoListImageCell">
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,5,0,5">
+
+                <TextBlock Text="{Binding Label}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,5,0"
+                           Width="250"/>
+
+                <Image Source="{Binding Value}"
+                       Width="256"
+                       Height="256" />
+
+            </StackPanel>
+        </DataTemplate>
+        
+    </Page.Resources>
+    
     <ScrollViewer>
 
         <StackPanel Orientation="Vertical">
@@ -43,31 +81,9 @@
                 
                 <PivotItem Header="Information">
 
-                    <StackPanel Orientation="Vertical">
+                    <ItemsControl x:Name="InfoList"
+                                  ItemTemplateSelector="{StaticResource Doop}" />
 
-                        <TextBlock Text="{Binding InformationViewModel.Header}" />
-
-                        <TextBlock Text="{Binding InformationViewModel.SubHeader}" />
-
-                        <ItemsControl x:Name="InfoList">
-
-                            <ItemsControl.ItemTemplate>
-
-                                <DataTemplate x:Name="InfoListTextCell">
-
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Label}" />
-                                        <TextBlock Text="{Binding Value}" />
-                                    </StackPanel>
-
-                                </DataTemplate>
-                                
-                            </ItemsControl.ItemTemplate>
-                            
-                        </ItemsControl>
-                        
-                    </StackPanel>
-                    
                 </PivotItem>
 
 

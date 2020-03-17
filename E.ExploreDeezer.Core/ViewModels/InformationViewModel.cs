@@ -22,6 +22,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     public enum EInformationType
     {
         Textual,
+        Image,
     }
 
     public class InformationEntry
@@ -131,6 +132,8 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             var infos = new List<InformationEntry>();
 
+            infos.Add(new InformationEntry(EInformationType.Image, "Album Art", this.albumViewModel.ArtworkUri));
+
             infos.Add(new InformationEntry(EInformationType.Textual, "Album Title", this.albumViewModel.Title));
             infos.Add(new InformationEntry(EInformationType.Textual, "Album Artist", this.albumViewModel.ArtistName));
 
@@ -148,6 +151,8 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.SubHeader = this.playlistViewModel.CreatorName;
 
             var infos = new List<InformationEntry>();
+
+            infos.Add(new InformationEntry(EInformationType.Image, "Playlist Artwork", this.playlistViewModel.ArtworkUri));
 
             infos.Add(new InformationEntry(EInformationType.Textual, "Playlist Title", this.playlistViewModel.Title));
             infos.Add(new InformationEntry(EInformationType.Textual, "Creator", this.playlistViewModel.CreatorName));
