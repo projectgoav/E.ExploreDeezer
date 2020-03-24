@@ -40,7 +40,9 @@ namespace E.ExploreDeezer.UWP.Views
 
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateArtistOverviewViewModel(e.Parameter as IArtistOverviewViewModelParams);
 
-            this.AlbumGrid.SelectionChanged += OnGridSelectionChanged;             
+            this.AlbumGrid.SelectionChanged += OnGridSelectionChanged;
+            this.RelatedArtistsGrid.SelectionChanged += OnGridSelectionChanged;
+            this.FeaturedPlaylistsGrid.SelectionChanged += OnGridSelectionChanged;
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
@@ -48,6 +50,8 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatingFrom(e);
 
             this.AlbumGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.RelatedArtistsGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.FeaturedPlaylistsGrid.SelectionChanged += OnGridSelectionChanged;
         }
 
         private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -56,6 +60,22 @@ namespace E.ExploreDeezer.UWP.Views
             {
                 var album = this.ViewModel.Albums.ElementAt(this.AlbumGrid.SelectedIndex);
                 var p = this.ViewModel.CreateTracklistViewModelParams(album);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
+            }
+            else if (sender == this.RelatedArtistsGrid)
+            {
+                var artist = this.ViewModel.RelatedArtists.ElementAt(this.RelatedArtistsGrid.SelectedIndex);
+                var p = this.ViewModel.CreateArtistOverviewViewModelParams(artist);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(ArtistOverviewView), p);
+            }
+            else if (sender == this.FeaturedPlaylistsGrid)
+            {
+                var playlist = this.ViewModel.FeaturedPlaylists.ElementAt(this.FeaturedPlaylistsGrid.SelectedIndex);
+                var p = this.ViewModel.CreateTracklistViewModelParams(playlist);
 
                 ServiceRegistry.GetService<Frame>()
                                .Navigate(typeof(TracklistView), p);

@@ -63,8 +63,23 @@
 
                 <PivotItem Header="Featured In">
 
-                    <TextBlock Text="Featured In" />
-                    
+                    <GridView x:Name="FeaturedPlaylistsGrid"
+                              ItemsSource="{Binding FeaturedPlaylists}">
+
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:PlaylistGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
                 </PivotItem>
                 
 
@@ -72,18 +87,25 @@
 
                 <PivotItem Header="Related Artists">
 
-                    <TextBlock Text="Related Artists" />
+                    <GridView x:Name="RelatedArtistsGrid"
+                              ItemsSource="{Binding RelatedArtists}">
 
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:ArtistGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+                    
                 </PivotItem>
                 
-
-                <!-- Related content -->
-
-                <!--
-                <PivotItem Header="Related">
-                        
-                </PivotItem>
-                 -->
 
             </Pivot>
 
