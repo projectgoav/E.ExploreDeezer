@@ -26,6 +26,8 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
 
         ITracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
         ITracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
+
+        IArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel);
     }
 
     internal class ChartsViewModel : ViewModelBase,
@@ -122,6 +124,14 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
                 throw new ArgumentException();
 
             return new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistViewModel);
+        }
+
+        public IArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
+        {
+            if (!artistViewModel.IsPresent)
+                throw new ArgumentException();
+
+            return new ArtistOverviewViewModelParams(artistViewModel);
         }
 
 

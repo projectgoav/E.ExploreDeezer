@@ -142,6 +142,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UWPPlatformServices.cs" />
+    <Compile Include="Views\ArtistOverviewView.xaml.cs">
+      <DependentUpon>ArtistOverviewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ArtistOverviewView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ChartsView.xaml">
       <SubType>Designer</SubType>

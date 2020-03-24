@@ -61,12 +61,14 @@ namespace E.ExploreDeezer.UWP.Views
         {
             this.AlbumChartGrid.SelectionChanged += OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged += OnGridSelectionChanged;
+            this.ArtistChartGrid.SelectionChanged += OnGridSelectionChanged;
         }
 
         private void RemoveEvents()
         {
             this.AlbumChartGrid.SelectionChanged -= OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.ArtistChartGrid.SelectionChanged -= OnGridSelectionChanged;
         }
 
 
@@ -92,6 +94,15 @@ namespace E.ExploreDeezer.UWP.Views
                 return;
 
             }
+            else if (sender == this.ArtistChartGrid)
+            {
+                var selectedItem = this.ViewModel.Artists.ElementAt(this.ArtistChartGrid.SelectedIndex);
+                var p = this.ViewModel.GetArtistOverviewViewModelParams(selectedItem);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(ArtistOverviewView), p);
+            }
+
             else
                 return; // TODO
         }

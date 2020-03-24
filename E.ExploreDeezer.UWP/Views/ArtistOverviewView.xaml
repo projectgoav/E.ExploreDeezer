@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="E.ExploreDeezer.UWP.Views.ArtistOverviewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E.ExploreDeezer.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer>
+
+        <StackPanel Orientation="Vertical">
+
+            <TextBlock Text="{Binding PageTitle}"
+                       Margin="10,0,0,0"
+                       FontSize="32"/>
+
+            <Pivot>
+
+                <!-- Tracklist -->
+                <PivotItem Header="Albums">
+
+                    <TextBlock Text="Albums" />
+
+                    <!-- For some reason using x:Bind, Mode=OneWay here doesn't actually
+                         respond to PropertChanged events. I don't get it. -->
+                    <!--<ListView x:Name="Tracklist"
+                          ItemsSource="{Binding Tracks}">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:TrackCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView> -->
+
+                </PivotItem>
+
+
+                <!-- Top tracks -->
+
+                <PivotItem Header="Top Tracks">
+
+                    <TextBlock Text="Top Tracks" />
+
+                </PivotItem>
+
+                <!-- Playlists -->
+
+                <PivotItem Header="Featured In">
+
+                    <TextBlock Text="Featured In" />
+                    
+                </PivotItem>
+                
+
+                <!-- Related Artists -->
+
+                <PivotItem Header="Related Artists">
+
+                    <TextBlock Text="Related Artists" />
+
+                </PivotItem>
+                
+
+                <!-- Related content -->
+
+                <!--
+                <PivotItem Header="Related">
+                        
+                </PivotItem>
+                 -->
+
+            </Pivot>
+
+        </StackPanel>
+
+    </ScrollViewer>
+</Page>
