@@ -14,14 +14,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+using E.ExploreDeezer.UWP.Views;
+using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.UWP
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
         private const string NEW_MENU_TAG = "new";
@@ -35,6 +32,9 @@ namespace E.ExploreDeezer.UWP
         };
 
 
+        private readonly ISearchViewModel searchViewModel;
+
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -42,13 +42,33 @@ namespace E.ExploreDeezer.UWP
             ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher));
             ServiceRegistry.Register<Frame>(this.ContentView);
 
+            this.searchViewModel = ServiceRegistry.ViewModelFactory.CreateSearchViewModel();
 
             this.ContentView.Navigated += OnNavigationOccurs;
             this.MainNav.BackRequested += OnBackRequested;
 
+            this.SearchBox.TextChanged += OnSearchTextChanged;
+            this.SearchBox.QuerySubmitted += OnSearchQuerySubmitted;
+
             this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
         }
 
+
+        //TODO: Search - Once the query has been removed, should we close the search views off from the stack??
+        private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ShowSearchViewIfRequired();
+            }
+
+            this.searchViewModel.SetQuery(this.SearchBox.Text);
+        }
+
+        private void OnSearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            this.searchViewModel.SetQuery(args.QueryText);
+        }
 
         private void MainNavSelectionChanged(object sender, NavigationViewSelectionChangedEventArgs args)
         {
@@ -92,6 +112,14 @@ namespace E.ExploreDeezer.UWP
         }
 
 
+        private void ShowSearchViewIfRequired()
+        {
+            if (!(this.ContentView.Content is SearchView))
+            {
+                this.ContentView.Navigate(typeof(SearchView), this.searchViewModel);
+            }
+        }
+
         private void OnBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
         {
             if (this.ContentView.CanGoBack)
@@ -99,7 +127,6 @@ namespace E.ExploreDeezer.UWP
                 this.ContentView.GoBack();
             }
         }
-
 
     }
 }

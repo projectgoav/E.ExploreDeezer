@@ -13,6 +13,7 @@
                     SelectionChanged="MainNavSelectionChanged"
                     IsSettingsVisible="False"
                     IsBackEnabled="True">
+
         <NavigationView.MenuItems>
             <NavigationViewItem Content="What's New" 
                                 Tag="new" />
@@ -27,6 +28,14 @@
             <!-- Recommendations (if logged in) -->    
             <!-- Favourites / Your Deezer / My Deezer -->
         </NavigationView.MenuItems>
+
+        <NavigationView.AutoSuggestBox >
+            
+            <AutoSuggestBox x:Name="SearchBox"
+                            PlaceholderText="Search Deezer"
+                            QueryIcon="Find"/>
+            
+        </NavigationView.AutoSuggestBox>
 
         <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
