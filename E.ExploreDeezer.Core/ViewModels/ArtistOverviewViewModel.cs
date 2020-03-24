@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Linq;
 
 using E.Deezer;
 
@@ -14,6 +16,11 @@ namespace E.ExploreDeezer.Core.ViewModels
         string PageTitle { get; }
        
         IArtistViewModel Artist { get; }
+
+        IEnumerable<IAlbumViewModel> Albums { get; }
+
+
+        ITracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album);
     }
 
     public interface IArtistOverviewViewModelParams
@@ -37,7 +44,11 @@ namespace E.ExploreDeezer.Core.ViewModels
                                              IArtistOverviewViewModel
                         
     {
+        private const uint kMaxAlbumCount = 100;
+
         private readonly IDeezerSession session;
+
+        private IEnumerable<IAlbumViewModel> albums;
 
 
         public ArtistOverviewViewModel(IDeezerSession session,
@@ -45,14 +56,49 @@ namespace E.ExploreDeezer.Core.ViewModels
                                        IArtistOverviewViewModelParams p)
             : base(platformServices)
         {
+            this.session = session;
             this.Artist = p.Artist;
+
+            FetchContent();
         }
 
 
 
+        // IArtistOverviewViewModel
         public string PageTitle => this.Artist.Name;
         
         public IArtistViewModel Artist { get; }
+
+        public IEnumerable<IAlbumViewModel> Albums
+        {
+            get => this.albums;
+            private set => SetProperty(ref this.albums, value);
+        }
+
+
+
+        private void FetchContent()
+        {
+            this.session.Artists.GetArtistsAlbums(this.Artist.Id, this.CancellationToken, 0, kMaxAlbumCount)
+                                .ContinueWith(t =>
+                                {
+                                    if (t.IsFaulted)
+                                        return; //TODO
+
+                                    this.Albums = t.Result.Select(x => new AlbumViewModel(x))
+                                                          .ToList();
+
+                                }, this.CancellationToken, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+        }
+
+
+        public ITracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album)
+        {
+            if (album == null || !album.IsPresent)
+                throw new ArgumentException();
+
+            return new TracklistViewModelParams(ETracklistViewModelType.Album, album);
+        }
 
 
 
@@ -60,7 +106,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             if (disposing)
             {
-
+                this.Albums = Array.Empty<IAlbumViewModel>();
             }
 
             base.Dispose(disposing);

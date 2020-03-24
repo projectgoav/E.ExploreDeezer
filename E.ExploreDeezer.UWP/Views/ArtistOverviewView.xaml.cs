@@ -39,6 +39,27 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateArtistOverviewViewModel(e.Parameter as IArtistOverviewViewModelParams);
+
+            this.AlbumGrid.SelectionChanged += OnGridSelectionChanged;             
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            base.OnNavigatingFrom(e);
+
+            this.AlbumGrid.SelectionChanged -= OnGridSelectionChanged;
+        }
+
+        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == this.AlbumGrid)
+            {
+                var album = this.ViewModel.Albums.ElementAt(this.AlbumGrid.SelectedIndex);
+                var p = this.ViewModel.CreateTracklistViewModelParams(album);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
+            }
         }
     }
 }

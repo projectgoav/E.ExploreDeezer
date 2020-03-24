@@ -5,6 +5,7 @@
     xmlns:local="using:E.ExploreDeezer.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -18,23 +19,25 @@
 
             <Pivot>
 
-                <!-- Tracklist -->
+                <!-- Albums -->
                 <PivotItem Header="Albums">
 
-                    <TextBlock Text="Albums" />
+                    <GridView x:Name="AlbumGrid"
+                          ItemsSource="{Binding Albums}">
 
-                    <!-- For some reason using x:Bind, Mode=OneWay here doesn't actually
-                         respond to PropertChanged events. I don't get it. -->
-                    <!--<ListView x:Name="Tracklist"
-                          ItemsSource="{Binding Tracks}">
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
 
-                        <ListView.ItemTemplate>
+                        <GridView.ItemTemplate>
                             <DataTemplate>
-                                <controls:TrackCell />
+                                <controls:AlbumGridCell />
                             </DataTemplate>
-                        </ListView.ItemTemplate>
+                        </GridView.ItemTemplate>
 
-                    </ListView> -->
+                    </GridView>
 
                 </PivotItem>
 
