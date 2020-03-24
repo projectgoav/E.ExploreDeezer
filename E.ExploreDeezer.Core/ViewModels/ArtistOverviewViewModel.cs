@@ -18,6 +18,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         IArtistViewModel Artist { get; }
 
         IEnumerable<IAlbumViewModel> Albums { get; }
+        IEnumerable<ITrackViewModel> TopTracks { get; }
 
 
         ITracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album);
@@ -45,9 +46,11 @@ namespace E.ExploreDeezer.Core.ViewModels
                         
     {
         private const uint kMaxAlbumCount = 100;
+        private const uint kMaxTopTrackCount = 25;
 
         private readonly IDeezerSession session;
 
+        private IEnumerable<ITrackViewModel> topTracks;
         private IEnumerable<IAlbumViewModel> albums;
 
 
@@ -58,6 +61,9 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             this.session = session;
             this.Artist = p.Artist;
+
+            this.Albums = Array.Empty<IAlbumViewModel>();
+            this.TopTracks = Array.Empty<ITrackViewModel>();
 
             FetchContent();
         }
@@ -75,6 +81,11 @@ namespace E.ExploreDeezer.Core.ViewModels
             private set => SetProperty(ref this.albums, value);
         }
 
+        public IEnumerable<ITrackViewModel> TopTracks
+        {
+            get => this.topTracks;
+            private set => SetProperty(ref this.topTracks, value);
+        }
 
 
         private void FetchContent()
@@ -87,6 +98,17 @@ namespace E.ExploreDeezer.Core.ViewModels
 
                                     this.Albums = t.Result.Select(x => new AlbumViewModel(x))
                                                           .ToList();
+
+                                }, this.CancellationToken, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+
+            this.session.Artists.GetArtistsTopTracks(this.Artist.Id, this.CancellationToken, 0, kMaxTopTrackCount)
+                                .ContinueWith(t =>
+                                {
+                                    if (t.IsFaulted)
+                                        return; //TODO
+
+                                    this.TopTracks = t.Result.Select(x => new TrackViewModel(x))
+                                                             .ToList();
 
                                 }, this.CancellationToken, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
         }
@@ -107,6 +129,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             if (disposing)
             {
                 this.Albums = Array.Empty<IAlbumViewModel>();
+                this.TopTracks = Array.Empty<ITrackViewModel>();
             }
 
             base.Dispose(disposing);

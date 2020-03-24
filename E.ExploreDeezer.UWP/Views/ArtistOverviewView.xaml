@@ -46,7 +46,16 @@
 
                 <PivotItem Header="Top Tracks">
 
-                    <TextBlock Text="Top Tracks" />
+                    <ListView x:Name="TopTrackList"
+                              ItemsSource="{Binding TopTracks}">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:TrackListCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
 
                 </PivotItem>
 
