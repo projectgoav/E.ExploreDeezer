@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="E.Deezer" Version="5.0.0-alpha3" />
+    <PackageReference Include="E.Deezer" Version="5.0.0-alpha4" />
     <PackageReference Include="System.Reactive" Version="4.3.2" />
   </ItemGroup>
 

@@ -222,7 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="E.Deezer">
-      <Version>5.0.0-alpha3</Version>
+      <Version>5.0.0-alpha4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.9</Version>

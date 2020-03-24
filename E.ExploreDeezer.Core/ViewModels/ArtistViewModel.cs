@@ -21,6 +21,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             IsPresent = artist != null;
 
             Name = artist?.Name ?? string.Empty;
+            ArtworkUri = artist?.Pictures.Medium ?? string.Empty;
         }
 
 
