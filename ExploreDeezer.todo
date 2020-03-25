@@ -5,8 +5,8 @@ Core/ViewModels:
  ☐ Merge all item ViewModels into a single 'MediaItem' ViewModel @single-cell
  ✔ Album ViewModel @tracklist @done (20-03-25 20:31)
  ✔ Artist ViewModel @tracklist @done (20-03-25 20:31)
- ☐ Search ViewModel
- ☐ Genre ViewModel
+ ✔ Search ViewModel @done (20-03-25 21:03)
+ ✔ Genre ViewModel @done (20-03-25 21:03)
  ☐ Navigation Param construction should be merged into single place
 
 Views:
@@ -16,5 +16,5 @@ Views:
   ✔ Search View (basic) @done (20-03-25 20:32)
   ☐ Search View - Should close off all search views when clearing search term
   ☐ Search View - Clearing search or selecting another tab should prune the nav stack of all search related views
-  ☐ Genre View
+  ✔ Genre View @done (20-03-25 21:03)
   ☐ Navigation handling *could* be merged into a single place

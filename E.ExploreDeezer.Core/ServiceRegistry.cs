@@ -10,7 +10,6 @@ using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.ViewModels;
-using E.ExploreDeezer.Core.NewReleases;
 
 namespace E.ExploreDeezer.Core
 {
@@ -24,21 +23,13 @@ namespace E.ExploreDeezer.Core
 
             ViewModelFactory = new ViewModelFactory();
             DeezerSession = new DeezerSession(new HttpClientHandler());
-
-            Store = new Store<AppState>(new AppState(), AppState.Reduce, Array.Empty<Middleware>());
-
-
-            NewReleasesManager = new NewReleaseManager(Store, DeezerSession);
         }
 
 
-        public static IStore<AppState> Store { get; private set; }
         public static IDeezerSession DeezerSession { get; private set; }
         public static IPlatformServices PlatformServices { get; private set; }
         public static IViewModelFactory ViewModelFactory { get; private set; }
 
-
-        public static INewReleaseManager NewReleasesManager { get; private set; }
 
 
         /* TODO: This *could* disappear and rely on the ViewModel layer

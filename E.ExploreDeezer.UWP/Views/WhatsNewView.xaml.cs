@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
-using E.ExploreDeezer.Core.NewReleases.ViewModels;
+using E.ExploreDeezer.Core.ViewModels.Home;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -61,7 +61,7 @@ namespace E.ExploreDeezer.UWP.Views
             IAlbumViewModel selectedItem = null;
 
             if (sender == this.NewAlbumGrid)
-                selectedItem = this.ViewModel.NewAlbums.ElementAt(this.NewAlbumGrid.SelectedIndex);
+                selectedItem = this.ViewModel.NewReleases.ElementAt(this.NewAlbumGrid.SelectedIndex);
 
             else if (sender == this.DeezerPicksGrid)
                 selectedItem = this.ViewModel.DeezerPicks.ElementAt(this.DeezerPicksGrid.SelectedIndex);
@@ -70,7 +70,7 @@ namespace E.ExploreDeezer.UWP.Views
                 return; // TODO
 
             // TODO : Centralise the navigation somewhere?
-            var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+            var p = this.ViewModel.CreateTracklistViewModelParams(selectedItem);
 
             ServiceRegistry.GetService<Frame>()
                            .Navigate(typeof(TracklistView), p);

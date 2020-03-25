@@ -36,7 +36,7 @@
                     -->
 
                     <GridView x:Name="NewAlbumGrid"
-                              ItemsSource="{Binding NewAlbums}">
+                              ItemsSource="{Binding NewReleases}">
 
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
