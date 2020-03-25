@@ -148,6 +148,9 @@
     <Compile Include="Views\ChartsView.xaml.cs">
       <DependentUpon>ChartsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GenreOverviewView.xaml.cs">
+      <DependentUpon>GenreOverviewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GenreView.xaml.cs">
       <DependentUpon>GenreView.xaml</DependentUpon>
     </Compile>
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ChartsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GenreOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

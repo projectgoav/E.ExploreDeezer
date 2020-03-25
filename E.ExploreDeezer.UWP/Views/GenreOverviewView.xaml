@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="E.ExploreDeezer.UWP.Views.GenreOverviewView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E.ExploreDeezer.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer>
+
+        <StackPanel Orientation="Vertical">
+
+            <TextBlock Text="{Binding PageTitle}"
+                           Margin="10,0,0,0"
+                           FontSize="32"/>
+
+            <Pivot>
+
+                <!-- New Releases -->
+                <PivotItem Header="New Releases">
+
+                    <GridView x:Name="NewReleaseGrid"
+                              ItemsSource="{Binding NewReleases}">
+
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:AlbumGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                </PivotItem>
+
+                <!-- Deezer Picks -->
+                <PivotItem Header="Deezer Picks">
+
+                    <GridView x:Name="DeezerPicksGrid"
+                              ItemsSource="{Binding DeezerPicks}">
+
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:AlbumGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                </PivotItem>
+
+            </Pivot>
+
+        </StackPanel>
+
+    </ScrollViewer>
+</Page>

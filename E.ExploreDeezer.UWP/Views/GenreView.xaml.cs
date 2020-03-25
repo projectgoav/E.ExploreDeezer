@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 using E.ExploreDeezer.Core;
-using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.ViewModels.Home;
 
 namespace E.ExploreDeezer.UWP.Views
@@ -40,6 +40,8 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateGenreListViewModel();
+
+            this.GenreGrid.SelectionChanged += OnGridSelectionChanged;
         }
 
 
@@ -47,9 +49,22 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
+            this.GenreGrid.SelectionChanged -= OnGridSelectionChanged;
+
             this.ViewModel.Dispose();
 
             this.DataContext = null;
         }
+
+
+        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var genre = this.ViewModel.GenreList.ElementAt(this.GenreGrid.SelectedIndex);
+            var p = new GenreOverviewViewModelParams(genre);
+
+            ServiceRegistry.GetService<Frame>()
+                           .Navigate(typeof(GenreOverviewView), p);
+        }
+
     }
 }

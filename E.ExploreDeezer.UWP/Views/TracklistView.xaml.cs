@@ -65,19 +65,20 @@ namespace E.ExploreDeezer.UWP.Views
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            this.ViewModel.PropertyChanged -= ViewModel_PropertyChanged;
+
+            (this.ViewModel as IDisposable)?.Dispose();
+        }
+
 
         private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case nameof(ITracklistViewModel.AlbumViewModel):
-
-                    break;
-
-                case nameof(ITracklistViewModel.PlaylistViewModel):
-
-                    break;
-
                 case nameof(ITracklistViewModel.InformationViewModel):
                     if (this.ViewModel.InformationViewModel != null)
                     {

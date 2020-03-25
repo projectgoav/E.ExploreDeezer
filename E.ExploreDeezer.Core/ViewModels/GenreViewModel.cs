@@ -12,8 +12,8 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         bool IsPresent { get; }
 
+        ulong Id { get; }
         string Name { get; }
-
         string ArtworkUri { get; }
     }
 
@@ -25,8 +25,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             this.IsPresent = genre != null;
 
+            this.Id = genre?.Id ?? 0u;
             this.Name = genre?.Name ?? string.Empty;
-
             this.ArtworkUri = genre?.Images?.Medium ?? string.Empty;
         }
 
@@ -34,9 +34,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         //IGenreViewModel
         public bool IsPresent { get; }
 
+        public ulong Id { get; }
         public string Name { get; }
-
         public string ArtworkUri { get; }
-
     }
 }
