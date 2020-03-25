@@ -60,7 +60,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel(e.Parameter as ITracklistViewModelParams);
+            this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel((TracklistViewModelParams)e.Parameter);
 
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }

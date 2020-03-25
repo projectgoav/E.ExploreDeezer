@@ -16,7 +16,7 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         IEnumerable<IAlbumViewModel> NewReleases { get; }
         IEnumerable<IAlbumViewModel> DeezerPicks { get; }
 
-        ITracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
+        TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
     }
 
     internal class WhatsNewViewModel : ViewModelBase,
@@ -58,13 +58,8 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         }
 
 
-        public ITracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
-        {
-            if (albumViewModel == null || !albumViewModel.IsPresent)
-                throw new ArgumentException();
-
-            return new TracklistViewModelParams(ETracklistViewModelType.Album, albumViewModel);
-        }
+        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
+            => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
 
 
         private void FetchContent()

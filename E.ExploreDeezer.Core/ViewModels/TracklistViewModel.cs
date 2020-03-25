@@ -37,18 +37,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     }
 
 
-    public interface ITracklistViewModelParams
-    {
-        object Item { get; }
-        ETracklistViewModelType Type { get; }    
-        
-        // Helpers
-        IAlbumViewModel Album { get; }
-        IPlaylistViewModel Playlist { get; }
-    }
-
-
-    internal struct TracklistViewModelParams : ITracklistViewModelParams
+    public struct TracklistViewModelParams
     {
         public TracklistViewModelParams(ETracklistViewModelType type,
                                         object item)
@@ -82,7 +71,6 @@ namespace E.ExploreDeezer.Core.ViewModels
     }
 
 
-
     internal class TracklistViewModel : ViewModelBase,
                                         ITracklistViewModel,
                                         IDisposable
@@ -99,7 +87,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         public TracklistViewModel(IDeezerSession session,
                                   IPlatformServices platformServices,
-                                  ITracklistViewModelParams p)
+                                  TracklistViewModelParams p)
             : base(platformServices)
         {
             this.session = session;

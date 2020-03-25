@@ -24,8 +24,8 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         IEnumerable<ITrackViewModel> Tracks { get; }
 
 
-        ITracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
-        ITracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
+        TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
+        TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
 
         IArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel);
     }
@@ -110,21 +110,12 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         }
 
 
-        public ITracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)
-        {
-            if (!albumViewModel.IsPresent)
-                throw new ArgumentException();
+        public TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)
+            => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
 
-            return new TracklistViewModelParams(ETracklistViewModelType.Album, albumViewModel);
-        }
+        public TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
+            => ViewModelParamFactory.CreateTracklistViewModelParams(playlistViewModel);
 
-        public ITracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
-        {
-            if (!playlistViewModel.IsPresent)
-                throw new ArgumentException();
-
-            return new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistViewModel);
-        }
 
         public IArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
         {
