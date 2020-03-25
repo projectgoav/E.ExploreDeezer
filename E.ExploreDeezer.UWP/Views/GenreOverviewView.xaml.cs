@@ -38,6 +38,8 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
+            Assert.ObjectOfType<IGenreOverviewViewModelParams>(e.Parameter);
+
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateGenreOverviewViewModel(e.Parameter as IGenreOverviewViewModelParams);
 
             this.NewReleaseGrid.SelectionChanged += OnGridSelectionChanged;

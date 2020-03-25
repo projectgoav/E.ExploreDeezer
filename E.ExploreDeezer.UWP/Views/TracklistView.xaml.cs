@@ -60,6 +60,8 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
+            Assert.ObjectOfType<TracklistViewModelParams>(e.Parameter);
+
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel((TracklistViewModelParams)e.Parameter);
 
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;

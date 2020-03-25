@@ -38,6 +38,8 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedTo(e);
 
+            Assert.ObjectOfType<ArtistOverviewViewModelParams>(e.Parameter);
+
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateArtistOverviewViewModel((ArtistOverviewViewModelParams)e.Parameter);
 
             this.AlbumGrid.SelectionChanged += OnGridSelectionChanged;
