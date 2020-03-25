@@ -60,7 +60,7 @@ namespace E.ExploreDeezer.UWP.Views
         private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var genre = this.ViewModel.GenreList.ElementAt(this.GenreGrid.SelectedIndex);
-            var p = new GenreOverviewViewModelParams(genre);
+            var p = this.ViewModel.CreateGenreOverviewViewModelParams(genre);
 
             ServiceRegistry.GetService<Frame>()
                            .Navigate(typeof(GenreOverviewView), p);

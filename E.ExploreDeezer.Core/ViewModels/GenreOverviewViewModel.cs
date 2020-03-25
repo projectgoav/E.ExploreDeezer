@@ -22,13 +22,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
     }
 
-    public interface IGenreOverviewViewModelParams
-    {
-        IGenreViewModel Genre { get; }
-    }
 
-
-    public class GenreOverviewViewModelParams : IGenreOverviewViewModelParams
+    public struct GenreOverviewViewModelParams
     {
         public GenreOverviewViewModelParams(IGenreViewModel genre)
         {
@@ -52,7 +47,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         public GenreOverviewViewModel(IDeezerSession session,
                                       IPlatformServices platformServices,
-                                      IGenreOverviewViewModelParams p)
+                                      GenreOverviewViewModelParams p)
             : base(platformServices)
         {
             this.session = session;

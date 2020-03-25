@@ -15,6 +15,8 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
         EContentFetchStatus FetchStatus { get; }
 
         IEnumerable<IGenreViewModel> GenreList { get; }
+
+        GenreOverviewViewModelParams CreateGenreOverviewViewModelParams(IGenreViewModel genre);
     }
 
     internal class GenreListViewModel : ViewModelBase,
@@ -49,6 +51,16 @@ namespace E.ExploreDeezer.Core.ViewModels.Home
             get => this.genreList;
             private set => SetProperty(ref this.genreList, value);
         }
+
+
+        public GenreOverviewViewModelParams CreateGenreOverviewViewModelParams(IGenreViewModel genreViewModel)
+        {
+            if (genreViewModel == null || !genreViewModel.IsPresent)
+                throw new ArgumentException();
+
+            return new GenreOverviewViewModelParams(genreViewModel);
+        }
+
 
 
         private void FetchContent()

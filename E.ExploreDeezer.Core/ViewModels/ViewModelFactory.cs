@@ -16,7 +16,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p);
         IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p);
-        IGenreOverviewViewModel CreateGenreOverviewViewModel(IGenreOverviewViewModelParams p);
+        IGenreOverviewViewModel CreateGenreOverviewViewModel(GenreOverviewViewModelParams p);
     }
 
     internal class ViewModelFactory : IViewModelFactory
@@ -49,7 +49,7 @@ namespace E.ExploreDeezer.Core.ViewModels
                                            ServiceRegistry.PlatformServices,
                                            p);
 
-        public IGenreOverviewViewModel CreateGenreOverviewViewModel(IGenreOverviewViewModelParams p)
+        public IGenreOverviewViewModel CreateGenreOverviewViewModel(GenreOverviewViewModelParams p)
             => new GenreOverviewViewModel(ServiceRegistry.DeezerSession,
                                           ServiceRegistry.PlatformServices,
                                           p);
