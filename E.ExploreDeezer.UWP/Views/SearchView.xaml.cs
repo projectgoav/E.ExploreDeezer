@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.UWP.Views
@@ -34,6 +35,49 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             this.DataContext = e.Parameter;
+
+            this.AlbumResultGrid.SelectionChanged += OnGridSelectionChanged;
+            this.ArtistResultGrid.SelectionChanged += OnGridSelectionChanged;
+            this.PlaylistsResultGrid.SelectionChanged += OnGridSelectionChanged;
+        }
+
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            this.AlbumResultGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.ArtistResultGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.PlaylistsResultGrid.SelectionChanged -= OnGridSelectionChanged;
+        }
+
+
+        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender == this.AlbumResultGrid)
+            {
+                var album = this.SearchViewModel.Albums.ElementAt(this.AlbumResultGrid.SelectedIndex);
+                var p = this.SearchViewModel.CreateTracklistViewModelParams(album);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
+            }
+            else if (sender == this.ArtistResultGrid)
+            {
+                var artist = this.SearchViewModel.Artists.ElementAt(this.ArtistResultGrid.SelectedIndex);
+                var p = this.SearchViewModel.CreateArtistOverviewViewModelParams(artist);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(ArtistOverviewView), p);
+            }
+            else if (sender == this.PlaylistsResultGrid)
+            {
+                var playlist = this.SearchViewModel.Playlists.ElementAt(this.PlaylistsResultGrid.SelectedIndex);
+                var p = this.SearchViewModel.CreateTracklistViewModelParams(playlist);
+
+                ServiceRegistry.GetService<Frame>()
+                               .Navigate(typeof(TracklistView), p);
+            }
         }
     }
 }
