@@ -25,16 +25,10 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album);
         TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist);
-        IArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist);
+        ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist);
     }
 
-    public interface IArtistOverviewViewModelParams
-    {
-        IArtistViewModel Artist { get; }
-    }
-
-
-    internal class ArtistOverviewViewModelParams : IArtistOverviewViewModelParams
+    public struct ArtistOverviewViewModelParams
     {
         public ArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
         {
@@ -64,7 +58,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         public ArtistOverviewViewModel(IDeezerSession session,
                                        IPlatformServices platformServices,
-                                       IArtistOverviewViewModelParams p)
+                                       ArtistOverviewViewModelParams p)
             : base(platformServices)
         {
             this.session = session;
@@ -164,13 +158,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist)
             => ViewModelParamFactory.CreateTracklistViewModelParams(playlist);
 
-        public IArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist)
-        {
-            if (artist == null || !artist.IsPresent)
-                throw new ArgumentException();
-
-            return new ArtistOverviewViewModelParams(artist);
-        }
+        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist)
+            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artist);
 
 
         protected override void Dispose(bool disposing)

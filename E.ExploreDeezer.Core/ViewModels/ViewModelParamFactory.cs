@@ -23,5 +23,12 @@ namespace E.ExploreDeezer.Core.ViewModels
             return new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistViewModel);
         }
 
+        public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
+        {
+            if (artistViewModel == null || !artistViewModel.IsPresent)
+                throw new ArgumentException();
+
+            return new ArtistOverviewViewModelParams(artistViewModel);
+        }
     }
 }

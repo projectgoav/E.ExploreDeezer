@@ -15,7 +15,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         ISearchViewModel CreateSearchViewModel();
 
         ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p);
-        IArtistOverviewViewModel CreateArtistOverviewViewModel(IArtistOverviewViewModelParams p);
+        IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p);
         IGenreOverviewViewModel CreateGenreOverviewViewModel(IGenreOverviewViewModelParams p);
     }
 
@@ -44,7 +44,7 @@ namespace E.ExploreDeezer.Core.ViewModels
                                       ServiceRegistry.PlatformServices,
                                       p);
 
-        public IArtistOverviewViewModel CreateArtistOverviewViewModel(IArtistOverviewViewModelParams p)
+        public IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p)
             => new ArtistOverviewViewModel(ServiceRegistry.DeezerSession,
                                            ServiceRegistry.PlatformServices,
                                            p);
