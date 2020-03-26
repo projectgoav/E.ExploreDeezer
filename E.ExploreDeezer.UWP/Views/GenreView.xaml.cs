@@ -17,7 +17,6 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
-using E.ExploreDeezer.Core.ViewModels.Home;
 
 namespace E.ExploreDeezer.UWP.Views
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 
 using E.ExploreDeezer.Core.ViewModels;
-using E.ExploreDeezer.Core.ViewModels.Home;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {

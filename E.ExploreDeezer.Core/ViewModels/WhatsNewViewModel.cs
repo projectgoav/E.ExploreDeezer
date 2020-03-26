@@ -9,7 +9,7 @@ using E.Deezer;
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Mvvm;
 
-namespace E.ExploreDeezer.Core.ViewModels.Home
+namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IWhatsNewViewModel : IDisposable
     {

@@ -7,7 +7,7 @@ Core/ViewModels:
  ✔ Artist ViewModel @tracklist @done (20-03-25 20:31)
  ✔ Search ViewModel @done (20-03-25 21:03)
  ✔ Genre ViewModel @done (20-03-25 21:03)
- ☐ Navigation Param construction should be merged into single place
+ ✔ Navigation Param construction should be merged into single place @done (20-03-25 21:50)
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell

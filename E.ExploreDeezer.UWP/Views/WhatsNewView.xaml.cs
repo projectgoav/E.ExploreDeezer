@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.ViewModels;
-using E.ExploreDeezer.Core.ViewModels.Home;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
