@@ -9,6 +9,7 @@ using E.Deezer;
 using E.Deezer.Api;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {
@@ -28,10 +29,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         IAlbumViewModel AlbumViewModel { get; }
         IPlaylistViewModel PlaylistViewModel { get; }
 
-        EContentFetchStatus FetchStatus { get; }
-
-        IEnumerable<ITrackViewModel> Tracks { get; }
-
+        IObservableCollection<ITrackViewModel> Tracks { get; }
 
         IInformationViewModel InformationViewModel { get; }
     }
@@ -84,6 +82,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         private IPlaylistViewModel playlistViewModel;
         private IInformationViewModel informationViewModel;
 
+        private TracklistDataController dataController;
+
 
         public TracklistViewModel(IDeezerSession session,
                                   IPlatformServices platformServices,
@@ -96,6 +96,19 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.AlbumViewModel = p.Album;
             this.PlaylistViewModel = p.Playlist;
+
+            this.dataController = ServiceRegistry.GetService<TracklistDataController>();
+
+            switch(this.Type)
+            {
+                case ETracklistViewModelType.Album:
+                    this.dataController.FetchTracklist(ETracklistType.Album, this.AlbumViewModel.ItemId);
+                    break;
+
+                case ETracklistViewModelType.Playlist:
+                    this.dataController.FetchTracklist(ETracklistType.Playlist, this.PlaylistViewModel.ItemId);
+                    break;
+            }
 
             FetchContent();
         }
@@ -121,17 +134,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         }
 
 
-        public EContentFetchStatus FetchStatus
-        {
-            get => this.fetchStatus;
-            private set => SetProperty(ref this.fetchStatus, value);
-        }
-
-        public IEnumerable<ITrackViewModel> Tracks
-        {
-            get => this.tracks;
-            private set => SetProperty(ref this.tracks, value);
-        }
+        public IObservableCollection<ITrackViewModel> Tracks => this.dataController.Tracklist;
 
 
         public IInformationViewModel InformationViewModel
@@ -144,14 +147,9 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         private void FetchContent()
         {
-            Task<IEnumerable<ITrack>> fetchTask = null;
-            
-            this.FetchStatus = EContentFetchStatus.Loading;
-
             switch(this.Type)
             {
                 case ETracklistViewModelType.Album:
-                    fetchTask = this.session.Albums.GetAlbumTracks(this.AlbumViewModel.ItemId, this.CancellationToken);
                     this.session.Albums.GetById(this.AlbumViewModel.ItemId, this.CancellationToken)
                                        .ContinueWith(t =>
                                        {
@@ -168,8 +166,6 @@ namespace E.ExploreDeezer.Core.ViewModels
                     break;
 
                 case ETracklistViewModelType.Playlist:
-                    fetchTask = this.session.Playlists.GetTracks(this.PlaylistViewModel.ItemId, this.CancellationToken);
-
                     this.session.Playlists.GetById(this.PlaylistViewModel.ItemId, this.CancellationToken)
                                           .ContinueWith(t =>
                                           {
@@ -185,30 +181,8 @@ namespace E.ExploreDeezer.Core.ViewModels
                     break;
 
                 default: //Exit case
-                    this.FetchStatus = EContentFetchStatus.Error;
                     return;
-            }
-
-            //Assert we don't have null task here
-
-            fetchTask.ContinueWith(t =>
-            {
-                if (t.IsFaulted || t.IsCanceled)
-                {
-                    this.FetchStatus = EContentFetchStatus.Error;
-                    return;
-                }
-
-                var tracks = t.Result.Select(x => new TrackViewModel(x, this.Type == ETracklistViewModelType.Playlist ? ETrackLHSMode.Artwork 
-                                                                                                                      : ETrackLHSMode.Number))
-                                     .ToList();
-
-                this.Tracks = tracks;
-
-                this.FetchStatus = tracks.Count == 0 ? EContentFetchStatus.Empty
-                                                     : EContentFetchStatus.Available;
-
-            }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+            } 
         }
 
 
@@ -217,7 +191,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             if (disposing)
             {
-                this.Tracks = Array.Empty<ITrackViewModel>();
+
             }
 
             base.Dispose(disposing);

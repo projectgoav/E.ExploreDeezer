@@ -23,13 +23,15 @@ namespace E.ExploreDeezer.Core
 
             ViewModelFactory = new ViewModelFactory();
             DeezerSession = new DeezerSession(new HttpClientHandler());
+
+
+            Register<TracklistDataController>(new TracklistDataController(DeezerSession));
         }
 
 
         public static IDeezerSession DeezerSession { get; private set; }
         public static IPlatformServices PlatformServices { get; private set; }
         public static IViewModelFactory ViewModelFactory { get; private set; }
-
 
 
         /* TODO: This *could* disappear and rely on the ViewModel layer
