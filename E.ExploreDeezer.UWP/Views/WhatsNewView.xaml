@@ -35,13 +35,14 @@
                                VerticalAlignment="Center" />
                     -->
 
-                        <GridView x:Name="NewAlbumGrid"
-                                  ItemsSource="{Binding NewReleases}">
+                    <GridView x:Name="NewAlbumGrid"
+                              IncrementalLoadingTrigger="Edge"
+                              IncrementalLoadingThreshold="10"
+                              ItemsSource="{Binding NewReleases}">
 
                         <GridView.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"
-                                               CacheLength="0" />
+                                <ItemsWrapGrid Orientation="Horizontal" />
                             </ItemsPanelTemplate>
                         </GridView.ItemsPanel>
 

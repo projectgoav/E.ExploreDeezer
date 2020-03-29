@@ -222,8 +222,8 @@ namespace E.ExploreDeezer.Core.Collections
 
             // Start populating the next set of items
             // once we get close to the bottom
-            if ((indexInPage + 1) >= this.nextPageThreashold)
-                SchedulePageFetch(page + 1);
+            //if ((indexInPage + 1) >= this.nextPageThreashold)
+            //    SchedulePageFetch(page + 1);
 
             return this.pages[page][indexInPage];
         }

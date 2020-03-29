@@ -14,7 +14,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IWhatsNewViewModel : IDisposable
     {
-        IEnumerable<IAlbumViewModel> NewReleases { get; }
+        IObservableCollection<IAlbumViewModel> NewReleases { get; }
         IEnumerable<IAlbumViewModel> DeezerPicks { get; }
 
         TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
@@ -53,7 +53,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
 
         // IWhatsNewViewModel
-        public IEnumerable<IAlbumViewModel> NewReleases => this.newReleases;
+        public IObservableCollection<IAlbumViewModel> NewReleases => this.newReleases;
 
         public IEnumerable<IAlbumViewModel> DeezerPicks
         {
