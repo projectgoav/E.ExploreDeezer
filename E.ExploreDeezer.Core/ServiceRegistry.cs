@@ -26,6 +26,7 @@ namespace E.ExploreDeezer.Core
 
 
             Register<TracklistDataController>(new TracklistDataController(DeezerSession));
+            Register<NewReleaseDataController>(new NewReleaseDataController(DeezerSession));
         }
 
 

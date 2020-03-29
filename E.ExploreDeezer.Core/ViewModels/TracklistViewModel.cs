@@ -76,7 +76,6 @@ namespace E.ExploreDeezer.Core.ViewModels
         private readonly IDeezerSession session;
 
         private EContentFetchStatus fetchStatus;
-        private IEnumerable<ITrackViewModel> tracks;
 
         private IAlbumViewModel albumViewModel;
         private IPlaylistViewModel playlistViewModel;
