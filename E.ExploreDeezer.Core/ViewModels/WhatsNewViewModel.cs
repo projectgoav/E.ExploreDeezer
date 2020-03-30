@@ -23,21 +23,16 @@ namespace E.ExploreDeezer.Core.ViewModels
     internal class WhatsNewViewModel : ViewModelBase,
                                        IWhatsNewViewModel
     {
-        private const uint MAX_DEEZER_PICKS = 25;
         private const ulong DEFAULT_GENRE_ID = 0;
 
-        private readonly IDeezerSession session;
 
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> newReleases;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> deezerPicks;
 
 
-        public WhatsNewViewModel(IDeezerSession session,
-                                 IPlatformServices platformServices)
+        public WhatsNewViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            this.session = session;
-
             var newReleaseDataController = ServiceRegistry.GetService<NewReleaseDataController>();
             var deezerPicksDataController = ServiceRegistry.GetService<DeezerPicksDataController>();
 

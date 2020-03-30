@@ -25,12 +25,10 @@ namespace E.ExploreDeezer.Core.ViewModels
                                    ServiceRegistry.PlatformServices);
 
         public IWhatsNewViewModel CreateWhatsNewViewModel()
-            => new WhatsNewViewModel(ServiceRegistry.DeezerSession,
-                                     ServiceRegistry.PlatformServices);
+            => new WhatsNewViewModel(ServiceRegistry.PlatformServices);
 
         public IChartsViewModel CreateChartsViewModel()
-            => new ChartsViewModel(ServiceRegistry.DeezerSession,
-                                   ServiceRegistry.PlatformServices);
+            => new ChartsViewModel(ServiceRegistry.PlatformServices);
 
         public IGenreListViewModel CreateGenreListViewModel()
             => new GenreListViewModel(ServiceRegistry.DeezerSession,

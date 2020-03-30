@@ -214,11 +214,21 @@ namespace E.ExploreDeezer.Core.Collections
 
         private T GetItem(int index)
         {
-            int page = index / this.PageSize;
+            int page = 0;
+            int indexInPage = index;
 
+
+            // Try to be fancy and do:
+            // => page = index / this.PageSize
+            // => indexInPath = index % this.PageSize
+            // in the one set of operations   
+            while (indexInPage >= this.PageSize)
+            {
+                indexInPage -= this.PageSize;
+                ++page;
+            }
+            
             Assert.That(this.pages.ContainsKey(page), "Attempting to read an item before it's been fetched.");
-
-            int indexInPage = index % this.PageSize;
 
             // Start populating the next set of items
             // once we get close to the bottom
