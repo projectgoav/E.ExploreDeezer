@@ -19,43 +19,25 @@
 
             <PivotItem Header="New Albums">
 
-                <Grid>
+                <GridView x:Name="NewAlbumGrid"
+                            IncrementalLoadingTrigger="Edge"
+                            IncrementalLoadingThreshold="10"
+                            ItemsSource="{Binding NewReleases}">
 
-                    <!--
-                    <ProgressRing x:Name="NewAlbumsSpinner"      
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  IsActive="True"
-                                  Width="64"
-                                  Height="64"/>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                    <TextBlock x:Name="NewAlbumsEmpty"
-                               Text="Empty"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
-                    -->
-
-                    <GridView x:Name="NewAlbumGrid"
-                              IncrementalLoadingTrigger="Edge"
-                              IncrementalLoadingThreshold="10"
-                              ItemsSource="{Binding NewReleases}">
-
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
                     
-                    </GridView>
+                </GridView>
 
-                </Grid>
-            
             </PivotItem>
 
             <PivotItem Header="Deezer Picks">
