@@ -15,7 +15,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     public interface IWhatsNewViewModel : IDisposable
     {
         IObservableCollection<IAlbumViewModel> NewReleases { get; }
-        IEnumerable<IAlbumViewModel> DeezerPicks { get; }
+        IObservableCollection<IAlbumViewModel> DeezerPicks { get; }
 
         TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
     }
@@ -27,11 +27,10 @@ namespace E.ExploreDeezer.Core.ViewModels
         private const ulong DEFAULT_GENRE_ID = 0;
 
         private readonly IDeezerSession session;
-        private readonly NewReleaseDataController newReleaseDataController;
 
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> newReleases;
+        private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> deezerPicks;
 
-        private IEnumerable<IAlbumViewModel> deezerPicks;
 
         public WhatsNewViewModel(IDeezerSession session,
                                  IPlatformServices platformServices)
@@ -39,56 +38,36 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             this.session = session;
 
-            this.deezerPicks = Array.Empty<IAlbumViewModel>();
+            var newReleaseDataController = ServiceRegistry.GetService<NewReleaseDataController>();
+            var deezerPicksDataController = ServiceRegistry.GetService<DeezerPicksDataController>();
 
-            this.newReleaseDataController = ServiceRegistry.GetService<NewReleaseDataController>();
-
-            this.newReleases = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(this.newReleaseDataController.NewReleases,
+            this.newReleases = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(newReleaseDataController.NewReleases,
                                                                                           PlatformServices.MainThreadDispatcher);
 
-            this.newReleaseDataController.SetGenreId(DEFAULT_GENRE_ID);
+            this.deezerPicks = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(deezerPicksDataController.DeezerPicks,
+                                                                                          PlatformServices.MainThreadDispatcher);
 
-            FetchContent();
+            newReleaseDataController.SetGenreId(DEFAULT_GENRE_ID);
+            deezerPicksDataController.SetGenreId(DEFAULT_GENRE_ID);
         }
 
 
         // IWhatsNewViewModel
         public IObservableCollection<IAlbumViewModel> NewReleases => this.newReleases;
 
-        public IEnumerable<IAlbumViewModel> DeezerPicks
-        {
-            get => this.deezerPicks;
-            private set => SetProperty(ref this.deezerPicks, value);
-        }
+        public IObservableCollection<IAlbumViewModel> DeezerPicks => this.deezerPicks;
 
 
         public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
             => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
 
 
-        private void FetchContent()
-        {
-            this.session.Genre.GetDeezerSelectionForGenre(DEFAULT_GENRE_ID, this.CancellationToken, 0, MAX_DEEZER_PICKS)
-                              .ContinueWith(t =>
-                              {
-                                  if (t.IsFaulted)
-                                      return; //TODO
-
-                                  this.DeezerPicks = t.Result.Select(x => new AlbumViewModel(x))
-                                                             .ToList();
-
-                              }, this.CancellationToken, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
-        }
-
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.DeezerPicks = Array.Empty<IAlbumViewModel>();
-
                 this.newReleases.Dispose();
+                this.deezerPicks.Dispose();
             }
 
             base.Dispose(disposing);

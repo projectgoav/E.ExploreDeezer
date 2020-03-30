@@ -222,19 +222,10 @@ namespace E.ExploreDeezer.Core.Collections
 
             // Start populating the next set of items
             // once we get close to the bottom
-            //if ((indexInPage + 1) >= this.nextPageThreashold)
-            //    SchedulePageFetch(page + 1);
+            if ((indexInPage + 1) >= this.nextPageThreashold)
+                SchedulePageFetch(page + 1);
 
             return this.pages[page][indexInPage];
-        }
-
-        private T GetItemFromPage(int pageNumber, int index)
-        {
-            var page = this.pages[pageNumber];
-
-            var indexInPage = index % pageNumber;
-
-            return page[indexInPage];
         }
 
 
@@ -245,21 +236,27 @@ namespace E.ExploreDeezer.Core.Collections
 
             this.pageFetchInProgress.Add(pageNumber);
 
-            FetchPage(pageNumber)
-                .ContinueWith(t =>
+            //FIX ME: Debugging 
+            Task.Delay(2000)
+                .ContinueWith(_ =>
                 {
-                    if (t.IsFaulted)
-                    {
-                        //TODO
-                        return;
-                    }
+                    FetchPage(pageNumber)
+                        .ContinueWith(t =>
+                        {
+                            if (t.IsFaulted)
+                            {
+                                //TODO
+                                return;
+                            }
 
-                    if (t.Result.Any())
-                    {
-                        this.pages.Add(pageNumber, new List<T>(t.Result));
-                        NotifyPageAdded(pageNumber);
-                    }
-                }, this.cancellationTokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                            if (t.Result.Any())
+                            {
+                                this.pages.Add(pageNumber, new List<T>(t.Result));
+                                NotifyPageAdded(pageNumber);
+                            }
+                        }, this.cancellationTokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+
+                }, this.cancellationTokenSource.Token);
         }
 
 
