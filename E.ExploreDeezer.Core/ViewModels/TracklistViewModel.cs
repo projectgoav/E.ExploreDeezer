@@ -81,7 +81,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         private IPlaylistViewModel playlistViewModel;
         private IInformationViewModel informationViewModel;
 
-        private TracklistDataController dataController;
+        private MainThreadObservableCollectionAdapter<ITrackViewModel> dataController;
 
 
         public TracklistViewModel(IDeezerSession session,
@@ -96,16 +96,18 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.AlbumViewModel = p.Album;
             this.PlaylistViewModel = p.Playlist;
 
-            this.dataController = ServiceRegistry.GetService<TracklistDataController>();
+            var tracklistController = ServiceRegistry.GetService<TracklistDataController>();
+
+            this.dataController = new MainThreadObservableCollectionAdapter<ITrackViewModel>(tracklistController.Tracklist, platformServices.MainThreadDispatcher);
 
             switch(this.Type)
             {
                 case ETracklistViewModelType.Album:
-                    this.dataController.FetchTracklist(ETracklistType.Album, this.AlbumViewModel.ItemId);
+                    tracklistController.FetchTracklist(ETracklistType.Album, this.AlbumViewModel.ItemId);
                     break;
 
                 case ETracklistViewModelType.Playlist:
-                    this.dataController.FetchTracklist(ETracklistType.Playlist, this.PlaylistViewModel.ItemId);
+                    tracklistController.FetchTracklist(ETracklistType.Playlist, this.PlaylistViewModel.ItemId);
                     break;
             }
 
@@ -133,7 +135,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         }
 
 
-        public IObservableCollection<ITrackViewModel> Tracks => this.dataController.Tracklist;
+        public IObservableCollection<ITrackViewModel> Tracks => this.dataController;
 
 
         public IInformationViewModel InformationViewModel

@@ -11,8 +11,6 @@ using E.ExploreDeezer.Core.Mvvm;
 namespace E.ExploreDeezer.Core.Collections
 {
     internal class MainThreadObservableCollectionAdapter<T> : IObservableCollection<T>,
-                                                              IList<T>,
-                                                              IList,
                                                               IDisposable
     {
         private static readonly CancellationToken CANCELLED_TOKEN = new CancellationToken(canceled: true);
@@ -64,13 +62,13 @@ namespace E.ExploreDeezer.Core.Collections
 
 
         // IObservableCollection
-        public T this[int index] => this.collection[index];
+        public T this[int index] => (T)this.collection[index];
 
-        T IList<T>.this[int index] 
-        {
-            get => this.collection[index];
-            set => throw new NotImplementedException();
-        }
+        //T IList<T>.this[int index] 
+        //{
+        //    get => this.collection[index];
+        //    set => throw new NotImplementedException();
+        //}
 
         object IList.this[int index] 
         {
@@ -130,9 +128,7 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
         public IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
+            => this.collection.GetEnumerator();
 
         public int IndexOf(T item)
         {
@@ -140,9 +136,7 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
         public int IndexOf(object value)
-        {
-            throw new NotImplementedException();
-        }
+            => this.collection.IndexOf(value);
 
         public void Insert(int index, T item)
         {

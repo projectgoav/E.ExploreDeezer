@@ -72,6 +72,8 @@ namespace E.ExploreDeezer.Core
 
             ClearCancellationTokenSource();
 
+            this.tracklistInternal.ClearContents();
+
             this.cancellationTokenSource = new CancellationTokenSource();
 
             Task<IEnumerable<ITrack>> tracksTask = null;

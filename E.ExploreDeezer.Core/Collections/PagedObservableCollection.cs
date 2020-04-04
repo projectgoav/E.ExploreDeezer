@@ -36,7 +36,7 @@ namespace E.ExploreDeezer.Core.Collections
                 this.pages = pages.ToDictionary(kvp => kvp.Key, kvp => kvp.Value); //No constructor of Dictionary accepts IReadOnly interface
 
                 this.currentPage = 0;
-                this.currentPageIndex = 0;
+                this.currentPageIndex = -1;
             }
 
 
@@ -300,10 +300,15 @@ namespace E.ExploreDeezer.Core.Collections
 
         public object SyncRoot => throw new NotImplementedException();
 
-        object IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        object IList.this[int index] 
+        {
+            get => GetItem(index);
+            set => throw new NotImplementedException(); 
+        }
+
         T IList<T>.this[int index]
-        { 
-            get => throw new NotImplementedException(); 
+        {
+            get => GetItem(index); 
             set => throw new NotImplementedException(); 
         }
 
