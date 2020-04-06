@@ -16,11 +16,18 @@ using Windows.UI.Xaml.Navigation;
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.UWP.Views;
 using E.ExploreDeezer.Core.ViewModels;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace E.ExploreDeezer.UWP
 {
     public sealed partial class MainPage : Page
     {
+        private enum EAnimateSearchRootClosure : byte
+        {
+            Yes,
+            No
+        }
+
         private const string NEW_MENU_TAG = "new";
         private const string CHART_MENU_TAG = "charts";
         private const string GENRE_MENU_TAG = "genre";
@@ -57,9 +64,18 @@ namespace E.ExploreDeezer.UWP
         //TODO: Search - Once the query has been removed, should we close the search views off from the stack??
         private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            string query = this.SearchBox.Text;
+
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                ShowSearchViewIfRequired();
+                if (string.IsNullOrEmpty(query))
+                {
+                    CloseSearchViewsIfRequired();
+                }
+                else
+                {
+                    ShowSearchViewIfRequired();
+                }
             }
 
             this.searchViewModel.SetQuery(this.SearchBox.Text);
@@ -98,7 +114,27 @@ namespace E.ExploreDeezer.UWP
                 }
 
 
-                if (newPageType != null)
+                CloseSearchViewsIfRequired();
+
+                Type viewBeforeSearch = null;
+
+                foreach(var entry in this.ContentView.BackStack)
+                {
+                    if (entry.SourcePageType == typeof(SearchView))
+                    {
+                        break;
+                    }
+
+                    viewBeforeSearch = entry.SourcePageType;
+                }
+
+                bool shouldAnimate = viewBeforeSearch != null && viewBeforeSearch == newPageType;
+                CloseSearchRootIfRequired(shouldAnimate ? EAnimateSearchRootClosure.Yes
+                                                        : EAnimateSearchRootClosure.No);
+
+                bool shouldShowNewPage = newPageType != null && (viewBeforeSearch == null || (viewBeforeSearch != null && viewBeforeSearch != newPageType));
+
+                if (shouldShowNewPage)
                 {
                     this.ContentView.Navigate(newPageType, viewModelParams, args.RecommendedNavigationTransitionInfo);
                 }
@@ -117,7 +153,52 @@ namespace E.ExploreDeezer.UWP
             if (!(this.ContentView.Content is SearchView))
             {
                 this.ContentView.Navigate(typeof(SearchView), this.searchViewModel);
+                this.MainNav.SelectedItem = null;
             }
+        }
+
+        private void CloseSearchViewsIfRequired()
+        {
+            var searchRoot = typeof(SearchView);
+
+            if (this.ContentView.BackStack.Select(x => x.SourcePageType)
+                                          .Contains(searchRoot))
+            {
+                bool keepPopping = true;
+
+                while(keepPopping && this.ContentView.CanGoBack)
+                {
+                    var topMost = this.ContentView.Content;
+                    var isTopMostSearch = topMost is SearchView;
+
+                    if (isTopMostSearch)
+                    {
+                        keepPopping = false;
+                    }
+                    else
+                    {
+                        this.ContentView.GoBack(new SuppressNavigationTransitionInfo());
+                    }
+                }
+            }
+        }
+
+        private void CloseSearchRootIfRequired(EAnimateSearchRootClosure animate)
+        {
+            if (this.ContentView.Content is SearchView)
+            {
+                if (animate == EAnimateSearchRootClosure.Yes)
+                {
+                    this.ContentView.GoBack();
+                }
+                else
+                {
+                    this.ContentView.GoBack(new SuppressNavigationTransitionInfo());
+                }
+
+                this.SearchBox.Text = string.Empty;
+            }
+
         }
 
         private void OnBackRequested(object sender, NavigationViewBackRequestedEventArgs e)
