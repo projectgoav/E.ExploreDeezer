@@ -18,11 +18,63 @@ namespace E.ExploreDeezer.UWP
         No
     }
 
+
+    internal static class Navigation
+    {
+        public const string NEW_MENU_TAG = "new";
+        public const string CHART_MENU_TAG = "charts";
+        public const string GENRE_MENU_TAG = "genre";
+
+        public static readonly Type WHATS_NEW_VIEWTYPE = typeof(WhatsNewView);
+        public static readonly Type CHARTS_VIEWTYPE = typeof(ChartsView);
+        public static readonly Type GENRE_VIEWTYPE = typeof(GenreView);
+
+
+        public static readonly HashSet<Type> TAB_ROOTS = new HashSet<Type>()
+        {
+            WHATS_NEW_VIEWTYPE,
+            CHARTS_VIEWTYPE,
+            GENRE_VIEWTYPE
+        };
+
+        internal static Type GetViewTypeForMenu(string menuItemTag)
+        {
+            switch(menuItemTag)
+            {
+                case NEW_MENU_TAG:
+                    return WHATS_NEW_VIEWTYPE;
+
+                case CHART_MENU_TAG:
+                    return CHARTS_VIEWTYPE;
+
+                case GENRE_MENU_TAG:
+                    return GENRE_VIEWTYPE;
+
+                default:
+                    throw new InvalidOperationException("Invalid menu tag specified.");
+            }
+        }
+
+        internal static string GetMenuTagFromView(Type view)
+        {
+            if (view == WHATS_NEW_VIEWTYPE)
+                return NEW_MENU_TAG;
+
+            else if (view == CHARTS_VIEWTYPE)
+                return CHART_MENU_TAG;
+
+            else if (view == GENRE_VIEWTYPE)
+                return GENRE_MENU_TAG;
+
+            else
+                return string.Empty;
+        }
+    }
+
     internal static class FrameExtensions
     {
         private static readonly Type SEARCH_VIEW = typeof(SearchView);
         private static readonly NavigationTransitionInfo NO_AMINATION_TRANSITION_INFO = new SuppressNavigationTransitionInfo();
-
 
         internal static bool IsSearchViewInBackstack(this Frame host)
         {
@@ -112,6 +164,20 @@ namespace E.ExploreDeezer.UWP
         }
 
 
+        internal static Type GetCurrentlyVisibleTab(this Frame host)
+        {
+            foreach(var entry in host.BackStack.Select(x => x.SourcePageType)
+                                               .Reverse())
+            {
+                if (Navigation.TAB_ROOTS.Contains(entry))
+                {
+                    return entry;
+                }
+            }
+
+            // Nothing in the backstack, so get the first available view
+            return host.Content.GetType();
+        }
     }
 
 

@@ -22,17 +22,6 @@ namespace E.ExploreDeezer.UWP
 {
     public sealed partial class MainPage : Page
     {
-        private const string NEW_MENU_TAG = "new";
-        private const string CHART_MENU_TAG = "charts";
-        private const string GENRE_MENU_TAG = "genre";
-
-        private static readonly Dictionary<string, Type> navLookup = new Dictionary<string, Type>()
-        {
-            { CHART_MENU_TAG, typeof(Views.ChartsView) },
-            { GENRE_MENU_TAG, typeof(Views.GenreView) },
-        };
-
-
         private readonly ISearchViewModel searchViewModel;
 
 
@@ -55,7 +44,6 @@ namespace E.ExploreDeezer.UWP
         }
 
 
-        //TODO: Search - Once the query has been removed, should we close the search views off from the stack??
         private void OnSearchTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
@@ -79,29 +67,10 @@ namespace E.ExploreDeezer.UWP
         {
             if (args.SelectedItemContainer != null)
             {
-                Type newPageType;
                 string tagValue = args.SelectedItemContainer.Tag
                                                             .ToString();
 
-                object viewModelParams = null;
-
-                switch(tagValue)
-                {
-                    case NEW_MENU_TAG:
-                        {
-                            newPageType = typeof(Views.WhatsNewView);
-                            viewModelParams = null;
-                            break;
-                        }
-                    case CHART_MENU_TAG:
-                    case GENRE_MENU_TAG:
-                        newPageType = navLookup[tagValue];
-                        break;
-
-                    default:
-                        return;
-                }
-
+                var newPageType = Navigation.GetViewTypeForMenu(tagValue);
 
                 this.ContentView.CloseSearchViewsIfPresent();
 
@@ -120,7 +89,7 @@ namespace E.ExploreDeezer.UWP
 
                 if (shouldShowNewPage)
                 {
-                    this.ContentView.Navigate(newPageType, viewModelParams, args.RecommendedNavigationTransitionInfo);
+                    this.ContentView.Navigate(newPageType);
                 }
             }
         }
@@ -147,8 +116,33 @@ namespace E.ExploreDeezer.UWP
             if (this.ContentView.CanGoBack)
             {
                 this.ContentView.GoBack();
+
+                //UpdateSelectedTab();
             }
         }
 
+
+        private void UpdateSelectedTab()
+        {
+            Type currentlyVisibleTab = this.ContentView.GetCurrentlyVisibleTab();
+            Assert.That(currentlyVisibleTab != null);
+
+            string menuTag = Navigation.GetMenuTagFromView(currentlyVisibleTab);
+
+            switch(menuTag)
+            {
+                case Navigation.NEW_MENU_TAG:
+                    this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
+                    break;
+
+                case Navigation.CHART_MENU_TAG:
+                    this.MainNav.SelectedItem = this.MainNav.MenuItems[1];
+                    break;
+
+                case Navigation.GENRE_MENU_TAG:
+                    this.MainNav.SelectedItem = this.MainNav.MenuItems[2];
+                    break;
+            }
+        }
     }
 }
