@@ -1,13 +1,15 @@
 
 Core/ViewModels:
- ☐ Move viewmodels into a single core project
- ☐ ViewModels shouldn't manage session etc, instead have a store and provide view over the top
+ ✔ Move viewmodels into a single core project @done (20-04-05 18:36)
+ ✔ ViewModels shouldn't manage session etc, instead have a store and provide view over the top @done (20-04-05 18:36)
  ☐ Merge all item ViewModels into a single 'MediaItem' ViewModel @single-cell
  ✔ Album ViewModel @tracklist @done (20-03-25 20:31)
  ✔ Artist ViewModel @tracklist @done (20-03-25 20:31)
  ✔ Search ViewModel @done (20-03-25 21:03)
  ✔ Genre ViewModel @done (20-03-25 21:03)
- ✔ Navigation Param construction should be merged into single place @done (20-03-25 21:50)
+ ✔ Navigation Param construction should be merged into single place@ done (20-03-25 21:50)
+ ☐ ObservableCollection should only implement IList (not generic).
+   ☐ Could be base class to proide some default options / methods
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell

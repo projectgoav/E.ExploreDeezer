@@ -112,7 +112,7 @@ namespace E.ExploreDeezer.Core.Collections
 
         public bool Contains(object value)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException();  
         }
 
         public int IndexOf(object value)
