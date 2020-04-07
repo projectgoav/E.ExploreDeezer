@@ -20,9 +20,9 @@
             <PivotItem Header="New Albums">
 
                 <GridView x:Name="NewAlbumGrid"
-                            IncrementalLoadingTrigger="Edge"
-                            IncrementalLoadingThreshold="10"
-                            ItemsSource="{Binding NewReleases}">
+                          IncrementalLoadingTrigger="Edge"
+                          IncrementalLoadingThreshold="10"
+                          ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}">
 
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -43,7 +43,7 @@
             <PivotItem Header="Deezer Picks">
             
                 <GridView x:Name="DeezerPicksGrid"
-                              ItemsSource="{Binding DeezerPicks}">
+                          ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}">
 
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>

@@ -18,7 +18,7 @@
 
         <GridView x:Name="GenreGrid"
                   Margin="10, 0, 10, 0"
-                  ItemsSource="{Binding GenreList}">
+                  ItemsSource="{x:Bind ViewModel.GenreList, Mode=OneWay}">
 
             <GridView.ItemsPanel>
                 <ItemsPanelTemplate>

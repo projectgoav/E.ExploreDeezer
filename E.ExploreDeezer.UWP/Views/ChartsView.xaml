@@ -21,7 +21,7 @@
             <PivotItem Header="Albums">
             
                 <ListView x:Name="AlbumChartGrid"
-                          ItemsSource="{Binding Albums}">
+                          ItemsSource="{x:Bind ViewModel.Albums, Mode=OneWay}">
 
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -42,7 +42,7 @@
             <PivotItem Header="Artists">
             
                 <ListView x:Name="ArtistChartGrid"
-                          ItemsSource="{Binding Artists}">
+                          ItemsSource="{x:Bind ViewModel.Artists, Mode=OneWay}">
 
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -63,7 +63,7 @@
             <PivotItem Header="Playlists">
 
                 <ListView x:Name="PlaylistsChartGrid"
-                          ItemsSource="{Binding Playlists}">
+                          ItemsSource="{x:Bind ViewModel.Playlists, Mode=OneWay}">
 
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -84,7 +84,7 @@
             <PivotItem Header="Tracks">
 
                 <ListView x:Name="TracksListGrid"
-                          ItemsSource="{Binding Tracks}">
+                          ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}">
 
                     <ListView.ItemTemplate>
                         <DataTemplate>
