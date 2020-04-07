@@ -15,7 +15,7 @@
 
         <StackPanel Orientation="Vertical">
 
-            <TextBlock Text="{Binding PageTitle}"
+            <TextBlock Text="{x:Bind ViewModel.PageTitle}"
                        Margin="10,0,0,0"
                        FontSize="32"/>
 
@@ -24,10 +24,8 @@
                 <!-- Tracklist -->
                 <PivotItem Header="Tracklist">
 
-                    <!-- For some reason using x:Bind, Mode=OneWay here doesn't actually
-                         respond to PropertChanged events. I don't get it. -->
                     <ListView x:Name="Tracklist"
-                          ItemsSource="{Binding Tracks}">
+                          ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}">
 
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -45,7 +43,7 @@
                 <PivotItem Header="Information">
 
                     <controls:TracklistInformation
-                            DataContext="{Binding InformationViewModel}" />
+                            DataContext="{x:Bind ViewModel.InformationViewModel, Mode=OneWay}" />
 
                 </PivotItem>
 

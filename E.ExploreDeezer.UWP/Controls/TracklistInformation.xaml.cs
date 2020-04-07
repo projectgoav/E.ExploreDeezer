@@ -44,5 +44,8 @@ namespace E.ExploreDeezer.UWP.Controls
         {
             this.InitializeComponent();
         }
+
+
+        public IInformationViewModel ViewModel => this.DataContext as IInformationViewModel;
     }
 }
