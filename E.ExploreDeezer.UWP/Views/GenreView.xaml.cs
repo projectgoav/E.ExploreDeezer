@@ -62,7 +62,7 @@ namespace E.ExploreDeezer.UWP.Views
             var p = this.ViewModel.CreateGenreOverviewViewModelParams(genre);
 
             ServiceRegistry.GetService<Frame>()
-                           .Navigate(typeof(GenreOverviewView), p);
+                           .ShowNewPage(typeof(GenreOverviewView), p);
         }
 
     }

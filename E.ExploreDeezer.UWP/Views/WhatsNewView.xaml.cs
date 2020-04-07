@@ -73,7 +73,7 @@ namespace E.ExploreDeezer.UWP.Views
             var p = this.ViewModel.CreateTracklistViewModelParams(selectedItem);
 
             ServiceRegistry.GetService<Frame>()
-                           .Navigate(typeof(TracklistView), p);
+                           .ShowNewPage(typeof(TracklistView), p);
         }
     }
 }

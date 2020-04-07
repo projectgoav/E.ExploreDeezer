@@ -74,6 +74,8 @@ namespace E.ExploreDeezer.UWP
     internal static class FrameExtensions
     {
         private static readonly Type SEARCH_VIEW = typeof(SearchView);
+
+        private static readonly DrillInNavigationTransitionInfo PAGE_TRANSITION_INFO = new DrillInNavigationTransitionInfo();
         private static readonly NavigationTransitionInfo NO_AMINATION_TRANSITION_INFO = new SuppressNavigationTransitionInfo();
 
         internal static bool IsSearchViewInBackstack(this Frame host)
@@ -146,7 +148,7 @@ namespace E.ExploreDeezer.UWP
          *  - MainWindow
          *
          * This method would return typeof(C) */
-         internal static Type TypeOfViewBefore(this Frame host, Type viewType)
+        internal static Type TypeOfViewBefore(this Frame host, Type viewType)
         {
             Type viewBefore = null;
 
@@ -164,21 +166,11 @@ namespace E.ExploreDeezer.UWP
         }
 
 
-        internal static Type GetCurrentlyVisibleTab(this Frame host)
-        {
-            foreach(var entry in host.BackStack.Select(x => x.SourcePageType)
-                                               .Reverse())
-            {
-                if (Navigation.TAB_ROOTS.Contains(entry))
-                {
-                    return entry;
-                }
-            }
+        internal static void ShowNewPage(this Frame host, Type pageType)
+            => ShowNewPage(host, pageType, null);
 
-            // Nothing in the backstack, so get the first available view
-            return host.Content.GetType();
-        }
+        internal static void ShowNewPage(this Frame host, Type pageType, object parameter)
+            => host.Navigate(pageType, parameter, PAGE_TRANSITION_INFO);
+
     }
-
-
 }

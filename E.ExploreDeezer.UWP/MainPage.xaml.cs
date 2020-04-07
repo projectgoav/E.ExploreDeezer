@@ -89,6 +89,8 @@ namespace E.ExploreDeezer.UWP
 
                 if (shouldShowNewPage)
                 {
+                    this.ContentView.BackStack.Clear();
+
                     this.ContentView.Navigate(newPageType);
                 }
             }
@@ -98,6 +100,8 @@ namespace E.ExploreDeezer.UWP
         private void OnNavigationOccurs(object sender, NavigationEventArgs e)
         {
             this.MainNav.IsBackEnabled = this.ContentView.CanGoBack;
+
+            UpdateSelectedTab();
         }
 
 
@@ -116,32 +120,31 @@ namespace E.ExploreDeezer.UWP
             if (this.ContentView.CanGoBack)
             {
                 this.ContentView.GoBack();
-
-                //UpdateSelectedTab();
             }
         }
 
 
         private void UpdateSelectedTab()
         {
-            Type currentlyVisibleTab = this.ContentView.GetCurrentlyVisibleTab();
-            Assert.That(currentlyVisibleTab != null);
-
-            string menuTag = Navigation.GetMenuTagFromView(currentlyVisibleTab);
-
-            switch(menuTag)
+            var currentViewType = this.ContentView.Content.GetType();
+            if (Navigation.TAB_ROOTS.Contains(currentViewType))
             {
-                case Navigation.NEW_MENU_TAG:
-                    this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
-                    break;
+                var menuItemTag = Navigation.GetMenuTagFromView(currentViewType);
 
-                case Navigation.CHART_MENU_TAG:
-                    this.MainNav.SelectedItem = this.MainNav.MenuItems[1];
-                    break;
+                switch (menuItemTag)
+                {
+                    case Navigation.NEW_MENU_TAG:
+                        this.MainNav.SelectedItem = this.MainNav.MenuItems[0];
+                        break;
 
-                case Navigation.GENRE_MENU_TAG:
-                    this.MainNav.SelectedItem = this.MainNav.MenuItems[2];
-                    break;
+                    case Navigation.CHART_MENU_TAG:
+                        this.MainNav.SelectedItem = this.MainNav.MenuItems[1];
+                        break;
+
+                    case Navigation.GENRE_MENU_TAG:
+                        this.MainNav.SelectedItem = this.MainNav.MenuItems[2];
+                        break;
+                }
             }
         }
     }

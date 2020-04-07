@@ -65,7 +65,7 @@ namespace E.ExploreDeezer.UWP.Views
                 var p = this.ViewModel.CreateTracklistViewModelParams(album);
 
                 ServiceRegistry.GetService<Frame>()
-                               .Navigate(typeof(TracklistView), p);
+                               .ShowNewPage(typeof(TracklistView), p);
             }
             else if (sender == this.DeezerPicksGrid)
             {
@@ -73,7 +73,7 @@ namespace E.ExploreDeezer.UWP.Views
                 var p = this.ViewModel.CreateTracklistViewModelParams(album);
 
                 ServiceRegistry.GetService<Frame>()
-                               .Navigate(typeof(TracklistView), p);
+                               .ShowNewPage(typeof(TracklistView), p);
 
             }
         }
