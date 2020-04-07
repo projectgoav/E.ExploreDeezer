@@ -160,7 +160,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
                                            this.AlbumViewModel = new AlbumViewModel(t.Result);
 
-                                           this.InformationViewModel = new InformationViewModel(this.AlbumViewModel, this.PlatformServices);
+                                           this.InformationViewModel = new InformationViewModel(this.AlbumViewModel, this.session, this.PlatformServices);
 
                                        }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 
@@ -176,7 +176,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
                                               this.PlaylistViewModel = new PlaylistViewModel(t.Result);
 
-                                              this.InformationViewModel = new InformationViewModel(this.PlaylistViewModel, this.PlatformServices);
+                                              this.InformationViewModel = new InformationViewModel(this.PlaylistViewModel, this.session, this.PlatformServices);
 
                                           }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
                     break;

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Linq;
 
 using System.ComponentModel;
 
+using E.Deezer;
 using E.ExploreDeezer.Core.Mvvm;
 
 namespace E.ExploreDeezer.Core.ViewModels
@@ -45,9 +48,9 @@ namespace E.ExploreDeezer.Core.ViewModels
 
     internal class InformationViewModel : ViewModelBase, IInformationViewModel
     {
+        private readonly IDeezerSession session;
         private readonly IAlbumViewModel albumViewModel;
         private readonly IPlaylistViewModel playlistViewModel;
-
 
         private string header;
         private string subHeader;
@@ -55,25 +58,29 @@ namespace E.ExploreDeezer.Core.ViewModels
         private IEnumerable<InformationEntry> values;
 
 
-
         public InformationViewModel(IAlbumViewModel album,
+                                    IDeezerSession session,
                                     IPlatformServices platformServices)
-            : this(album, null, platformServices)
+            : this(album, null, session, platformServices)
         { }
 
         public InformationViewModel(IPlaylistViewModel playlist,
+                                    IDeezerSession session,
                                     IPlatformServices platformServices)
-            : this(null, playlist, platformServices)
+            : this(null, playlist, session, platformServices)
         { }
 
 
         public InformationViewModel(IAlbumViewModel album,
                                     IPlaylistViewModel playlist, 
+                                    IDeezerSession session,
                                     IPlatformServices platformServices)
             : base(platformServices)
         {
+
             this.albumViewModel = album;
             this.playlistViewModel = playlist;
+            this.session = session;
 
             PopulateInformation();
         }
@@ -139,8 +146,59 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             infos.Add(new InformationEntry(EInformationType.Textual, "Number of Tracks", this.albumViewModel.NumberOfTracks.ToString()));
 
-
             this.Values = infos;
+
+            // Fetch additional items, so we can display more information!
+            this.session.Albums.GetById(this.albumViewModel.ItemId, this.CancellationToken)
+                               .ContinueWith(t =>
+                               {
+                                   if (t.IsFaulted)
+                                       return; //TODO
+
+                                   var album = t.Result;
+
+                                   var updatedValues = new List<InformationEntry>(this.Values);
+
+                                   if (album.Contributors.Any())
+                                   {
+                                       //TODO: Formatting
+                                       updatedValues.Add(new InformationEntry(EInformationType.Textual, "Contributors", string.Join("\n", album.Contributors.Select(x => x.Name))));
+                                   }
+
+
+                                   if (album.Duration > 0)
+                                   {
+                                       //TODO: Formatting
+                                       updatedValues.Add(new InformationEntry(EInformationType.Textual, "Duration", album.Duration.ToString())); 
+                                   }
+
+
+                                   if (album.Genre.Any())
+                                   {
+                                       updatedValues.Add(new InformationEntry(EInformationType.Textual, "Associated Genre", string.Join("\n", album.Genre.Select(x => x.Name))));
+                                   }
+
+
+                                   updatedValues.Add(new InformationEntry(EInformationType.Textual, "Explicit", album.HasExplicitLyrics ? "Yes" : "No"));
+
+                                   updatedValues.Add(new InformationEntry(EInformationType.Textual, "Record Label", album.Label));
+
+                                   
+                                   if (album.ReleaseDate != null)
+                                   {
+                                       updatedValues.Add(new InformationEntry(EInformationType.Textual, "Release Date", album.ReleaseDate.Value.ToShortDateString()));
+                                   }
+
+
+                                   updatedValues.Add(new InformationEntry(EInformationType.Textual, "Share Link", album.ShareLink));
+
+                                   updatedValues.Add(new InformationEntry(EInformationType.Textual, "UPC", album.UPC));
+
+
+                                   this.Values = updatedValues;
+
+                               }, this.CancellationToken, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+            
         }
 
         private void PopulatePlaylistInformation()
