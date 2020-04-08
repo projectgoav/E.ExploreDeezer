@@ -37,12 +37,7 @@
             
         </NavigationView.AutoSuggestBox>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled">
-
-            <Frame x:Name="ContentView" />
-
-        </ScrollViewer>
-
+        <Frame x:Name="ContentView" />
+        
     </NavigationView>
 </Page>

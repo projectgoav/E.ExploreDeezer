@@ -6,61 +6,62 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
-    xmlns:vm="using:E.ExploreDeezer.Core.ViewModels"
-    xmlns:views="using:E.ExploreDeezer.UWP.Views"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer>
+    <Grid>
 
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        
+        <TextBlock Grid.Row="0"
+                   Text="{x:Bind ViewModel.PageTitle}"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
 
-            <TextBlock Text="{x:Bind ViewModel.PageTitle}"
-                       Margin="10,0,0,0"
-                       FontSize="32"/>
+        <Pivot Grid.Row="1">
 
-            <Pivot>
-   
-                <!-- Tracklist -->
-                <PivotItem Header="Tracklist">
+            <!-- Tracklist -->
+            <PivotItem Header="Tracklist">
 
-                    <ListView x:Name="Tracklist"
+                <ListView x:Name="Tracklist"
                           ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}">
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:TrackCell />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TrackCell />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                    </ListView>
+                </ListView>
 
-                </PivotItem>
+            </PivotItem>
 
-                
-                <!-- Information (Title could be Album Info / Playlist Info -->
-                
-                <PivotItem Header="Information">
 
-                    <controls:TracklistInformation
+            <!-- Information (Title could be Album Info / Playlist Info -->
+
+            <PivotItem Header="Information">
+
+                <controls:TracklistInformation
                             DataContext="{x:Bind ViewModel.InformationViewModel, Mode=OneWay}" />
 
-                </PivotItem>
+            </PivotItem>
 
 
-                
-                <!-- Related content -->
-                
-                <!--
+
+            <!-- Related content -->
+
+            <!--
                 <PivotItem Header="Related">
                         
                 </PivotItem>
                  -->
-                
-            </Pivot>
-               
-        </StackPanel>
- 
-    </ScrollViewer>
+
+        </Pivot>
+
+    </Grid>
     
 </Page>

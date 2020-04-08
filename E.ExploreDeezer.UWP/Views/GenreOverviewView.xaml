@@ -9,63 +9,66 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer>
+    <Grid>
 
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding PageTitle}"
-                           Margin="10,0,0,0"
-                           FontSize="32"/>
+        <TextBlock Grid.Row="0"
+                  Text="{Binding PageTitle}"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
 
-            <Pivot>
+        <Pivot Grid.Row="1">
 
-                <!-- New Releases -->
-                <PivotItem Header="New Releases">
+            <!-- New Releases -->
+            <PivotItem Header="New Releases">
 
-                    <GridView x:Name="NewReleaseGrid"
+                <GridView x:Name="NewReleaseGrid"
                               ItemsSource="{Binding NewReleases}">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                    </GridView>
+                </GridView>
 
-                </PivotItem>
+            </PivotItem>
 
-                <!-- Deezer Picks -->
-                <PivotItem Header="Deezer Picks">
+            <!-- Deezer Picks -->
+            <PivotItem Header="Deezer Picks">
 
-                    <GridView x:Name="DeezerPicksGrid"
+                <GridView x:Name="DeezerPicksGrid"
                               ItemsSource="{Binding DeezerPicks}">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                    </GridView>
+                </GridView>
 
-                </PivotItem>
+            </PivotItem>
 
-            </Pivot>
+        </Pivot>
 
-        </StackPanel>
-
-    </ScrollViewer>
+    </Grid>
+    
 </Page>

@@ -10,74 +10,63 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-    <StackPanel Orientation="Vertical">
+    <Grid>
 
-        <TextBlock Text="Charts"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+        <TextBlock Grid.Row="0"
+                   Text="Charts"
                    Margin="10,0,0,0"
                    FontSize="32"/>
 
-        <Pivot>
+        <Pivot Grid.Row="1">
 
             <PivotItem Header="Albums">
-            
-                <ListView x:Name="AlbumChartGrid"
+
+                <GridView x:Name="AlbumChartGrid"
                           ItemsSource="{x:Bind ViewModel.Albums, Mode=OneWay}">
 
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-
-                    <ListView.ItemTemplate>
+                    <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:AlbumGridCell />
                         </DataTemplate>
-                    </ListView.ItemTemplate>
+                    </GridView.ItemTemplate>
 
-                </ListView>
-            
+                </GridView>
+
             </PivotItem>
 
             <PivotItem Header="Artists">
-            
-                <ListView x:Name="ArtistChartGrid"
+
+                <GridView x:Name="ArtistChartGrid"
                           ItemsSource="{x:Bind ViewModel.Artists, Mode=OneWay}">
 
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-
-                    <ListView.ItemTemplate>
+                    <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:ArtistGridCell />
                         </DataTemplate>
-                    </ListView.ItemTemplate>
+                    </GridView.ItemTemplate>
 
-                </ListView>
-            
+                </GridView>
+
             </PivotItem>
 
             <PivotItem Header="Playlists">
 
-                <ListView x:Name="PlaylistsChartGrid"
+                <GridView x:Name="PlaylistsChartGrid"
                           ItemsSource="{x:Bind ViewModel.Playlists, Mode=OneWay}">
-
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-
-                    <ListView.ItemTemplate>
+                    
+                    <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:PlaylistGridCell />
                         </DataTemplate>
-                    </ListView.ItemTemplate>
+                    </GridView.ItemTemplate>
 
-                </ListView>
+                </GridView>
 
             </PivotItem>
 
@@ -91,13 +80,13 @@
                             <controls:TrackListCell />
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                
+
                 </ListView>
-            
+
             </PivotItem>
 
         </Pivot>
 
-    </StackPanel>
-
+    </Grid>
+    
 </Page>

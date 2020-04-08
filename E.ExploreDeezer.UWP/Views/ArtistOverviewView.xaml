@@ -9,107 +9,91 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer>
+    <Grid>
 
-        <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-            <TextBlock Text="{x:Bind ViewModel.PageTitle}"
-                       Margin="10,0,0,0"
-                       FontSize="32"/>
+        <TextBlock Grid.Row="0"
+                   Text="{x:Bind ViewModel.PageTitle}"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
 
-            <Pivot>
+        <Pivot Grid.Row="1">
 
-                <!-- Albums -->
-                <PivotItem Header="Albums">
+            <!-- Albums -->
+            <PivotItem Header="Albums">
 
-                    <GridView x:Name="AlbumGrid"
+                <GridView x:Name="AlbumGrid"
                           ItemsSource="{Binding Albums}">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AlbumGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                </GridView>
 
-                    </GridView>
-
-                </PivotItem>
+            </PivotItem>
 
 
-                <!-- Top tracks -->
+            <!-- Top tracks -->
 
-                <PivotItem Header="Top Tracks">
+            <PivotItem Header="Top Tracks">
 
-                    <ListView x:Name="TopTrackList"
+                <ListView x:Name="TopTrackList"
                               ItemsSource="{Binding TopTracks}">
 
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:TrackListCell />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:TrackListCell />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                    </ListView>
+                </ListView>
 
-                </PivotItem>
+            </PivotItem>
 
-                <!-- Playlists -->
+            <!-- Playlists -->
 
-                <PivotItem Header="Featured In">
+            <PivotItem Header="Featured In">
 
-                    <GridView x:Name="FeaturedPlaylistsGrid"
+                <GridView x:Name="FeaturedPlaylistsGrid"
                               ItemsSource="{Binding FeaturedPlaylists}">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:PlaylistGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:PlaylistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                </GridView>
 
-                    </GridView>
+            </PivotItem>
 
-                </PivotItem>
-                
 
-                <!-- Related Artists -->
+            <!-- Related Artists -->
 
-                <PivotItem Header="Related Artists">
+            <PivotItem Header="Related Artists">
 
-                    <GridView x:Name="RelatedArtistsGrid"
+                <GridView x:Name="RelatedArtistsGrid"
                               ItemsSource="{Binding RelatedArtists}">
 
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ArtistGridCell />
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
 
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ArtistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
+                </GridView>
 
-                    </GridView>
-                    
-                </PivotItem>
-                
+            </PivotItem>
+            
+        </Pivot>
 
-            </Pivot>
-
-        </StackPanel>
-
-    </ScrollViewer>
+    </Grid>
+    
 </Page>

@@ -9,13 +9,22 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <StackPanel Orientation="Vertical">
 
-        <TextBlock Text="What's New"
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        
+        <TextBlock Grid.Row="0"
+                   Text="What's New"
                    Margin="10,0,0,0"
                    FontSize="32"/>
 
-        <Pivot>
+
+        <Pivot Grid.Row="1">
 
             <PivotItem Header="New Albums">
 
@@ -35,13 +44,13 @@
                             <controls:AlbumGridCell />
                         </DataTemplate>
                     </GridView.ItemTemplate>
-                    
+
                 </GridView>
 
             </PivotItem>
 
             <PivotItem Header="Deezer Picks">
-            
+
                 <GridView x:Name="DeezerPicksGrid"
                           ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}">
 
@@ -58,11 +67,11 @@
                     </GridView.ItemTemplate>
 
                 </GridView>
-            
+
             </PivotItem>
 
         </Pivot>
-        
-    </StackPanel>
-    
+
+    </Grid>
+   
 </Page>

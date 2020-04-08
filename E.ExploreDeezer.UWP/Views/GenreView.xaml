@@ -10,21 +10,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
 
-    <StackPanel Orientation="Vertical">
+    <!-- TODO: This could maybe be merged down into filters on 
+               the other views.
+    
+               Otherwise, the outer grid could be wrapped into
+               the GridView.Header property -->
+    
+    <Grid>
 
-        <TextBlock Text="Genre"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Genre"
                    Margin="10,0,0,0"
                    FontSize="32"/>
 
         <GridView x:Name="GenreGrid"
+                  Grid.Row="1"
                   Margin="10, 0, 10, 0"
                   ItemsSource="{x:Bind ViewModel.GenreList, Mode=OneWay}">
-
-            <GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
 
             <GridView.ItemTemplate>
                 <DataTemplate>
@@ -34,35 +41,6 @@
 
         </GridView>
 
-        <!--
-        
-        <Pivot>
-
-            <PivotItem Header="Genre">
-
-                <GridView x:Name="GenreGrid"
-                          ItemsSource="{Binding GenreList}">
-
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:GenreCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-
-                </GridView>
-
-            </PivotItem>
-      
-        </Pivot> 
-        
-        -->
-
-    </StackPanel>
-
+    </Grid>
+    
 </Page>

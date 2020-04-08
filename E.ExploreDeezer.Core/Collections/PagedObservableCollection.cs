@@ -214,6 +214,8 @@ namespace E.ExploreDeezer.Core.Collections
 
         private T GetItem(int index)
         {
+            System.Diagnostics.Debug.WriteLine($"\t\t\t\t\t\t\t\t\t\t\t\t\t~ GetItem: Index {index}");
+
             int page = 0;
             int indexInPage = index;
 
@@ -246,27 +248,22 @@ namespace E.ExploreDeezer.Core.Collections
 
             this.pageFetchInProgress.Add(pageNumber);
 
-            //FIX ME: Debugging 
-            Task.Delay(2000)
-                .ContinueWith(_ =>
+            FetchPage(pageNumber)
+                .ContinueWith(t =>
                 {
-                    FetchPage(pageNumber)
-                        .ContinueWith(t =>
-                        {
-                            if (t.IsFaulted)
-                            {
-                                //TODO
-                                return;
-                            }
+                    if (t.IsFaulted)
+                    {
+                        //TODO
+                        return;
+                    }
 
-                            if (t.Result.Any())
-                            {
-                                this.pages.Add(pageNumber, new List<T>(t.Result));
-                                NotifyPageAdded(pageNumber);
-                            }
-                        }, this.cancellationTokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                    if (t.Result.Any())
+                    {
+                        this.pages.Add(pageNumber, new List<T>(t.Result));
+                        NotifyPageAdded(pageNumber);
+                    }
+                }, this.cancellationTokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 
-                }, this.cancellationTokenSource.Token);
         }
 
 
