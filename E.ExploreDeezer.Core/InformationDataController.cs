@@ -152,7 +152,36 @@ namespace E.ExploreDeezer.Core
 
         private void PopulateCollectionForPlaylist(IPlaylist playlist)
         {
+            var infos = new List<InformationEntry>();
 
+            infos.Add(new InformationEntry(EInformationType.Image, "Artwork", playlist.Images.Large));
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Playlist Title", playlist.Title));
+
+            if (!string.IsNullOrEmpty(playlist.Description))
+            {
+                infos.Add(new InformationEntry(EInformationType.Textual, "Description", playlist.Description));
+            }
+
+            if (playlist.Creator != null)
+            {
+                infos.Add(new InformationEntry(EInformationType.Textual, "Creator", playlist.Creator.Username));
+
+                if (playlist.Creator.ProfilePictures.HasPictureOfSize(PictureSize.Medium))
+                {
+                    infos.Add(new InformationEntry(EInformationType.Image, "Creator Profile Picture", playlist.Creator.ProfilePictures.Medium));
+                }
+            }
+
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Duration", playlist.Duration.ToString())); //TODO: Formatting
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Number of Tracks", playlist.NumberOfTracks.ToString()));
+
+            infos.Add(new InformationEntry(EInformationType.Textual, "Share Link", playlist.ShareLink));
+
+
+            this.values.SetContents(infos);
         }
 
 
