@@ -31,8 +31,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             => new ChartsViewModel(ServiceRegistry.PlatformServices);
 
         public IGenreListViewModel CreateGenreListViewModel()
-            => new GenreListViewModel(ServiceRegistry.DeezerSession,
-                                      ServiceRegistry.PlatformServices);
+            => new GenreListViewModel(ServiceRegistry.PlatformServices);
 
 
 

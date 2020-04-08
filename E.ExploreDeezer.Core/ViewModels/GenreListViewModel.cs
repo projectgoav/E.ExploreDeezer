@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {
@@ -14,7 +15,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         EContentFetchStatus FetchStatus { get; }
 
-        IEnumerable<IGenreViewModel> GenreList { get; }
+        IObservableCollection<IGenreViewModel> GenreList { get; }
 
         GenreOverviewViewModelParams CreateGenreOverviewViewModelParams(IGenreViewModel genre);
     }
@@ -23,19 +24,17 @@ namespace E.ExploreDeezer.Core.ViewModels
                                         IGenreListViewModel,
                                         IDisposable
     {
-        private readonly IDeezerSession session;
-
+        private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
 
         private EContentFetchStatus fetchStatus;
-        private IEnumerable<IGenreViewModel> genreList;
 
-        public GenreListViewModel(IDeezerSession session,
-                                  IPlatformServices platformServices)
+        public GenreListViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            this.session = session;
+            var dataController = ServiceRegistry.GetService<GenreListDataController>();
 
-            FetchContent();
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(dataController.GenreList,
+                                                                                        this.PlatformServices.MainThreadDispatcher);
         }
 
 
@@ -46,11 +45,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             private set => SetProperty(ref this.fetchStatus, value);
         }
 
-        public IEnumerable<IGenreViewModel> GenreList
-        {
-            get => this.genreList;
-            private set => SetProperty(ref this.genreList, value);
-        }
+        public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
 
 
         public GenreOverviewViewModelParams CreateGenreOverviewViewModelParams(IGenreViewModel genreViewModel)
@@ -63,37 +58,12 @@ namespace E.ExploreDeezer.Core.ViewModels
 
 
 
-        private void FetchContent()
-        {
-            this.FetchStatus = EContentFetchStatus.Loading;
-
-            this.session.Genre.GetCommonGenre(this.CancellationToken)
-                              .ContinueWith(t =>
-                              {
-                                  if (t.IsFaulted || t.IsCanceled)
-                                  {
-                                      this.FetchStatus = EContentFetchStatus.Error;
-                                      return;
-                                  }
-
-                                  var genreList = t.Result.Select(x => new GenreViewModel(x))
-                                                          .ToList();
-
-                                  this.GenreList = genreList;
-
-                                  this.FetchStatus = genreList.Count == 0 ? EContentFetchStatus.Empty
-                                                                          : EContentFetchStatus.Available;
-                              }, this.CancellationToken, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
-        }
-
-
-
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                this.GenreList = Array.Empty<IGenreViewModel>();
+                this.genreList.Dispose();
             }
 
             base.Dispose(disposing);
