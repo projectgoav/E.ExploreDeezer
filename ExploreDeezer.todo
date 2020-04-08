@@ -17,6 +17,7 @@ Core/ViewModels:
  ☐ Fetch status for data controllers
  ☐ Implement deep linking, allowing info pages to link to artist & user pages?
  ✔ Genre data controller @done (20-04-08 13:41)
+ ☐ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...)
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
