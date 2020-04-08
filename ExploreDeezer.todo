@@ -10,6 +10,10 @@ Core/ViewModels:
  ✔ Navigation Param construction should be merged into single place@ done (20-03-25 21:50)
  ☐ ObservableCollection should only implement IList (not generic).
    ☐ Could be base class to proide some default options / methods
+ ☐ Information cell text formatting
+   ☐ Date/Times
+   ☐ Duration
+ ☐ Information data controllers
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -23,6 +27,10 @@ Views:
   ☐ Each tab should have a backstack, which would made switch between tabs easier and more consistent.  
     This is because by default it looks like the way the navigation view changes between tabs means you lose backstack values
     and so can cause a whole load of issues...
-  ☐ Look into a way in which the Views aren't recreated when navigating backwards
-    When navigating forwards and backwards it seems to reconstruct the intermediate views simply to just dispose of them again
-    which seems quite wasteful....
+  ✘ Look into a way in which the Views aren't recreated when navigating backwards @cancelled (20-04-07 14:12)
+    This is done on purpose by the way 
+  ☐ Move information cells into their own files / controls
+  ☐ Information cells for links, which open the system's browser
+  ☐ Information cells that allow for linking
+  ☐ Investigate why x:Bind doesn't work in ArtistOverview View (Possibly due to the collection not being observable? )
+  ☐ Investigate why x:Bind doesn't work for GenrOverview view (See above)
