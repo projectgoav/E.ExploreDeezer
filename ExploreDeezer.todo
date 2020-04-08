@@ -14,6 +14,7 @@ Core/ViewModels:
    ☐ Date/Times
    ☐ Duration
  ☐ Information data controllers
+ ☐ Fetch status for data controllers
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -34,3 +35,4 @@ Views:
   ☐ Information cells that allow for linking
   ☐ Investigate why x:Bind doesn't work in ArtistOverview View (Possibly due to the collection not being observable? )
   ☐ Investigate why x:Bind doesn't work for GenrOverview view (See above)
+  ☐ Integrate fetch status to pages

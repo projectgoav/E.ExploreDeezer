@@ -29,6 +29,7 @@ namespace E.ExploreDeezer.Core
             Register<NewReleaseDataController>(new NewReleaseDataController(DeezerSession));
             Register<DeezerPicksDataController>(new DeezerPicksDataController(DeezerSession));
             Register<ChartsDataController>(new ChartsDataController(DeezerSession));
+            Register<InformationDataController>(new InformationDataController(DeezerSession));
         }
 
 
