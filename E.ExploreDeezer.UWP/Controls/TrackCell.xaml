@@ -5,6 +5,7 @@
     xmlns:local="using:E.ExploreDeezer.UWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="using:System"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -23,7 +24,7 @@
                    Width="32"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   Text="{Binding TrackNumber}" />
+                   Text="{x:Bind ViewModel.TrackNumber}" />
 
           
         <Image Grid.Column="0"
@@ -33,13 +34,13 @@
                Height="48"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Source="{Binding ArtworkUri}" />
+               Source="{Binding ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
 
         <StackPanel Grid.Column="1"
                     Orientation="Vertical">
 
-            <TextBlock Text="{Binding Title}" />
-            <TextBlock Text="{Binding AllArtistNames}" />
+            <TextBlock Text="{x:Bind ViewModel.Title}" />
+            <TextBlock Text="{x:Bind ViewModel.AllArtistNames}" />
 
         </StackPanel>
 

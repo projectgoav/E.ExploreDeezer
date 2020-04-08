@@ -16,8 +16,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
-        
+          
         <TextBlock Grid.Row="0"
                    Text="What's New"
                    Margin="10,0,0,0"
@@ -29,16 +28,8 @@
             <PivotItem Header="New Albums">
 
                 <GridView x:Name="NewAlbumGrid"
-                          IncrementalLoadingTrigger="Edge"
-                          IncrementalLoadingThreshold="10"
                           ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}">
-
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-
+                    
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:AlbumGridCell />
@@ -53,13 +44,7 @@
 
                 <GridView x:Name="DeezerPicksGrid"
                           ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}">
-
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-
+                    
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:AlbumGridCell />

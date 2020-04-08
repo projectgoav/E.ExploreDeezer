@@ -20,18 +20,18 @@
         <Image Grid.Column="0" 
                Width="64"
                Height="64"
-               Source="{Binding ArtworkUri}" />
+               Source="{x:Bind ViewModel.ArtworkUri}" />
 
         <StackPanel Grid.Column="1"
                     Orientation="Vertical"
                     Padding="5,0,0,0">
 
-            <TextBlock Text="{Binding Title}"
+            <TextBlock Text="{x:Bind ViewModel.Title}"
                        MaxLines="2"
                        TextWrapping="WrapWholeWords"
                        TextTrimming="WordEllipsis"/>
             
-            <TextBlock Text="{Binding Artist}"
+            <TextBlock Text="{x:Bind ViewModel.Artist}"
                        TextWrapping="NoWrap"
                        TextTrimming="CharacterEllipsis"/>
 

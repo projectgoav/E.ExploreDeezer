@@ -214,8 +214,6 @@ namespace E.ExploreDeezer.Core.Collections
 
         private T GetItem(int index)
         {
-            System.Diagnostics.Debug.WriteLine($"\t\t\t\t\t\t\t\t\t\t\t\t\t~ GetItem: Index {index}");
-
             int page = 0;
             int indexInPage = index;
 

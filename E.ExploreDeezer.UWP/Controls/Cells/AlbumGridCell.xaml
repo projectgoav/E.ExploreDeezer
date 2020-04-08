@@ -20,15 +20,15 @@
                Margin="5"
                Width="128"
                Height="128"
-               Source="{Binding ArtworkUri}"/>
+               Source="{x:Bind ViewModel.ArtworkUri}"/>
 
         <TextBlock Grid.Row="1"
-                   Text="{Binding Title}"
+                   Text="{x:Bind ViewModel.Title}"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 
         <TextBlock Grid.Row="2"
-                   Text="{Binding ArtistName}"
+                   Text="{x:Bind ViewModel.ArtistName}"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 
