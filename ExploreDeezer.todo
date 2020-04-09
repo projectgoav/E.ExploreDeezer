@@ -18,6 +18,7 @@ Core/ViewModels:
  ☐ Implement deep linking, allowing info pages to link to artist & user pages?
  ✔ Genre data controller @done (20-04-08 13:41)
  ✔ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...) @done (20-04-08 16:03)
+ ☐ Radio support
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -41,3 +42,4 @@ Views:
   ✔ Investigate why x:Bind doesn't work for GenrOverview view (See above) @done (20-04-08 13:41)
   ☐ Integrate fetch status to pages
   ☐ Implement deep linking. See ViewModel task for this, as work migh be required in View layer
+  ☐ Radio support

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Services;
 using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IGenreListViewModel : IDisposable
     {
-        EContentFetchStatus FetchStatus { get; }
-
+        EFetchState FetchState { get; }
         IObservableCollection<IGenreViewModel> GenreList { get; }
 
         GenreOverviewViewModelParams CreateGenreOverviewViewModelParams(IGenreViewModel genre);
@@ -24,25 +24,29 @@ namespace E.ExploreDeezer.Core.ViewModels
                                         IGenreListViewModel,
                                         IDisposable
     {
+        private readonly IGenreListService service;
         private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
 
-        private EContentFetchStatus fetchStatus;
+        private EFetchState fetchState;
 
         public GenreListViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            var dataController = ServiceRegistry.GetService<GenreListDataController>();
+            this.service = ServiceRegistry.GetService<IGenreListService>();
 
-            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(dataController.GenreList,
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.service.GenreList,
                                                                                         this.PlatformServices.MainThreadDispatcher);
+
+            this.service.OnFetchStateChanged += OnFetchStateChanged;
+
+            this.service.FetchGenreListAsync();
         }
 
-
         // IGenreViewModel
-        public EContentFetchStatus FetchStatus
+        public EFetchState FetchState
         {
-            get => this.fetchStatus;
-            private set => SetProperty(ref this.fetchStatus, value);
+            get => this.fetchState;
+            private set => SetProperty(ref this.fetchState, value);
         }
 
         public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
@@ -57,12 +61,17 @@ namespace E.ExploreDeezer.Core.ViewModels
         }
 
 
+        private void OnFetchStateChanged(object sender, FetchStateChangedEventArgs e)
+            => this.FetchState = e.NewValue;
+
 
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.service.OnFetchStateChanged -= OnFetchStateChanged;
+
                 this.genreList.Dispose();
             }
 

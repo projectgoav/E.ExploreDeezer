@@ -9,7 +9,9 @@ using System.Net.Http;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Services;
 using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.Services.Genre;
 
 namespace E.ExploreDeezer.Core
 {
@@ -30,7 +32,10 @@ namespace E.ExploreDeezer.Core
             Register<DeezerPicksDataController>(new DeezerPicksDataController(DeezerSession));
             Register<ChartsDataController>(new ChartsDataController(DeezerSession));
             Register<InformationDataController>(new InformationDataController(DeezerSession));
-            Register<GenreListDataController>(new GenreListDataController(DeezerSession));
+
+            // TODO: Need to work out how to dispose of services when they are dying off
+
+            Register<IGenreListService>(new GenreListService(DeezerSession));
         }
 
 

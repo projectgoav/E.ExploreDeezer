@@ -37,7 +37,7 @@ namespace E.ExploreDeezer.UWP.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
+            
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateGenreListViewModel();
 
             this.GenreGrid.SelectionChanged += OnGridSelectionChanged;

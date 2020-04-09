@@ -28,10 +28,31 @@
                    Margin="10,0,0,0"
                    FontSize="32"/>
 
+        <!-- Empty State -->
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="No genre available."
+                   Visibility="{Binding FetchState, 
+                                        Converter={StaticResource EmptyFetchStateVisibility}}" />
+
+        <!-- Loading State -->
+        <ProgressRing Grid.Row="1"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsActive="true"
+                      Width="50"
+                      Height="50"
+                      Visibility="{Binding FetchState, 
+                                           Converter={StaticResource LoadingFetchStateVisibility}}"/>
+
+        <!-- Content State -->
         <GridView x:Name="GenreGrid"
                   Grid.Row="1"
                   Margin="10, 0, 10, 0"
-                  ItemsSource="{x:Bind ViewModel.GenreList, Mode=OneWay}">
+                  ItemsSource="{x:Bind ViewModel.GenreList, Mode=OneWay}"
+                  Visibility="{Binding FetchState, 
+                                       Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
             <GridView.ItemTemplate>
                 <DataTemplate>
