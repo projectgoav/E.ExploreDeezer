@@ -41,8 +41,10 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.Title = track?.Title ?? string.Empty;
             this.Artist = track?.ArtistName ?? string.Empty;
 
-            this.ArtworkUri = track?.Artwork?.Medium ?? string.Empty;
-
+            // Too many ? ?? Are you sure??
+            this.ArtworkUri = track?.Artwork?.HasPictureOfSize(PictureSize.Medium) ?? false ? track.Artwork.Medium
+                                                                                            : "ms-appx:///Assets/StoreLogo.png";
+                
             this.TrackNumber = track?.TrackNumber.ToString() ?? string.Empty;
 
             this.AllArtistNames = GetAllArtistNames(track);

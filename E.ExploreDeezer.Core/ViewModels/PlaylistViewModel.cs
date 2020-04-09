@@ -32,7 +32,9 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.Title = playlist?.Title ?? string.Empty;
             this.CreatorName = playlist?.Creator?.Username ?? string.Empty;
-            this.ArtworkUri = playlist?.Images?.Medium ?? string.Empty;
+
+            this.ArtworkUri = playlist?.Images?.HasPictureOfSize(PictureSize.Medium) ?? false ? playlist.Images.Medium
+                                                                                              : "ms-appx:///Assets/StoreLogo.png";
 
             this.NumberOfTracks = playlist?.NumberOfTracks.ToString() ?? string.Empty;
         }

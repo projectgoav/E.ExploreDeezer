@@ -13,6 +13,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         ulong Id { get; }
         string Name { get; }
         bool IsPresent { get; }
+        string ArtworkUri { get; }
     }
 
     internal class ArtistViewModel : IArtistViewModel
@@ -23,7 +24,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             Id = artist?.Id ?? 0u;
             Name = artist?.Name ?? string.Empty;
-            ArtworkUri = artist?.Pictures.Medium ?? string.Empty;
+            ArtworkUri = artist?.Pictures.Medium ?? "ms-appx:///Assets/StoreLogo.png"; //TODO: Fallback artwork
         }
 
 

@@ -32,7 +32,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
 
-            this.ArtworkUri = album?.CoverArtwork.Medium;
+            this.ArtworkUri = album?.CoverArtwork?.Medium ?? "ms-appx:///Assets/StoreLogo.png"; //TODO: Fallback artwork
 
             this.NumberOfTracks = album?.TrackCount ?? 0u;
 

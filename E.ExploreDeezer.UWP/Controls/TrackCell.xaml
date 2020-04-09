@@ -34,7 +34,7 @@
                Height="48"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Source="{Binding ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
+               Source="{x:Bind ViewModel.ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
 
         <StackPanel Grid.Column="1"
                     Orientation="Vertical">

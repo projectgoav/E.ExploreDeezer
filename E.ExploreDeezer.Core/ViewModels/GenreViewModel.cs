@@ -27,7 +27,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.Id = genre?.Id ?? 0u;
             this.Name = genre?.Name ?? string.Empty;
-            this.ArtworkUri = genre?.Images?.Medium ?? string.Empty;
+            this.ArtworkUri = genre?.Images?.Medium ?? "ms-appx:///Assets/StoreLogo.png";
         }
 
 

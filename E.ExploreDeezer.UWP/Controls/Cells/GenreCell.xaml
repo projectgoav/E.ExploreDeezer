@@ -22,10 +22,10 @@
                Height="128"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
-               Source="{Binding ArtworkUri}" />
+               Source="{x:Bind ViewModel.ArtworkUri}" />
 
         <TextBlock Grid.Row="1"
-                   Text="{Binding Name}"
+                   Text="{x:Bind ViewModel.Name}"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 

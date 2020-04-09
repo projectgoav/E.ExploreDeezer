@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.UWP.Controls
 {
@@ -22,6 +22,16 @@ namespace E.ExploreDeezer.UWP.Controls
         public ArtistGridCell()
         {
             this.InitializeComponent();
+
+            this.DataContextChanged += OnDataContextChanged;
         }
+
+        private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            this.ViewModel = args.NewValue as IArtistViewModel;
+            Bindings.Update();
+        }
+
+        public IArtistViewModel ViewModel { get; private set; }
     }
 }
