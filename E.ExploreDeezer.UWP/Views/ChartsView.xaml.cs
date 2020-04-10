@@ -62,6 +62,8 @@ namespace E.ExploreDeezer.UWP.Views
             this.AlbumChartGrid.SelectionChanged += OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged += OnGridSelectionChanged;
             this.ArtistChartGrid.SelectionChanged += OnGridSelectionChanged;
+
+            this.GenreSelector.SelectionChanged += GenreSelectionChanged;
         }
 
         private void RemoveEvents()
@@ -69,6 +71,8 @@ namespace E.ExploreDeezer.UWP.Views
             this.AlbumChartGrid.SelectionChanged -= OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged -= OnGridSelectionChanged;
             this.ArtistChartGrid.SelectionChanged -= OnGridSelectionChanged;
+
+            this.GenreSelector.SelectionChanged -= GenreSelectionChanged;
         }
 
 
@@ -105,6 +109,13 @@ namespace E.ExploreDeezer.UWP.Views
 
             else
                 return; // TODO
+        }
+
+
+        private void GenreSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedGenre = this.ViewModel.GenreList.ElementAt(this.GenreSelector.SelectedIndex);
+            this.ViewModel.SetSelectedGenre(selectedGenre);
         }
     }
 }

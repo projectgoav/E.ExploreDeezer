@@ -12,6 +12,12 @@ namespace E.ExploreDeezer.Core.Services
     {
         IObservableCollection<IGenreViewModel> GenreList { get; }
 
-        Task FetchGenreListAsync();
+        Task RefreshGenreListAsync();
+    }
+
+
+    internal interface IGenreNewReleaseService : IDataFetchingService
+    {
+
     }
 }

@@ -45,7 +45,7 @@ namespace E.ExploreDeezer.Core.Services.Genre
         public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
 
 
-        public Task FetchGenreListAsync()
+        public Task RefreshGenreListAsync()
         {
             if (this.genreList.Count > 0)
                 return Task.CompletedTask;

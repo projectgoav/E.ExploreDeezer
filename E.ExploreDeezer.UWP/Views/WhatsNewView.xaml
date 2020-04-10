@@ -25,11 +25,31 @@
 
         <Pivot Grid.Row="1">
 
+            <Pivot.RightHeader>
+
+                <ComboBox x:Name="GenreSelector" 
+                          SelectedIndex="0"
+                          PlaceholderText="Select Genre"
+                          ItemsSource="{x:Bind ViewModel.GenreList}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    
+                </ComboBox>
+
+            </Pivot.RightHeader>
+            
+            
             <PivotItem Header="New Albums">
 
                 <GridView x:Name="NewAlbumGrid"
                           ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}">
-                    
+
                     <GridView.ItemTemplate>
                         <DataTemplate>
                             <controls:AlbumGridCell />
@@ -37,7 +57,7 @@
                     </GridView.ItemTemplate>
 
                 </GridView>
-
+                
             </PivotItem>
 
             <PivotItem Header="Deezer Picks">

@@ -116,7 +116,8 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
         public int IndexOf(object value)
-            => this.contents.IndexOf((T)value);
+            => (value is T castValue) ? this.contents.IndexOf(castValue)
+                                      : -1;
 
 
         public void Insert(int index, object value)

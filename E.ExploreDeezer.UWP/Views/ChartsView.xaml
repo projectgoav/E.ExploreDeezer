@@ -25,6 +25,25 @@
 
         <Pivot Grid.Row="1">
 
+            <Pivot.RightHeader>
+
+                <ComboBox x:Name="GenreSelector" 
+                          SelectedIndex="0"
+                          PlaceholderText="Select Genre"
+                          ItemsSource="{x:Bind ViewModel.GenreList}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center">
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
+
+            </Pivot.RightHeader>
+
             <PivotItem Header="Albums">
 
                 <GridView x:Name="AlbumChartGrid"

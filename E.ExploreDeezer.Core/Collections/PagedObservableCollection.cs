@@ -144,11 +144,6 @@ namespace E.ExploreDeezer.Core.Collections
 
         public void SetFetcher(ItemFetcher<T> fetcher)
         {
-            if (this.itemFetcher == fetcher)
-            {
-                return;
-            }
-
             this.itemFetcher = fetcher;
 
             ResetContents();
@@ -359,9 +354,10 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
         public int IndexOf(object value)
-        {
-            throw new NotImplementedException();
-        }
+            => (value is T castValue) ? this.pages.SelectMany(kvp => kvp.Value)
+                                                  .ToList()
+                                                  .IndexOf(castValue)
+                                      : -1;
 
         public void Insert(int index, object value)
         {

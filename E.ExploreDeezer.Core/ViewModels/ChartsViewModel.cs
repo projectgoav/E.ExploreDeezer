@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using E.Deezer;
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Services;
 using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
@@ -14,10 +15,13 @@ namespace E.ExploreDeezer.Core.ViewModels
     public interface IChartsViewModel : INotifyPropertyChanged,
                                         IDisposable
     {
+        IObservableCollection<IGenreViewModel> GenreList { get; }
         IObservableCollection<IAlbumViewModel> Albums { get; }
         IObservableCollection<IArtistViewModel> Artists { get; }
         IObservableCollection<IPlaylistViewModel> Playlists { get; }
         IObservableCollection<ITrackViewModel> Tracks { get; }
+
+        void SetSelectedGenre(IGenreViewModel genre);
 
 
         TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
@@ -32,6 +36,10 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         private const ulong DEFAULT_GENRE_ID = 0;
 
+        private readonly IGenreListService genreService;
+        private readonly ChartsDataController dataController;
+
+        private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> albums;
         private readonly MainThreadObservableCollectionAdapter<IArtistViewModel> artists;
         private readonly MainThreadObservableCollectionAdapter<IPlaylistViewModel> playlists;
@@ -40,7 +48,12 @@ namespace E.ExploreDeezer.Core.ViewModels
         public ChartsViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            var dataController = ServiceRegistry.GetService<ChartsDataController>();
+            this.genreService = ServiceRegistry.GetService<IGenreListService>();
+
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(genreService.GenreList,
+                                                                                        PlatformServices.MainThreadDispatcher);
+
+            this.dataController = ServiceRegistry.GetService<ChartsDataController>();
 
             this.albums = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(dataController.Albums,
                                                                                      PlatformServices.MainThreadDispatcher);
@@ -54,18 +67,24 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.playlists = new MainThreadObservableCollectionAdapter<IPlaylistViewModel>(dataController.Playlists,
                                                                                            PlatformServices.MainThreadDispatcher);
 
-
             dataController.SetGenreId(DEFAULT_GENRE_ID);
         }
 
 
 
         // IChartViewModel
+        public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
         public IObservableCollection<IAlbumViewModel> Albums => this.albums;
         public IObservableCollection<IArtistViewModel> Artists => this.artists;
         public IObservableCollection<IPlaylistViewModel> Playlists => this.playlists;
         public IObservableCollection<ITrackViewModel> Tracks => this.tracks;
 
+
+        public void SetSelectedGenre(IGenreViewModel genre)
+        {
+            Assert.That(genre != null);
+            this.dataController.SetGenreId(genre.Id);
+        }
 
         public TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)
             => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
@@ -86,6 +105,7 @@ namespace E.ExploreDeezer.Core.ViewModels
                 this.artists.Dispose();
                 this.playlists.Dispose();
                 this.tracks.Dispose();
+                this.genreList.Dispose();
             }
 
             base.Dispose(disposing);

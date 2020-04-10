@@ -39,7 +39,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.service.OnFetchStateChanged += OnFetchStateChanged;
 
-            this.service.FetchGenreListAsync();
+            this.service.RefreshGenreListAsync();
         }
 
         // IGenreViewModel
