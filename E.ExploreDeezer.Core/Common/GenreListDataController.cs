@@ -59,34 +59,29 @@ namespace E.ExploreDeezer.Core.Common
 
             this.fetchState.SetLoading();
 
+            return this.session.Genre.GetCommonGenre(this.tokenSource.Token)
+                                        .ContinueWith(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                            {
+                                                //TODO: Proper logging
+                                                System.Diagnostics.Debug.WriteLine($"Failed to fetch genre list.\n{t.Exception.GetBaseException()}");
+                                                this.fetchState.SetError();
+                                                return;
+                                            }
 
-            return Task.Delay(5000)
-                       .ContinueWith(_ =>
-                {
-                    return this.session.Genre.GetCommonGenre(this.tokenSource.Token)
-                                             .ContinueWith(t =>
-                                             {
-                                                 if (t.IsFaulted)
-                                                 {
-                                                     //TODO: Proper logging
-                                                     System.Diagnostics.Debug.WriteLine($"Failed to fetch genre list.\n{t.Exception.GetBaseException()}");
-                                                     this.fetchState.SetError();
-                                                     return;
-                                                 }
+                                            this.genreList.SetContents(t.Result.Select(x => new GenreViewModel(x)));
 
-                                                 this.genreList.SetContents(t.Result.Select(x => new GenreViewModel(x)));
+                                            if (this.genreList.Count == 0)
+                                            {
+                                                this.fetchState.SetEmpty();
+                                            }
+                                            else
+                                            {
+                                                this.fetchState.SetAvailable();
+                                            }
 
-                                                 if (this.genreList.Count == 0)
-                                                 {
-                                                     this.fetchState.SetEmpty();
-                                                 }
-                                                 else
-                                                 {
-                                                     this.fetchState.SetAvailable();
-                                                 }
-
-                                             }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
-                });
+                                        }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
         }
 
 
