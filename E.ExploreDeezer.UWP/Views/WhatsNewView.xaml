@@ -71,32 +71,78 @@
             
             <PivotItem Header="New Albums">
 
-                <GridView x:Name="NewAlbumGrid"
-                          ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}">
+                <Grid>
 
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:AlbumGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding NewReleaseFetchState,
+                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
 
-                </GridView>
+                    <ProgressRing IsActive="True"
+                                  Width="75"
+                                  Height="75"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding NewReleaseFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+
+                    <GridView x:Name="NewAlbumGrid"
+                              ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}"
+                              Visibility="{Binding NewReleaseFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}" >
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:AlbumGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+
+
+                </Grid>
                 
             </PivotItem>
 
             <PivotItem Header="Deezer Picks">
 
-                <GridView x:Name="DeezerPicksGrid"
-                          ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}">
+                <Grid>
+
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding DeezerPicksFetchState,
+                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+
+                    <ProgressRing IsActive="True"
+                                  Width="75"
+                                  Height="75"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding DeezerPicksFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+
+
+
+                    <GridView x:Name="DeezerPicksGrid"
+                              ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}"
+                              Visibility="{Binding DeezerPicksFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
                     
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:AlbumGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <controls:AlbumGridCell />
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
 
-                </GridView>
-
+                    </GridView>
+                            
+                </Grid>
+                  
             </PivotItem>
 
         </Pivot>
