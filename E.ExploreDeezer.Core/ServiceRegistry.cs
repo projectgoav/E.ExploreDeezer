@@ -10,8 +10,9 @@ using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.Common;
-using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.WhatsNew;
+using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.Core
 {
@@ -30,13 +31,14 @@ namespace E.ExploreDeezer.Core
             Register<TracklistDataController>(new TracklistDataController(DeezerSession));
             Register<NewReleaseDataController>(new NewReleaseDataController(DeezerSession));
             Register<DeezerPicksDataController>(new DeezerPicksDataController(DeezerSession));
-            Register<ChartsDataController>(new ChartsDataController(DeezerSession));
+            //Register<ChartsDataController>(new ChartsDataController(DeezerSession));
             Register<InformationDataController>(new InformationDataController(DeezerSession));
 
             // TODO: Need to work out how to dispose of services when they are dying off
 
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
             Register<IWhatsNewDataController>(new WhatsNewDataController(DeezerSession));
+            Register<IChartsDataController>(new ChartsDataController(DeezerSession));
         }
 
 

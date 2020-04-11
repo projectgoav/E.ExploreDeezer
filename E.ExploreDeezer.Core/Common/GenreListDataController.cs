@@ -13,6 +13,19 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Common
 {
+    internal struct OnGenreFilterChangedEventArgs
+    {
+        public OnGenreFilterChangedEventArgs(ulong genreId)
+        {
+            this.GenreId = genreId;
+        }
+
+        public ulong GenreId { get; }
+    }
+
+    internal delegate void OnGenreFilterChangedEventHandler(object sender, OnGenreFilterChangedEventArgs args);
+
+
     internal interface IGenreListDataController : IDataController
     {
         IObservableCollection<IGenreViewModel> TheList { get; }

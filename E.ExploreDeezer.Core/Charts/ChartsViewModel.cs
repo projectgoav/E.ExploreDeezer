@@ -5,24 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using E.Deezer;
 using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.Common;
+using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
 
-namespace E.ExploreDeezer.Core.ViewModels
+
+namespace E.ExploreDeezer.Core.Charts
 {
     public interface IChartsViewModel : INotifyPropertyChanged,
                                         IDisposable
     {
+        //EFetchState AlbumChartFetchState { get; }
+        IObservableCollection<IAlbumViewModel> AlbumChart { get; }
+
+        //EFetchState ArtistChartFetchState { get; }
+        IObservableCollection<IArtistViewModel> ArtistChart { get; }
+
+        //EFetchState TrackChartFetchState { get; }
+        IObservableCollection<ITrackViewModel> TrackChart { get; }
+
+        //EFetchState PlaylistFetchState { get; }
+        IObservableCollection<IPlaylistViewModel> PlaylistChart { get; }
+
+        //EFetchState GenreListFetchState { get; }
         IObservableCollection<IGenreViewModel> GenreList { get; }
-        IObservableCollection<IAlbumViewModel> Albums { get; }
-        IObservableCollection<IArtistViewModel> Artists { get; }
-        IObservableCollection<IPlaylistViewModel> Playlists { get; }
-        IObservableCollection<ITrackViewModel> Tracks { get; }
 
-        void SetSelectedGenre(IGenreViewModel genre);
-
+        //int SelectedGenreIndex { get; set; }
 
         TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
         TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
@@ -34,10 +43,8 @@ namespace E.ExploreDeezer.Core.ViewModels
                                      IChartsViewModel,
                                      IDisposable
     {
-        private const ulong DEFAULT_GENRE_ID = 0;
-
+        private readonly IChartsDataController chartsDataController;
         private readonly IGenreListDataController genreListDataController;
-        private readonly ChartsDataController dataController;
 
         private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> albums;
@@ -48,42 +55,46 @@ namespace E.ExploreDeezer.Core.ViewModels
         public ChartsViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
+            this.chartsDataController = ServiceRegistry.GetService<IChartsDataController>();
             this.genreListDataController = ServiceRegistry.GetService<IGenreListDataController>();
+
 
             this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.genreListDataController.TheList,
                                                                                         PlatformServices.MainThreadDispatcher);
 
-            this.dataController = ServiceRegistry.GetService<ChartsDataController>();
 
-            this.albums = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(dataController.Albums,
+
+            this.albums = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(this.chartsDataController.AlbumChart,
                                                                                      PlatformServices.MainThreadDispatcher);
 
-            this.artists = new MainThreadObservableCollectionAdapter<IArtistViewModel>(dataController.Artists,
+            this.artists = new MainThreadObservableCollectionAdapter<IArtistViewModel>(this.chartsDataController.ArtistChart,
                                                                                        PlatformServices.MainThreadDispatcher);
 
-            this.tracks = new MainThreadObservableCollectionAdapter<ITrackViewModel>(dataController.Tracks,
+            this.tracks = new MainThreadObservableCollectionAdapter<ITrackViewModel>(this.chartsDataController.TrackChart,
                                                                                      PlatformServices.MainThreadDispatcher);
 
-            this.playlists = new MainThreadObservableCollectionAdapter<IPlaylistViewModel>(dataController.Playlists,
+            this.playlists = new MainThreadObservableCollectionAdapter<IPlaylistViewModel>(this.chartsDataController.PlaylistChart,
                                                                                            PlatformServices.MainThreadDispatcher);
 
-            dataController.SetGenreId(DEFAULT_GENRE_ID);
+
+            this.chartsDataController.BeginPopulateAsync();
+            this.genreListDataController.RefreshGenreListAsync();
         }
 
 
 
         // IChartViewModel
         public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
-        public IObservableCollection<IAlbumViewModel> Albums => this.albums;
-        public IObservableCollection<IArtistViewModel> Artists => this.artists;
-        public IObservableCollection<IPlaylistViewModel> Playlists => this.playlists;
-        public IObservableCollection<ITrackViewModel> Tracks => this.tracks;
+        public IObservableCollection<IAlbumViewModel> AlbumChart => this.albums;
+        public IObservableCollection<IArtistViewModel> ArtistChart => this.artists;
+        public IObservableCollection<IPlaylistViewModel> PlaylistChart => this.playlists;
+        public IObservableCollection<ITrackViewModel> TrackChart => this.tracks;
 
 
         public void SetSelectedGenre(IGenreViewModel genre)
         {
             Assert.That(genre != null);
-            this.dataController.SetGenreId(genre.Id);
+            this.chartsDataController.SetGenreFilter(genre.Id);
         }
 
         public TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)

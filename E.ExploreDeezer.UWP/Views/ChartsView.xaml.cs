@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 
 using E.ExploreDeezer.Core;
+using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -81,7 +82,7 @@ namespace E.ExploreDeezer.UWP.Views
         {
             if (sender == this.AlbumChartGrid)
             {
-                var selectedItem = this.ViewModel.Albums.ElementAt(this.AlbumChartGrid.SelectedIndex);
+                var selectedItem = this.ViewModel.AlbumChart.ElementAt(this.AlbumChartGrid.SelectedIndex);
                 var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
 
                 ServiceRegistry.GetService<Frame>()
@@ -90,7 +91,7 @@ namespace E.ExploreDeezer.UWP.Views
             }
             else if (sender == this.PlaylistsChartGrid)
             {
-                var selectedItem = this.ViewModel.Playlists.ElementAt(this.PlaylistsChartGrid.SelectedIndex);
+                var selectedItem = this.ViewModel.PlaylistChart.ElementAt(this.PlaylistsChartGrid.SelectedIndex);
                 var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
 
                 ServiceRegistry.GetService<Frame>()
@@ -100,7 +101,7 @@ namespace E.ExploreDeezer.UWP.Views
             }
             else if (sender == this.ArtistChartGrid)
             {
-                var selectedItem = this.ViewModel.Artists.ElementAt(this.ArtistChartGrid.SelectedIndex);
+                var selectedItem = this.ViewModel.ArtistChart.ElementAt(this.ArtistChartGrid.SelectedIndex);
                 var p = this.ViewModel.GetArtistOverviewViewModelParams(selectedItem);
 
                 ServiceRegistry.GetService<Frame>()
@@ -114,8 +115,8 @@ namespace E.ExploreDeezer.UWP.Views
 
         private void GenreSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedGenre = this.ViewModel.GenreList.ElementAt(this.GenreSelector.SelectedIndex);
-            this.ViewModel.SetSelectedGenre(selectedGenre);
+            //var selectedGenre = this.ViewModel.GenreList.ElementAt(this.GenreSelector.SelectedIndex);
+            //this.ViewModel.SetSelectedGenre(selectedGenre);
         }
     }
 }

@@ -14,18 +14,6 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.WhatsNew
 {
-    internal struct OnGenreFilterChangedEventArgs
-    {
-        public OnGenreFilterChangedEventArgs(ulong genreId)
-        {
-            this.GenreId = genreId;
-        }
-
-        public ulong GenreId { get; }
-    }
-
-    internal delegate void OnGenreFilterChangedEventHandler(object sender, OnGenreFilterChangedEventArgs args);
-
     internal interface IWhatsNewDataController
     {
         EFetchState NewReleaseFetchState { get; }
@@ -128,8 +116,11 @@ namespace E.ExploreDeezer.Core.WhatsNew
                                                                                     if (t.IsFaulted)
                                                                                     {
                                                                                         this.newReleaseFetchState.SetError();
-                                                                                        //TODO: Log
-                                                                                        throw t.Exception.GetBaseException();
+
+                                                                                        var ex = t.Exception.GetBaseException();
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch some new releases. {ex}");
+
+                                                                                        throw ex;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -154,8 +145,11 @@ namespace E.ExploreDeezer.Core.WhatsNew
                                                                                     if (t.IsFaulted)
                                                                                     {
                                                                                         this.deezerPicksFetchState.SetError();
-                                                                                        //TODO: Log
-                                                                                        throw t.Exception.GetBaseException();
+
+                                                                                        var ex = t.Exception.GetBaseException();
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch some new releases. {ex}");
+
+                                                                                        throw ex;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));

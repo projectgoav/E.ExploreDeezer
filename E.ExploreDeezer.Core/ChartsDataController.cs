@@ -11,6 +11,7 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core
 {
+    /*
     internal class ChartsDataController
     {
         private readonly IDeezerSession session;
@@ -123,4 +124,5 @@ namespace E.ExploreDeezer.Core
             this.playlists.SetFetcher(playlistFetcher);
         }
     }
+    */
 }

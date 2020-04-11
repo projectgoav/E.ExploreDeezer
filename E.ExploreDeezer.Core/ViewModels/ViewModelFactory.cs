@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
 
