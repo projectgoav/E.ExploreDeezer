@@ -40,8 +40,6 @@ namespace E.ExploreDeezer.UWP.Views
 
             this.NewAlbumGrid.SelectionChanged += GridSelectionChanged;
             this.DeezerPicksGrid.SelectionChanged += GridSelectionChanged;
-
-            this.GenreSelector.SelectionChanged += GenreSelectionChanged;
         }
 
 
@@ -51,8 +49,6 @@ namespace E.ExploreDeezer.UWP.Views
 
             this.NewAlbumGrid.SelectionChanged -= GridSelectionChanged;
             this.DeezerPicksGrid.SelectionChanged -= GridSelectionChanged;
-
-            this.GenreSelector.SelectionChanged -= GenreSelectionChanged;
 
             this.ViewModel.Dispose();
 
@@ -79,13 +75,6 @@ namespace E.ExploreDeezer.UWP.Views
 
             ServiceRegistry.GetService<Frame>()
                            .ShowNewPage(typeof(TracklistView), p);
-        }
-
-
-        private void GenreSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedGenre = this.ViewModel.GenreList.ElementAt(this.GenreSelector.SelectedIndex);
-            this.ViewModel.SetSelectedGenre(selectedGenre);
         }
     }
 }

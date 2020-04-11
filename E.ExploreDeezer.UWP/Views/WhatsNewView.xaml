@@ -36,7 +36,7 @@
                 -->
                 
                 <ComboBox x:Name="GenreSelector" 
-                          SelectedIndex="0"
+                          SelectedIndex="{x:Bind ViewModel.SelectedGenreIndex, Mode=TwoWay}"
                           PlaceholderText="Select Genre"
                           ItemsSource="{x:Bind ViewModel.GenreList}"
                           HorizontalAlignment="Center"

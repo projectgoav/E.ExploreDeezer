@@ -38,13 +38,17 @@ namespace E.ExploreDeezer.Core.Mvvm
                                                                                                               : this.cancellationTokenSource.Token;
 
 
-        public void SetProperty<T>(ref T storage, T newValue, [CallerMemberName] string propertyName = null)
+        public bool SetProperty<T>(ref T storage, T newValue, [CallerMemberName] string propertyName = null)
         {
-            if (storage == null || !storage.Equals(newValue))
+            bool changed = storage == null || !storage.Equals(newValue);
+
+            if (changed)
             {
                 storage = newValue;
                 RaisePropertyChangedSafe(propertyName);
             }
+
+            return changed;
         }
 
 
