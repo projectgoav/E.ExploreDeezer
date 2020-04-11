@@ -27,20 +27,44 @@
 
             <Pivot.RightHeader>
 
-                <ComboBox x:Name="GenreSelector" 
-                          SelectedIndex="0"
-                          PlaceholderText="Select Genre"
-                          ItemsSource="{x:Bind ViewModel.GenreList}"
-                          HorizontalAlignment="Center"
-                          VerticalAlignment="Center">
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Margin="0,0,10,0">
 
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                    <!-- Genre List -->
+                    <StackPanel Orientation="Horizontal"
+                                Visibility="{Binding GenreListFetchState,
+                                                     Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
-                </ComboBox>
+                        <TextBlock Text="Genre:"
+                                   VerticalAlignment="Center"/>
+
+                        <ComboBox x:Name="GenreSelector" 
+                                  VerticalAlignment="Center"
+                                  Margin="5,0,0,0"
+                                  SelectedIndex="{x:Bind ViewModel.SelectedGenreIndex, Mode=TwoWay}"
+                                  ItemsSource="{x:Bind ViewModel.GenreList}">
+
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+
+                        </ComboBox>
+
+                    </StackPanel>
+
+
+                    <!-- Loading View -->
+                    <ProgressRing IsActive="True"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding GenreListFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+                </Grid>
+
 
             </Pivot.RightHeader>
 

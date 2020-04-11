@@ -16,22 +16,22 @@ namespace E.ExploreDeezer.Core.Charts
     public interface IChartsViewModel : INotifyPropertyChanged,
                                         IDisposable
     {
-        //EFetchState AlbumChartFetchState { get; }
+        EFetchState AlbumChartFetchState { get; }
         IObservableCollection<IAlbumViewModel> AlbumChart { get; }
 
-        //EFetchState ArtistChartFetchState { get; }
+        EFetchState ArtistChartFetchState { get; }
         IObservableCollection<IArtistViewModel> ArtistChart { get; }
 
-        //EFetchState TrackChartFetchState { get; }
+        EFetchState TrackChartFetchState { get; }
         IObservableCollection<ITrackViewModel> TrackChart { get; }
 
-        //EFetchState PlaylistFetchState { get; }
+        EFetchState PlaylistChartFetchState { get; }
         IObservableCollection<IPlaylistViewModel> PlaylistChart { get; }
 
-        //EFetchState GenreListFetchState { get; }
+        EFetchState GenreListFetchState { get; }
         IObservableCollection<IGenreViewModel> GenreList { get; }
 
-        //int SelectedGenreIndex { get; set; }
+        int SelectedGenreIndex { get; set; }
 
         TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
         TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
@@ -51,6 +51,14 @@ namespace E.ExploreDeezer.Core.Charts
         private readonly MainThreadObservableCollectionAdapter<IArtistViewModel> artists;
         private readonly MainThreadObservableCollectionAdapter<IPlaylistViewModel> playlists;
         private readonly MainThreadObservableCollectionAdapter<ITrackViewModel> tracks;
+
+        private int selectedGenreIndex;
+        private EFetchState genreFetchState;
+        private EFetchState albumFetchState;
+        private EFetchState artistFetchState;
+        private EFetchState trackFetchState;
+        private EFetchState playlistFetchState;
+
 
         public ChartsViewModel(IPlatformServices platformServices)
             : base(platformServices)
@@ -77,25 +85,88 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                            PlatformServices.MainThreadDispatcher);
 
 
+            this.genreListDataController.OnFetchStateChanged += OnGenreListFetchStateChanged;
+
+            this.chartsDataController.OnAlbumChartFetchStateChanged += OnAlbumChartFetchStatusChanged;
+            this.chartsDataController.OnArtistChartFetchStateChanged += OnArtistChartFetchStatusChanged;
+            this.chartsDataController.OnTrackChartFetchStateChanged += OnTrackChartFetchStatusChanged;
+            this.chartsDataController.OnPlaylistChartFetchStateChanged += OnPlaylistChartFetchStatusChanged;
+
+
+            //TODO: Need stop this 'Begin' call required before executing the below LINQ command stuff
             this.chartsDataController.BeginPopulateAsync();
             this.genreListDataController.RefreshGenreListAsync();
+
+            this.selectedGenreIndex = this.genreList.Count == 0 ? 0
+                                                                : this.genreList.Select((x, i) => new { Genre = x, Index = i })
+                                                                                .Where(x => x.Genre.Id == this.chartsDataController.CurrentGenreFilter)
+                                                                                .SingleOrDefault()
+                                                                                .Index;
+
+
         }
 
 
 
         // IChartViewModel
         public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
+
+        public EFetchState GenreListFetchState
+        {
+            get => this.genreFetchState;
+            private set => SetProperty(ref this.genreFetchState, value);
+        }
+
+
         public IObservableCollection<IAlbumViewModel> AlbumChart => this.albums;
+
+        public EFetchState AlbumChartFetchState
+        {
+            get => this.albumFetchState;
+            private set => SetProperty(ref this.albumFetchState, value);
+        }
+
+
         public IObservableCollection<IArtistViewModel> ArtistChart => this.artists;
+
+        public EFetchState ArtistChartFetchState
+        {
+            get => this.artistFetchState;
+            private set => SetProperty(ref this.artistFetchState, value);
+        }
+
+
         public IObservableCollection<IPlaylistViewModel> PlaylistChart => this.playlists;
+
+        public EFetchState PlaylistChartFetchState
+        {
+            get => this.playlistFetchState;
+            private set => SetProperty(ref this.playlistFetchState, value);
+        }
+
+
         public IObservableCollection<ITrackViewModel> TrackChart => this.tracks;
 
-
-        public void SetSelectedGenre(IGenreViewModel genre)
+        public EFetchState TrackChartFetchState
         {
-            Assert.That(genre != null);
-            this.chartsDataController.SetGenreFilter(genre.Id);
+            get => this.trackFetchState;
+            private set => SetProperty(ref this.trackFetchState, value);
         }
+
+
+        public int SelectedGenreIndex
+        {
+            get => this.selectedGenreIndex;
+            set
+            {
+                if (SetProperty(ref this.selectedGenreIndex, value))
+                {
+                    this.chartsDataController.SetGenreFilter(this.genreList[value].Id);
+                }
+            }
+        }
+
+
 
         public TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)
             => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
@@ -108,10 +179,34 @@ namespace E.ExploreDeezer.Core.Charts
 
 
 
+        private void OnAlbumChartFetchStatusChanged(object sender, FetchStateChangedEventArgs args)
+            => this.AlbumChartFetchState = args.NewValue;
+
+        private void OnArtistChartFetchStatusChanged(object sender, FetchStateChangedEventArgs args)
+            => this.ArtistChartFetchState = args.NewValue;
+
+        private void OnTrackChartFetchStatusChanged(object sender, FetchStateChangedEventArgs args)
+            => this.TrackChartFetchState = args.NewValue;
+
+        private void OnPlaylistChartFetchStatusChanged(object sender, FetchStateChangedEventArgs args)
+            => this.PlaylistChartFetchState = args.NewValue;
+
+        private void OnGenreListFetchStateChanged(object sender, FetchStateChangedEventArgs args)
+            => this.GenreListFetchState = args.NewValue;
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.genreListDataController.OnFetchStateChanged -= OnGenreListFetchStateChanged;
+
+                this.chartsDataController.OnAlbumChartFetchStateChanged -= OnAlbumChartFetchStatusChanged;
+                this.chartsDataController.OnArtistChartFetchStateChanged -= OnArtistChartFetchStatusChanged;
+                this.chartsDataController.OnTrackChartFetchStateChanged -= OnTrackChartFetchStatusChanged;
+                this.chartsDataController.OnPlaylistChartFetchStateChanged -= OnPlaylistChartFetchStatusChanged;
+
+
                 this.albums.Dispose();
                 this.artists.Dispose();
                 this.playlists.Dispose();
