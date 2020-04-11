@@ -11,16 +11,23 @@ using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
 
-namespace E.ExploreDeezer.Core.Services.Genre
+namespace E.ExploreDeezer.Core.Common
 {
-    internal class GenreListService : IGenreListService
+    internal interface IGenreListDataController : IDataController
+    {
+        IObservableCollection<IGenreViewModel> TheList { get; }
+
+        Task RefreshGenreListAsync();
+    }
+
+    internal class GenreListDataController : IGenreListDataController
     {
         private readonly IDeezerSession session;
         private readonly UpdatableFetchState fetchState;
         private readonly ResetableCancellationTokenSource tokenSource;
         private readonly FixedSizeObservableCollection<IGenreViewModel> genreList;
 
-        public GenreListService(IDeezerSession session)
+        public GenreListDataController(IDeezerSession session)
         {
             this.session = session;
 
@@ -33,7 +40,7 @@ namespace E.ExploreDeezer.Core.Services.Genre
         // IDataFetchingService
         public string Id => "GenreList";
 
-        public EFetchState FetchState => this.fetchState.CurrentState;
+        public EFetchState CurrentFetchState => this.fetchState.CurrentState;
 
         public event FetchStateChangedEventHandler OnFetchStateChanged
         {
@@ -42,7 +49,7 @@ namespace E.ExploreDeezer.Core.Services.Genre
         }
 
         //IGenreListService
-        public IObservableCollection<IGenreViewModel> GenreList => this.genreList;
+        public IObservableCollection<IGenreViewModel> TheList => this.genreList;
 
 
         public Task RefreshGenreListAsync()

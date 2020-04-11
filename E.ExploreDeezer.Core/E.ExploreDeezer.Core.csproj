@@ -8,4 +8,8 @@
     <PackageReference Include="E.Deezer" Version="5.0.0-alpha4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

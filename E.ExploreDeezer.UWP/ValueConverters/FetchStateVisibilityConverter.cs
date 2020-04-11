@@ -8,7 +8,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
 using E.ExploreDeezer.Core;
-using E.ExploreDeezer.Core.Services;
 
 namespace E.ExploreDeezer.UWP.ValueConverters
 {

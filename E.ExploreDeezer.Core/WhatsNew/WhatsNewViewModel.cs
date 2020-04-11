@@ -8,10 +8,11 @@ using E.Deezer;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Mvvm;
-using E.ExploreDeezer.Core.Services;
+using E.ExploreDeezer.Core.Common;
+using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
 
-namespace E.ExploreDeezer.Core.ViewModels
+namespace E.ExploreDeezer.Core.WhatsNew
 {
     public interface IWhatsNewViewModel : IDisposable
     {
@@ -28,12 +29,8 @@ namespace E.ExploreDeezer.Core.ViewModels
     internal class WhatsNewViewModel : ViewModelBase,
                                        IWhatsNewViewModel
     {
-        private const ulong DEFAULT_GENRE_ID = 0;
-
-        private readonly IGenreListService genreService;
-
-        private readonly NewReleaseDataController newReleaseDataController;
-        private readonly DeezerPicksDataController deezerPicksDataController;
+        private readonly IWhatsNewDataController whatsNewDataController;
+        private readonly IGenreListDataController genreListDataController;
 
         private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> newReleases;
@@ -43,23 +40,20 @@ namespace E.ExploreDeezer.Core.ViewModels
         public WhatsNewViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            this.genreService = ServiceRegistry.GetService<IGenreListService>();
-            this.genreService.RefreshGenreListAsync();
+            this.whatsNewDataController = ServiceRegistry.GetService<IWhatsNewDataController>();
+            this.genreListDataController = ServiceRegistry.GetService<IGenreListDataController>();
 
-            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.genreService.GenreList,
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.genreListDataController.TheList,
                                                                                         PlatformServices.MainThreadDispatcher);
 
-            this.newReleaseDataController = ServiceRegistry.GetService<NewReleaseDataController>();
-            this.deezerPicksDataController = ServiceRegistry.GetService<DeezerPicksDataController>();
-
-            this.newReleases = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(newReleaseDataController.NewReleases,
+            this.newReleases = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(this.whatsNewDataController.NewReleases,
                                                                                           PlatformServices.MainThreadDispatcher);
 
-            this.deezerPicks = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(deezerPicksDataController.DeezerPicks,
+            this.deezerPicks = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(this.whatsNewDataController.DeezerPicks,
                                                                                           PlatformServices.MainThreadDispatcher);
 
-            newReleaseDataController.SetGenreId(DEFAULT_GENRE_ID);
-            deezerPicksDataController.SetGenreId(DEFAULT_GENRE_ID);
+            this.whatsNewDataController.BeginPopulateAsync();
+            this.genreListDataController.RefreshGenreListAsync();
         }
 
 
@@ -75,8 +69,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             Assert.That(genre != null);
 
-            this.newReleaseDataController.SetGenreId(genre.Id);
-            this.deezerPicksDataController.SetGenreId(genre.Id);
+            this.whatsNewDataController.SetGenreFilter(genre.Id);
         }
 
 

@@ -7,7 +7,7 @@ using E.Deezer;
 
 using E.ExploreDeezer.Core.Util;
 
-namespace E.ExploreDeezer.Core.Services
+namespace E.ExploreDeezer.Core
 {
     // Fetch Status
     public enum EFetchState
@@ -104,15 +104,5 @@ namespace E.ExploreDeezer.Core.Services
                 Assert.That(this.OnFetchStateChangedInternal == null, "Dangling event handlers on fetch status.");
             }
         }
-    }
-
-
-
-    internal interface IDataFetchingService : IDisposable
-    {
-        string Id { get; }
-        EFetchState FetchState { get; }
-
-        event FetchStateChangedEventHandler OnFetchStateChanged;
     }
 }

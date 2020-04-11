@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
-using E.ExploreDeezer.Core.Services;
+using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
@@ -24,7 +24,7 @@ namespace E.ExploreDeezer.Core.ViewModels
                                         IGenreListViewModel,
                                         IDisposable
     {
-        private readonly IGenreListService service;
+        private readonly IGenreListDataController genreListDataController;
         private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
 
         private EFetchState fetchState;
@@ -32,14 +32,14 @@ namespace E.ExploreDeezer.Core.ViewModels
         public GenreListViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            this.service = ServiceRegistry.GetService<IGenreListService>();
+            this.genreListDataController = ServiceRegistry.GetService<IGenreListDataController>();
 
-            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.service.GenreList,
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.genreListDataController.TheList,
                                                                                         this.PlatformServices.MainThreadDispatcher);
 
-            this.service.OnFetchStateChanged += OnFetchStateChanged;
+            this.genreListDataController.OnFetchStateChanged += OnFetchStateChanged;
 
-            this.service.RefreshGenreListAsync();
+            this.genreListDataController.RefreshGenreListAsync();
         }
 
         // IGenreViewModel
@@ -70,7 +70,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         {
             if (disposing)
             {
-                this.service.OnFetchStateChanged -= OnFetchStateChanged;
+                this.genreListDataController.OnFetchStateChanged -= OnFetchStateChanged;
 
                 this.genreList.Dispose();
             }

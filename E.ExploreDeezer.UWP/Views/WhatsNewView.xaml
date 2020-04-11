@@ -27,6 +27,14 @@
 
             <Pivot.RightHeader>
 
+                <!--
+                <Grid HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                    
+                   
+                </Gird>
+                -->
+                
                 <ComboBox x:Name="GenreSelector" 
                           SelectedIndex="0"
                           PlaceholderText="Select Genre"

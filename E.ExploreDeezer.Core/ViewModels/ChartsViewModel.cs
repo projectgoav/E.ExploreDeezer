@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using E.Deezer;
 using E.ExploreDeezer.Core.Mvvm;
-using E.ExploreDeezer.Core.Services;
+using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.ViewModels
@@ -36,7 +36,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         private const ulong DEFAULT_GENRE_ID = 0;
 
-        private readonly IGenreListService genreService;
+        private readonly IGenreListDataController genreListDataController;
         private readonly ChartsDataController dataController;
 
         private readonly MainThreadObservableCollectionAdapter<IGenreViewModel> genreList;
@@ -48,9 +48,9 @@ namespace E.ExploreDeezer.Core.ViewModels
         public ChartsViewModel(IPlatformServices platformServices)
             : base(platformServices)
         {
-            this.genreService = ServiceRegistry.GetService<IGenreListService>();
+            this.genreListDataController = ServiceRegistry.GetService<IGenreListDataController>();
 
-            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(genreService.GenreList,
+            this.genreList = new MainThreadObservableCollectionAdapter<IGenreViewModel>(this.genreListDataController.TheList,
                                                                                         PlatformServices.MainThreadDispatcher);
 
             this.dataController = ServiceRegistry.GetService<ChartsDataController>();
