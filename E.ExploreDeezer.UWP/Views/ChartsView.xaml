@@ -115,7 +115,7 @@
                     <TextBlock Text="No content found"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               Visibility="{Binding AritstChartFetchState,
+                               Visibility="{Binding ArtistChartFetchState,         
                                                     Converter={StaticResource EmptyFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"

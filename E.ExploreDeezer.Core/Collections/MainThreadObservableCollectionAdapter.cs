@@ -24,9 +24,9 @@ namespace E.ExploreDeezer.Core.Collections
             this.collection = theCollection;
             this.mainThreadDispatcher = mainThreadDispatcher;
 
-            this.collection.CollectionChanged += Collection_CollectionChanged;
-
             this.tokenSource = new ResetableCancellationTokenSource();
+
+            this.collection.CollectionChanged += Collection_CollectionChanged;
         }
 
 
@@ -73,6 +73,7 @@ namespace E.ExploreDeezer.Core.Collections
             {
                 this.tokenSource.Cancel();
                 this.tokenSource.Dispose();
+
                 this.collection.CollectionChanged -= Collection_CollectionChanged;
             }
 
