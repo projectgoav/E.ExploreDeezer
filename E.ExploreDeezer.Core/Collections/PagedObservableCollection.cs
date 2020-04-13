@@ -17,9 +17,7 @@ namespace E.ExploreDeezer.Core.Collections
                                                           CancellationToken cancellationToken);
 
 
-    internal class PagedObservableCollection<T> : IObservableCollection<T>,
-                                                  IList<T>,
-                                                  IList
+    internal class PagedObservableCollection<T> : ObservableCollectionBase<T>
     {
         private class PagedObservableCollectionEnumerator : IEnumerator,
                                                             IEnumerator<T>
@@ -48,7 +46,7 @@ namespace E.ExploreDeezer.Core.Collections
             {
                 if (this.pages.Count == 0)
                     return false;
-                
+
 
                 // Step through page
                 ++this.currentPageIndex;
@@ -96,8 +94,6 @@ namespace E.ExploreDeezer.Core.Collections
             }
         }
 
-
-
         private const int DEFAULT_PAGE_SIZE = 50;
         private const int DEFAULT_THREASHOLD = 50;
 
@@ -123,23 +119,58 @@ namespace E.ExploreDeezer.Core.Collections
 
         public int PageSize { get; }
 
+        // ObservableCollectionBase
+        public override T GetItem(int index)
+        {
+            int page = 0;
+            int indexInPage = index;
 
-        // IObservableCollection<T>
-        public T this[int index] => GetItem(index);
+            // Try to be fancy and do:
+            // => page = index / this.PageSize
+            // => indexInPath = index % this.PageSize
+            // in the one set of operations   
+            while (indexInPage >= this.PageSize)
+            {
+                indexInPage -= this.PageSize;
+                ++page;
+            }
 
-        public int Count => this.pages.Sum(kvp => kvp.Value.Count);
+            Assert.That(this.pages.ContainsKey(page), "Attempting to read an item before it's been fetched.");
 
-        //TODO: Need special enumerator...
-        public IEnumerator<T> GetEnumerator()
+            // Start populating the next set of items
+            // once we get close to the bottom
+            if ((indexInPage + 1) >= this.nextPageThreashold)
+                SchedulePageFetch(page + 1);
+
+            return this.pages[page][indexInPage];
+        }
+
+
+        public override int Count => this.pages.Sum(kvp => kvp.Value.Count);
+
+
+        public override int IndexOfItem(T value)
+            => this.pages.SelectMany(kvp => kvp.Value)
+                         .ToList()
+                         .IndexOf(value);
+
+        public override bool ContainsItem(T item)
+            => this.pages.SelectMany(kvp => kvp.Value)
+                         .Contains(item);
+
+        public override void Clear()
+        {
+            this.cancellationTokenSource.Reset();
+
+            this.pages.Clear();
+            this.pageFetchInProgress.Clear();
+
+            NotifyReset();
+        }
+
+
+        public override IEnumerator<T> GetEnumerator()
             => new PagedObservableCollectionEnumerator(this.PageSize, this.pages);
-
-        IEnumerator IEnumerable.GetEnumerator()
-            => new PagedObservableCollectionEnumerator(this.PageSize, this.pages);
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 
 
@@ -152,8 +183,6 @@ namespace E.ExploreDeezer.Core.Collections
             FetchFirstPage();
         }
 
-
-
         private void ResetContents()
         {
             this.cancellationTokenSource.Reset();
@@ -163,8 +192,6 @@ namespace E.ExploreDeezer.Core.Collections
 
             NotifyReset();
         }
-
-
 
         private void FetchFirstPage()
             => FetchPage(0)
@@ -177,60 +204,15 @@ namespace E.ExploreDeezer.Core.Collections
                         {
                             this.pages.Add(0, new List<T>(t.Result));
                             NotifyPageAdded(0);
-                        }            
+                        }
                     }, this.cancellationTokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 
 
         private void NotifyReset()
-        {
-            NotifyPropertiesChanged();
-
-            this.CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
+            => this.NotifyChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
         private void NotifyPageAdded(int pageNumber)
-        {
-            NotifyPropertiesChanged();
-
-            var eventArgs = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this.pages[pageNumber] as IList, pageNumber * this.PageSize);
-            this.CollectionChanged?.Invoke(this, eventArgs);
-        }
-
-
-        private void NotifyPropertiesChanged()
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Constants.COUNT_PROPERTY_NAME));
-                this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(Constants.INDEXER_PROPERTY_NAME));
-            }
-        }
-
-        private T GetItem(int index)
-        {
-            int page = 0;
-            int indexInPage = index;
-
-
-            // Try to be fancy and do:
-            // => page = index / this.PageSize
-            // => indexInPath = index % this.PageSize
-            // in the one set of operations   
-            while (indexInPage >= this.PageSize)
-            {
-                indexInPage -= this.PageSize;
-                ++page;
-            }
-            
-            Assert.That(this.pages.ContainsKey(page), "Attempting to read an item before it's been fetched.");
-
-            // Start populating the next set of items
-            // once we get close to the bottom
-            if ((indexInPage + 1) >= this.nextPageThreashold)
-                SchedulePageFetch(page + 1);
-
-            return this.pages[page][indexInPage];
-        }
+            => this.NotifyChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this.pages[pageNumber] as IList, pageNumber * this.PageSize));
 
 
         private void SchedulePageFetch(int pageNumber)
@@ -259,115 +241,12 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
 
-
         private Task<IEnumerable<T>> FetchPage(int number)
         {
             int startingIndex = number * this.PageSize;
             int numberOfItems = this.PageSize;
 
             return this.itemFetcher(startingIndex, numberOfItems, this.cancellationTokenSource.Token);
-        }
-
-
-
-        //Other Interface PISH
-
-        public bool IsReadOnly => true;
-
-        public bool IsFixedSize => true;
-
-        public bool IsSynchronized => false;
-
-        public object SyncRoot => throw new NotImplementedException();
-
-        object IList.this[int index] 
-        {
-            get => GetItem(index);
-            set => throw new NotImplementedException(); 
-        }
-
-        T IList<T>.this[int index]
-        {
-            get => GetItem(index); 
-            set => throw new NotImplementedException(); 
-        }
-
-
-        public int IndexOf(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Add(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int IndexOf(object value)
-            => (value is T castValue) ? this.pages.SelectMany(kvp => kvp.Value)
-                                                  .ToList()
-                                                  .IndexOf(castValue)
-                                      : -1;
-
-        public void Clear()
-        {
-            this.cancellationTokenSource.Reset();
-
-            this.pages.Clear();
-            this.pageFetchInProgress.Clear();
-
-            NotifyReset();
-        }
-
-        public bool Contains(T item)
-            => (item is T castItem) ? this.pages.SelectMany(kvp => kvp.Value)
-                                                .Contains(castItem)
-                                    : false;
-
-
-        public void Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
         }
     }
 }

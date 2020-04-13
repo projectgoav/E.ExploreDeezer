@@ -161,7 +161,7 @@ namespace E.ExploreDeezer.Core.Charts
             {
                 if (SetProperty(ref this.selectedGenreIndex, value))
                 {
-                    this.chartsDataController.SetGenreFilter(this.genreList[value].Id);
+                    this.chartsDataController.SetGenreFilter(this.genreList.GetItem(value).Id);
                 }
             }
         }

@@ -109,7 +109,7 @@ namespace E.ExploreDeezer.Core.WhatsNew
             {
                 if (SetProperty(ref this.selectedGenreIndex, value))
                 {
-                    this.whatsNewDataController.SetGenreFilter(this.genreList[value].Id);
+                    this.whatsNewDataController.SetGenreFilter(this.genreList.GetItem(value).Id);
                 }
             }
         }

@@ -26,9 +26,11 @@ namespace E.ExploreDeezer.Core.Common
     internal delegate void OnGenreFilterChangedEventHandler(object sender, OnGenreFilterChangedEventArgs args);
 
 
-    internal interface IGenreListDataController : IDataController
+    internal interface IGenreListDataController
     {
+        EFetchState CurrentFetchState { get; }
         IObservableCollection<IGenreViewModel> TheList { get; }
+        event FetchStateChangedEventHandler OnFetchStateChanged;
 
         Task RefreshGenreListAsync();
     }
@@ -50,10 +52,10 @@ namespace E.ExploreDeezer.Core.Common
         }
 
 
-        // IDataFetchingService
-        public string Id => "GenreList";
-
+        // IGenreListDataController
         public EFetchState CurrentFetchState => this.fetchState.CurrentState;
+
+        public IObservableCollection<IGenreViewModel> TheList => this.genreList;
 
         public event FetchStateChangedEventHandler OnFetchStateChanged
         {
@@ -61,8 +63,6 @@ namespace E.ExploreDeezer.Core.Common
             remove => this.fetchState.OnFetchStateChanged -= value;
         }
 
-        //IGenreListService
-        public IObservableCollection<IGenreViewModel> TheList => this.genreList;
 
 
         public Task RefreshGenreListAsync()

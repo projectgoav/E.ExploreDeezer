@@ -8,6 +8,8 @@ namespace E.ExploreDeezer.Core.Collections
     {
         public const string COUNT_PROPERTY_NAME = "Count";
         public const string INDEXER_PROPERTY_NAME = "Item[]";
+
+        public const int NOT_FOUND_INDEX = -1;
     }
 
 }

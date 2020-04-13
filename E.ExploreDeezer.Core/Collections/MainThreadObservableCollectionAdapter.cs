@@ -7,18 +7,15 @@ using System.Text;
 using System.Threading;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core.Collections
 {
-    internal class MainThreadObservableCollectionAdapter<T> : IObservableCollection<T>,
-                                                              IDisposable
+    internal class MainThreadObservableCollectionAdapter<T> : ObservableCollectionBase<T>
     {
-        private static readonly CancellationToken CANCELLED_TOKEN = new CancellationToken(canceled: true);
-
-
         private readonly IObservableCollection<T> collection;
         private readonly IMainThreadDispatcher mainThreadDispatcher;
-        private readonly CancellationTokenSource cancellationTokenSource;
+        private readonly ResetableCancellationTokenSource tokenSource;
 
 
         public MainThreadObservableCollectionAdapter(IObservableCollection<T> theCollection,
@@ -27,156 +24,59 @@ namespace E.ExploreDeezer.Core.Collections
             this.collection = theCollection;
             this.mainThreadDispatcher = mainThreadDispatcher;
 
-            this.collection.PropertyChanged += Collection_PropertyChanged;
             this.collection.CollectionChanged += Collection_CollectionChanged;
 
-            this.cancellationTokenSource = new CancellationTokenSource();
+            this.tokenSource = new ResetableCancellationTokenSource();
         }
 
 
-        private CancellationToken CancellationToken => this.cancellationTokenSource.IsCancellationRequested ? CANCELLED_TOKEN
-                                                                                                            : this.cancellationTokenSource.Token;
+        // ObservableCollectionBase
+        public override T GetItem(int index)
+            => this.collection.GetItem(index);
+
+        public override int Count => this.collection.Count;
+
+
+        public override int IndexOfItem(T item)
+            => this.collection.IndexOfItem(item);
+
+        public override bool ContainsItem(T item)
+            => this.collection.ContainsItem(item);
+
+
+        public override void Clear()
+            => this.collection.Clear();
+
+
+        public override IEnumerator<T> GetEnumerator()
+            => this.collection.GetEnumerator();
+
 
 
         private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            this.mainThreadDispatcher.ExecuteOnMainThreadAsync(() =>
-            {
-                if (!this.CancellationToken.IsCancellationRequested)
-                {
-                    this.CollectionChanged?.Invoke(sender, e);
-                }
-            });
-        }
+            var token = this.tokenSource.Token;
 
-        private void Collection_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
             this.mainThreadDispatcher.ExecuteOnMainThreadAsync(() =>
             {
-                if (!this.CancellationToken.IsCancellationRequested)
+                if (!token.IsCancellationRequested)
                 {
-                    this.PropertyChanged?.Invoke(sender, e);
+                    this.NotifyChanged(e);
                 }
             });
         }
 
 
-        // IObservableCollection
-        public T this[int index] => (T)this.collection[index];
-
-        //T IList<T>.this[int index] 
-        //{
-        //    get => this.collection[index];
-        //    set => throw new NotImplementedException();
-        //}
-
-        object IList.this[int index] 
+        protected override void Dispose(bool disposing)
         {
-            get => this.collection[index];
-            set => throw new NotImplementedException();
-        }
+            if (disposing)
+            {
+                this.tokenSource.Cancel();
+                this.tokenSource.Dispose();
+                this.collection.CollectionChanged -= Collection_CollectionChanged;
+            }
 
-
-        public int Count => this.collection.Count;
-
-        public bool IsReadOnly => true;
-
-        public bool IsFixedSize => true;
-
-        public bool IsSynchronized => false;
-
-        public object SyncRoot => throw new NotImplementedException();
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        public void Add(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Add(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CopyTo(Array array, int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<T> GetEnumerator()
-            => this.collection.GetEnumerator();
-
-        public int IndexOf(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int IndexOf(object value)
-            => this.collection.IndexOf(value);
-
-        public void Insert(int index, T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Insert(int index, object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Remove(object value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveAt(int index)
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public void Dispose()
-        {
-            this.cancellationTokenSource.Cancel();
-            this.cancellationTokenSource.Dispose();
-
-            this.collection.PropertyChanged -= Collection_PropertyChanged;
-            this.collection.CollectionChanged -= Collection_CollectionChanged;
+            base.Dispose(disposing);
         }
     }
 }
