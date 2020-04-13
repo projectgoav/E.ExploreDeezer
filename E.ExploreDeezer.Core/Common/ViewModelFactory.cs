@@ -6,18 +6,16 @@ using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
 
-namespace E.ExploreDeezer.Core.ViewModels
+namespace E.ExploreDeezer.Core.Common
 {
     public interface IViewModelFactory
     {
         IWhatsNewViewModel CreateWhatsNewViewModel();
         IChartsViewModel CreateChartsViewModel();
-        IGenreListViewModel CreateGenreListViewModel();
         ISearchViewModel CreateSearchViewModel();
 
         ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p);
         IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p);
-        IGenreOverviewViewModel CreateGenreOverviewViewModel(GenreOverviewViewModelParams p);
     }
 
     internal class ViewModelFactory : IViewModelFactory
@@ -32,9 +30,6 @@ namespace E.ExploreDeezer.Core.ViewModels
         public IChartsViewModel CreateChartsViewModel()
             => new ChartsViewModel(ServiceRegistry.PlatformServices);
 
-        public IGenreListViewModel CreateGenreListViewModel()
-            => new GenreListViewModel(ServiceRegistry.PlatformServices);
-
 
 
         public ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p)
@@ -46,11 +41,5 @@ namespace E.ExploreDeezer.Core.ViewModels
             => new ArtistOverviewViewModel(ServiceRegistry.DeezerSession,
                                            ServiceRegistry.PlatformServices,
                                            p);
-
-        public IGenreOverviewViewModel CreateGenreOverviewViewModel(GenreOverviewViewModelParams p)
-            => new GenreOverviewViewModel(ServiceRegistry.DeezerSession,
-                                          ServiceRegistry.PlatformServices,
-                                          p);
-
     }
 }

@@ -21,9 +21,6 @@
             <NavigationViewItem Content="Charts"
                                 Tag="charts" />
 
-            <NavigationViewItem Content="Genre"
-                                Tag="genre" />
-            
             <!-- Combine the both of these ?-->
             <!-- Recommendations (if logged in) -->    
             <!-- Favourites / Your Deezer / My Deezer -->

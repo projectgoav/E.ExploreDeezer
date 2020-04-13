@@ -23,18 +23,15 @@ namespace E.ExploreDeezer.UWP
     {
         public const string NEW_MENU_TAG = "new";
         public const string CHART_MENU_TAG = "charts";
-        public const string GENRE_MENU_TAG = "genre";
 
         public static readonly Type WHATS_NEW_VIEWTYPE = typeof(WhatsNewView);
         public static readonly Type CHARTS_VIEWTYPE = typeof(ChartsView);
-        public static readonly Type GENRE_VIEWTYPE = typeof(GenreView);
 
 
         public static readonly HashSet<Type> TAB_ROOTS = new HashSet<Type>()
         {
             WHATS_NEW_VIEWTYPE,
             CHARTS_VIEWTYPE,
-            GENRE_VIEWTYPE
         };
 
         internal static Type GetViewTypeForMenu(string menuItemTag)
@@ -46,9 +43,6 @@ namespace E.ExploreDeezer.UWP
 
                 case CHART_MENU_TAG:
                     return CHARTS_VIEWTYPE;
-
-                case GENRE_MENU_TAG:
-                    return GENRE_VIEWTYPE;
 
                 default:
                     throw new InvalidOperationException("Invalid menu tag specified.");
@@ -62,9 +56,6 @@ namespace E.ExploreDeezer.UWP
 
             else if (view == CHARTS_VIEWTYPE)
                 return CHART_MENU_TAG;
-
-            else if (view == GENRE_VIEWTYPE)
-                return GENRE_MENU_TAG;
 
             else
                 return string.Empty;

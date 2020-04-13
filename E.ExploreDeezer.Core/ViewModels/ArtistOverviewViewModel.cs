@@ -7,7 +7,7 @@ using System.Linq;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
-using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.Common;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {

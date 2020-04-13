@@ -28,7 +28,6 @@ namespace E.ExploreDeezer.Core
             DeezerSession = new DeezerSession(new HttpClientHandler());
 
             Register<TracklistDataController>(new TracklistDataController(DeezerSession));
-            Register<DeezerPicksDataController>(new DeezerPicksDataController(DeezerSession));
             Register<InformationDataController>(new InformationDataController(DeezerSession));
 
             // TODO: Need to work out how to dispose of services when they are dying off

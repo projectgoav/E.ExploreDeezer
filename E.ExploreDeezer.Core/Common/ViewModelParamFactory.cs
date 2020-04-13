@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace E.ExploreDeezer.Core.ViewModels
+using E.ExploreDeezer.Core.ViewModels;
+
+namespace E.ExploreDeezer.Core.Common
 {
     public static class ViewModelParamFactory
     {

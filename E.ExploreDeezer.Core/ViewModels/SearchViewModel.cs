@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.Common;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {
