@@ -8,7 +8,7 @@ using System.Collections.Specialized;
 using System.Threading;
 using System.Threading.Tasks;
 
-using E.Deezer;
+using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core.Collections
 {
@@ -104,9 +104,9 @@ namespace E.ExploreDeezer.Core.Collections
         private readonly int nextPageThreashold;
         private readonly Dictionary<int, IReadOnlyList<T>> pages;
         private readonly HashSet<int> pageFetchInProgress;
+        private readonly ResetableCancellationTokenSource cancellationTokenSource;
 
         private ItemFetcher<T> itemFetcher;
-        private CancellationTokenSource cancellationTokenSource;
 
 
         public PagedObservableCollection(int pageSize = DEFAULT_PAGE_SIZE,
@@ -117,6 +117,7 @@ namespace E.ExploreDeezer.Core.Collections
 
             this.pages = new Dictionary<int, IReadOnlyList<T>>();
             this.pageFetchInProgress = new HashSet<int>();
+            this.cancellationTokenSource = new ResetableCancellationTokenSource();
         }
 
 
@@ -155,9 +156,7 @@ namespace E.ExploreDeezer.Core.Collections
 
         private void ResetContents()
         {
-            ClearCancellationTokenSource();
-
-            this.cancellationTokenSource = new CancellationTokenSource();
+            this.cancellationTokenSource.Reset();
 
             this.pages.Clear();
             this.pageFetchInProgress.Clear();
@@ -270,15 +269,6 @@ namespace E.ExploreDeezer.Core.Collections
         }
 
 
-        private void ClearCancellationTokenSource()
-        {
-            if (this.cancellationTokenSource != null)
-            {
-                this.cancellationTokenSource.Cancel();
-                this.cancellationTokenSource.Dispose();
-            }
-        }
-
 
         //Other Interface PISH
 
@@ -323,16 +313,6 @@ namespace E.ExploreDeezer.Core.Collections
             throw new NotImplementedException();
         }
 
-        public void Clear()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Contains(T item)
-        {
-            throw new NotImplementedException();
-        }
-
         public void CopyTo(T[] array, int arrayIndex)
         {
             throw new NotImplementedException();
@@ -358,6 +338,22 @@ namespace E.ExploreDeezer.Core.Collections
                                                   .ToList()
                                                   .IndexOf(castValue)
                                       : -1;
+
+        public void Clear()
+        {
+            this.cancellationTokenSource.Reset();
+
+            this.pages.Clear();
+            this.pageFetchInProgress.Clear();
+
+            NotifyReset();
+        }
+
+        public bool Contains(T item)
+            => (item is T castItem) ? this.pages.SelectMany(kvp => kvp.Value)
+                                                .Contains(castItem)
+                                    : false;
+
 
         public void Insert(int index, object value)
         {

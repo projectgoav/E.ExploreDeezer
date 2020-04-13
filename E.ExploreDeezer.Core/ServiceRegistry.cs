@@ -9,8 +9,9 @@ using System.Net.Http;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
-using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.Charts;
+using E.ExploreDeezer.Core.Search;
+using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
 
@@ -34,6 +35,7 @@ namespace E.ExploreDeezer.Core
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
             Register<IWhatsNewDataController>(new WhatsNewDataController(DeezerSession));
             Register<IChartsDataController>(new ChartsDataController(DeezerSession));
+            Register<ISearchDataController>(new SearchDataController(DeezerSession));
         }
 
 

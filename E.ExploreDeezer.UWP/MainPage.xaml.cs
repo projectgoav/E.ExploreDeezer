@@ -14,9 +14,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
+using E.ExploreDeezer.Core.Search;
+
 using E.ExploreDeezer.UWP.Views;
-using E.ExploreDeezer.Core.ViewModels;
-using Windows.UI.Xaml.Media.Animation;
 
 namespace E.ExploreDeezer.UWP
 {
@@ -52,7 +52,7 @@ namespace E.ExploreDeezer.UWP
                 ShowSearchViewIfRequired();
             }
 
-            this.searchViewModel.SetQuery(this.SearchBox.Text);
+            this.searchViewModel.CurrentQuery = this.SearchBox.Text;
         }
 
         private void OnSearchQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
@@ -60,7 +60,7 @@ namespace E.ExploreDeezer.UWP
             this.ContentView.CloseSearchViewsIfPresent();
             ShowSearchViewIfRequired();
 
-            this.searchViewModel.SetQuery(args.QueryText);
+            this.searchViewModel.CurrentQuery = args.QueryText;
         }
 
         private void MainNavSelectionChanged(object sender, NavigationViewSelectionChangedEventArgs args)

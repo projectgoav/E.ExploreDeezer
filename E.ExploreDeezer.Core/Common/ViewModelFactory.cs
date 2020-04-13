@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using E.ExploreDeezer.Core.Charts;
+using E.ExploreDeezer.Core.Search;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
 
@@ -21,8 +22,7 @@ namespace E.ExploreDeezer.Core.Common
     internal class ViewModelFactory : IViewModelFactory
     {
         public ISearchViewModel CreateSearchViewModel()
-            => new SearchViewModel(ServiceRegistry.DeezerSession,
-                                   ServiceRegistry.PlatformServices);
+            => new SearchViewModel(ServiceRegistry.PlatformServices);
 
         public IWhatsNewViewModel CreateWhatsNewViewModel()
             => new WhatsNewViewModel(ServiceRegistry.PlatformServices);
