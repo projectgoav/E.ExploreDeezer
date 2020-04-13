@@ -155,6 +155,11 @@ namespace E.ExploreDeezer.Core.Search
 
             this.CurrentQuery = newQuery;
 
+            this.albumsFetchState.SetLoading();
+            this.tracksFetchState.SetLoading();
+            this.artistsFetchState.SetLoading();
+            this.playlistsFetchState.SetLoading();
+
             this.albumResults.SetFetcher((start, count, ct) => this.session.Search.FindAlbums(this.CurrentQuery, ct, (uint)start, (uint)count)
                                                                                   .ContinueWith<IEnumerable<IAlbumViewModel>>(t =>
                                                                                   {

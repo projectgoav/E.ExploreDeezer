@@ -13,12 +13,16 @@ namespace E.ExploreDeezer.Core.Search
     {
         string CurrentQuery { get; set; }
 
+        EFetchState AlbumResultFetchState { get; }
         IObservableCollection<IAlbumViewModel> Albums { get; }
 
+        EFetchState TrackResultFetchState { get; }
         IObservableCollection<ITrackViewModel> Tracks { get; }
 
+        EFetchState ArtistResultFetchState { get; }
         IObservableCollection<IArtistViewModel> Artists { get; }
 
+        EFetchState PlaylistResultFetchState { get; }
         IObservableCollection<IPlaylistViewModel> Playlists { get; }
 
 
@@ -39,6 +43,10 @@ namespace E.ExploreDeezer.Core.Search
         private readonly MainThreadObservableCollectionAdapter<IPlaylistViewModel> playlists;
 
         private string currentQuery;
+        private EFetchState albumFetchState;
+        private EFetchState trackFetchState;
+        private EFetchState artistFetchState;
+        private EFetchState playlistFetchState;
 
         public SearchViewModel(IPlatformServices platformServices)
             : base(platformServices)
@@ -57,6 +65,12 @@ namespace E.ExploreDeezer.Core.Search
 
             this.playlists = new MainThreadObservableCollectionAdapter<IPlaylistViewModel>(this.dataController.PlaylistResults,
                                                                                            PlatformServices.MainThreadDispatcher);
+
+
+            this.dataController.OnAlbumResultsFetchStateChanged += OnAlbumFetchStateChanged;
+            this.dataController.OnTrackResultsFetchStateChanged += OnTrackFetchStateChanged;
+            this.dataController.OnArtistResultsFetchStateChanged += OnArtistFetchStateChanged;
+            this.dataController.OnPlaylistResultsFetchStateChanged += OnPlaylistFetchStateChanged;
         }
 
 
@@ -74,11 +88,38 @@ namespace E.ExploreDeezer.Core.Search
         }
 
 
+        public EFetchState AlbumResultFetchState
+        {
+            get => this.albumFetchState;
+            private set => SetProperty(ref this.albumFetchState, value);
+        }
+
         public IObservableCollection<IAlbumViewModel> Albums => this.albums;
+
+
+        public EFetchState TrackResultFetchState
+        {
+            get => this.trackFetchState;
+            private set => SetProperty(ref this.trackFetchState, value);
+        }
 
         public IObservableCollection<ITrackViewModel> Tracks => this.tracks;
 
+
+        public EFetchState ArtistResultFetchState
+        {
+            get => this.artistFetchState;
+            private set => SetProperty(ref this.artistFetchState, value);
+        }
+
         public IObservableCollection<IArtistViewModel> Artists => this.artists;
+
+
+        public EFetchState PlaylistResultFetchState
+        {
+            get => this.playlistFetchState;
+            private set => SetProperty(ref this.playlistFetchState, value);
+        }
 
         public IObservableCollection<IPlaylistViewModel> Playlists => this.playlists;
 
@@ -94,11 +135,29 @@ namespace E.ExploreDeezer.Core.Search
             => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artistViewModel);
 
 
+        private void OnAlbumFetchStateChanged(object sender, FetchStateChangedEventArgs args)
+            => this.AlbumResultFetchState = args.NewValue;
+
+        private void OnTrackFetchStateChanged(object sender, FetchStateChangedEventArgs args)
+            => this.TrackResultFetchState = args.NewValue;
+
+        private void OnArtistFetchStateChanged(object sender, FetchStateChangedEventArgs args)
+            => this.ArtistResultFetchState = args.NewValue;
+
+        private void OnPlaylistFetchStateChanged(object sender, FetchStateChangedEventArgs args)
+            => this.PlaylistResultFetchState = args.NewValue;
+
+
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
+                this.dataController.OnAlbumResultsFetchStateChanged -= OnAlbumFetchStateChanged;
+                this.dataController.OnTrackResultsFetchStateChanged -= OnTrackFetchStateChanged;
+                this.dataController.OnArtistResultsFetchStateChanged -= OnArtistFetchStateChanged;
+                this.dataController.OnPlaylistResultsFetchStateChanged -= OnPlaylistFetchStateChanged;
+
                 this.albums.Dispose();
                 this.tracks.Dispose();
                 this.artists.Dispose();
