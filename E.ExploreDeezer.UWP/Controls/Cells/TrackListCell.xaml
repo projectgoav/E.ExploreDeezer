@@ -11,6 +11,10 @@
 
     <Grid Margin="5">
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="74" />
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
@@ -18,20 +22,22 @@
 
         
         <Image Grid.Column="0" 
-               Width="64"
-               Height="64"
                Source="{x:Bind ViewModel.ArtworkUri}" />
 
         <StackPanel Grid.Column="1"
+                    Margin="5,0,0,0"
                     Orientation="Vertical"
-                    Padding="5,0,0,0">
+                    VerticalAlignment="Center">
 
             <TextBlock Text="{x:Bind ViewModel.Title}"
+                       Margin="0,0,0,5"
+                       FontSize="16"
                        MaxLines="2"
                        TextWrapping="WrapWholeWords"
                        TextTrimming="WordEllipsis"/>
             
             <TextBlock Text="{x:Bind ViewModel.Artist}"
+                       FontSize="14"
                        TextWrapping="NoWrap"
                        TextTrimming="CharacterEllipsis"/>
 

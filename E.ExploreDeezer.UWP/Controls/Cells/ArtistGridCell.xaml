@@ -7,24 +7,26 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    MaxWidth="145">
+    d:DesignWidth="400">
 
     <Grid Margin="5">
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170" />
+        </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <Image Margin="5"
-               Grid.Row="0"
-               Width="128"
-               Height="128"
+        <Image Grid.Row="0"
+               Margin="0,0,0,5"
                Source="{x:Bind ViewModel.ArtworkUri}" />
 
         <TextBlock Grid.Row="1"
                    Text="{x:Bind ViewModel.Name}"
+                   FontSize="16"
                    MaxLines="2"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>

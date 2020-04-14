@@ -5,11 +5,14 @@
     xmlns:local="using:E.ExploreDeezer.UWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    MaxWidth="145">
+    mc:Ignorable="d">
 
     <Grid Margin="5">
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170" />
+        </Grid.ColumnDefinitions>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
@@ -17,18 +20,19 @@
         </Grid.RowDefinitions>
 
         <Image Grid.Row="0"
-               Margin="5"
-               Width="128"
-               Height="128"
+               Margin="0,0,0,5"
                Source="{x:Bind ViewModel.ArtworkUri}"/>
 
         <TextBlock Grid.Row="1"
+                   Margin="0,0,0,5"
                    Text="{x:Bind ViewModel.Title}"
+                   FontSize="16"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 
         <TextBlock Grid.Row="2"
                    Text="{x:Bind ViewModel.ArtistName}"
+                   FontSize="14"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 
