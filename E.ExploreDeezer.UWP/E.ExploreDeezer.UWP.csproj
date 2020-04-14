@@ -237,9 +237,7 @@
       <Version>6.2.9</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\Headers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\E.ExploreDeezer.Core\E.ExploreDeezer.Core.csproj">
       <Project>{801dc25e-4adf-4d28-87b7-4340589d46e7}</Project>

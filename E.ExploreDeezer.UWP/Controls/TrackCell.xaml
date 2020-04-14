@@ -12,6 +12,10 @@
 
     <Grid Margin="5">
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="58" />
+        </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
@@ -30,8 +34,6 @@
         <Image Grid.Column="0"
                x:Name="TrackImage"
                Margin="5"
-               Width="48"
-               Height="48"
                HorizontalAlignment="Center"
                VerticalAlignment="Center"
                Source="{x:Bind ViewModel.ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
@@ -39,8 +41,12 @@
         <StackPanel Grid.Column="1"
                     Orientation="Vertical">
 
-            <TextBlock Text="{x:Bind ViewModel.Title}" />
-            <TextBlock Text="{x:Bind ViewModel.AllArtistNames}" />
+            <TextBlock Margin="0,0,0,5"
+                       Text="{x:Bind ViewModel.Title}"
+                       FontSize="16" />
+            
+            <TextBlock Text="{x:Bind ViewModel.AllArtistNames}"
+                       FontSize="14" />
 
         </StackPanel>
 
