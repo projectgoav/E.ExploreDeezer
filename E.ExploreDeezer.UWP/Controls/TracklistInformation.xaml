@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:E.ExploreDeezer.UWP.Controls"
+    xmlns:infoCells="using:E.ExploreDeezer.UWP.Controls.InformationCells"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -15,45 +16,11 @@
         <controls:InformationDataTemplateSelector x:Key="InfoTemplateSelector" />
 
         <DataTemplate x:Name="InfoListTextCell">
-
-            <StackPanel Orientation="Horizontal"
-                        Margin="0,5,0,5"
-                        Spacing="5">
-
-                <TextBlock Width="250"
-                           VerticalAlignment="Center"
-                           Text="{Binding Label}"
-                           FontSize="16"/>
-
-                <TextBlock Text="{Binding Value}"
-                           FontSize="14"
-                           TextWrapping="Wrap"
-                           TextTrimming="None" />
-
-            </StackPanel>
-                   
+            <infoCells:TextualnformationCell />
         </DataTemplate>
 
         <DataTemplate x:Name="InfoListImageCell">
-
-            <StackPanel Orientation="Horizontal"
-                        Margin="0,5,0,5"
-                        Spacing="5">
-
-                <TextBlock Width="250"
-                           Text="{Binding Label}"
-                           FontSize="16"
-                           VerticalAlignment="Center"
-                           Margin="0,0,5,0"/>
-
-                <Image Source="{Binding Value}"
-                       HorizontalAlignment="Left"
-                       Width="256"
-                       Height="256" />
-
-
-            </StackPanel>
-            
+            <infoCells:ImageInformationCell />
         </DataTemplate>
 
     </UserControl.Resources>
