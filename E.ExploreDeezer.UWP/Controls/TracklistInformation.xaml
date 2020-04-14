@@ -16,49 +16,44 @@
 
         <DataTemplate x:Name="InfoListTextCell">
 
-            <Grid Margin="0,5,0,5">
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,5,0,5"
+                        Spacing="5">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
+                <TextBlock Width="250"
                            VerticalAlignment="Center"
-                           Text="{Binding Label}" 
-                           Margin="0,0,5,0" />
+                           Text="{Binding Label}"
+                           FontSize="16"/>
 
-                <TextBlock Grid.Column="1"
-                           Text="{Binding Value}"
+                <TextBlock Text="{Binding Value}"
+                           FontSize="14"
                            TextWrapping="Wrap"
                            TextTrimming="None" />
 
-            </Grid>
-            
+            </StackPanel>
+                   
         </DataTemplate>
 
         <DataTemplate x:Name="InfoListImageCell">
 
-            <Grid Margin="0,5,0,5">
+            <StackPanel Orientation="Horizontal"
+                        Margin="0,5,0,5"
+                        Spacing="5">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"
+                <TextBlock Width="250"
                            Text="{Binding Label}"
+                           FontSize="16"
                            VerticalAlignment="Center"
                            Margin="0,0,5,0"/>
 
-                <Image Grid.Column="1"
-                       Source="{Binding Value}"
+                <Image Source="{Binding Value}"
                        HorizontalAlignment="Left"
                        Width="256"
                        Height="256" />
 
-            </Grid>
 
+            </StackPanel>
+            
         </DataTemplate>
 
     </UserControl.Resources>

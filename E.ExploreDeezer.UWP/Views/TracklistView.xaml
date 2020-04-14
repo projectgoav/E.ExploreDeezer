@@ -15,7 +15,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         
         <TextBlock Grid.Row="0"
                    Text="{x:Bind ViewModel.PageTitle}"
@@ -29,7 +29,7 @@
 
                 <ListView x:Name="Tracklist"
                           ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}">
-
+ 
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <controls:TrackCell />
