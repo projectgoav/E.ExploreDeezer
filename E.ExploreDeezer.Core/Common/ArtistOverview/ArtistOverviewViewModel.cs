@@ -39,11 +39,15 @@ namespace E.ExploreDeezer.Core.Common
     public struct ArtistOverviewViewModelParams
     {
         public ArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
+            : this(artistViewModel.Id)
+        { }
+
+        public ArtistOverviewViewModelParams(ulong artistId)
         {
-            this.Artist = artistViewModel;
+            this.ArtistId = artistId;
         }
 
-        public IArtistViewModel Artist { get; }
+        public ulong ArtistId { get; }
     }
 
 
@@ -51,7 +55,6 @@ namespace E.ExploreDeezer.Core.Common
                                              IArtistOverviewViewModel
                         
     {
-        private readonly IArtistViewModel artist;
         private readonly IArtistOverviewDataController dataController;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> albums;
         private readonly MainThreadObservableCollectionAdapter<ITrackViewModel> topTracks;
@@ -94,18 +97,20 @@ namespace E.ExploreDeezer.Core.Common
             this.dataController.OnCompleteArtistFetchStateChanged += OnCompleteArtistFetchStateChanged;
 
 
-            this.artist = p.Artist;
+            // TODO: Need to change these over to use the 'Complete' artist property on the 
+            //       data controller
+            //this.artist = p.Artist;
 
-            this.ArtistName = this.artist.Name;
-            this.ArtistImage = this.artist.ArtworkUri;
+            //this.ArtistName = this.artist.Name;
+            //this.ArtistImage = this.artist.ArtworkUri;
 
-            this.dataController.FetchOverviewAsync(p.Artist.Id);
+            this.dataController.FetchOverviewAsync(p.ArtistId);
         }
 
 
         // IArtistOverviewViewModel
-        public string ArtistName { get; }
-        public string ArtistImage { get; }
+        public string ArtistName { get; } = null;
+        public string ArtistImage { get; } = "ms-appx:///Assets/StoreLogo.png";
 
         public uint NumberOfFans
         {

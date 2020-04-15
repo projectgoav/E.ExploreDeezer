@@ -41,15 +41,35 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             Assert.ObjectOfType<TracklistViewModelParams>(e.Parameter);
-
             this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel((TracklistViewModelParams)e.Parameter);
+
+            this.SubtitleButton.Click += OnSubtitleClicked;
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
 
+            this.SubtitleButton.Click -= OnSubtitleClicked;
+
             (this.ViewModel as IDisposable)?.Dispose();
         }
+
+
+        private void OnSubtitleClicked(object sender, RoutedEventArgs e)
+        {
+            switch(this.ViewModel.Type)
+            {
+                case ETracklistViewModelType.Album:
+                    var p = this.ViewModel.CreateArtistOverviewViewModelParams();
+
+                    ServiceRegistry.GetService<Frame>()
+                                   .Navigate(typeof(ArtistOverviewView), p);
+
+                    break;
+            }
+        }
+
     }
+
 }

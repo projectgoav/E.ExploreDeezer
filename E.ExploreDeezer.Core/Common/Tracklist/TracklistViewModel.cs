@@ -24,6 +24,8 @@ namespace E.ExploreDeezer.Core.Common
         
         EFetchState FetchState { get; }
         IObservableCollection<ITrackViewModel> Tracklist { get; }
+
+        ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams();
     }
 
     public enum ETracklistViewModelType : byte
@@ -168,13 +170,18 @@ namespace E.ExploreDeezer.Core.Common
         public IObservableCollection<ITrackViewModel> Tracklist => this.tracklist;
 
 
+        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams()
+        {
+            Assert.That(this.Type == ETracklistViewModelType.Album);
+            return new ArtistOverviewViewModelParams(this.dataController.CompleteAlbum.ArtistId);
+        }
+
+
         private void OnFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.FetchState = e.NewValue;
 
         private void OnHeaderFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.HeaderFetchState = e.NewValue;
-
-
 
 
         private void ConfigureViewModelAsAlbum(IAlbumViewModel album)

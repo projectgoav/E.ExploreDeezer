@@ -10,13 +10,15 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         ulong ItemId { get; }
         string Title { get; }
+
+        ulong ArtistId { get; }
         string ArtistName { get; }
 
         string ArtworkUri { get; }
     }
 
     // Properties requiring a fetch of the complete album
-    public interface IExtendedAlbumViewModel
+    public interface IExtendedAlbumViewModel : IAlbumViewModel
     {
         uint NumberOfFans { get; }
         uint NumberOfTracks { get; }
@@ -35,6 +37,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.Title = album?.Title;
             this.ArtistName = album?.ArtistName;
+            this.ArtistId = album?.Artist?.Id ?? 0;
 
             this.ArtworkUri = album?.CoverArtwork?.Medium ?? "ms-appx:///Assets/StoreLogo.png"; //TODO: Fallback artwork
 
@@ -49,6 +52,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         //IAlbumViewModel
         public ulong ItemId { get; }
         public string Title { get; }
+        public ulong ArtistId { get; }
         public string ArtistName { get; }
         public string ArtworkUri { get; }
 

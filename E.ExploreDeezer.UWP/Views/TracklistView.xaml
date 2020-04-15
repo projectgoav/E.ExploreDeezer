@@ -69,8 +69,9 @@
                         Visibility="{Binding HeaderFetchState,
                                              Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
-                <TextBlock Text="{x:Bind ViewModel.Subtitle}"
-                           FontSize="16" />
+                <HyperlinkButton x:Name="SubtitleButton"
+                                 Content="{x:Bind ViewModel.Subtitle}"
+                                 FontSize="16" />
 
                 <HyperlinkButton Content="View on Deezer"
                                  NavigateUri="{Binding WebsiteLink}" />
