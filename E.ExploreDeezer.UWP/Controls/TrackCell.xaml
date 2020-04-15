@@ -10,12 +10,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid Margin="0,5,0,5">
+    <Grid Margin="0,5,0,5"
+          Height="56">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="58" />
-        </Grid.RowDefinitions>
-        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
@@ -33,12 +30,14 @@
           
         <Image Grid.Column="0"
                x:Name="TrackImage"
-               Margin="0,5,5,0"
-               VerticalAlignment="Center"
+               Width="56"
+               Height="56"
+               Stretch="UniformToFill"
                Source="{x:Bind ViewModel.ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
 
         <StackPanel Grid.Column="1"
                     Orientation="Vertical"
+                    VerticalAlignment="Center"
                     Margin="5,0,0,5"
                     Spacing="5">
 
