@@ -68,8 +68,6 @@
                        HorizontalAlignment="Center"
                        Source="{x:Bind ViewModel.ArtworkUri}" />
 
-
-
             </Grid>
                
         </ListView.Header>

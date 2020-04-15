@@ -5,7 +5,6 @@ using System.Text;
 using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.Search;
 using E.ExploreDeezer.Core.WhatsNew;
-using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.Core.Common
 {
@@ -37,8 +36,7 @@ namespace E.ExploreDeezer.Core.Common
                                       p);
 
         public IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p)
-            => new ArtistOverviewViewModel(ServiceRegistry.DeezerSession,
-                                           ServiceRegistry.PlatformServices,
+            => new ArtistOverviewViewModel(ServiceRegistry.PlatformServices,
                                            p);
     }
 }
