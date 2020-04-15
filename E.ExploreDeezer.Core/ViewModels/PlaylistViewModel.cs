@@ -18,7 +18,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         string ArtworkUri { get; }
     }
 
-    public interface IExtendedPlaylistViewModel
+    public interface IExtendedPlaylistViewModel : IPlaylistViewModel
     {
         uint NumberOfFans { get; }
         uint NumberOfTracks { get; }

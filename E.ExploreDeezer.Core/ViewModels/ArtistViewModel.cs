@@ -18,7 +18,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     // Simply a marker interface to indicate where additional work needs to be done
     // in order to fetch these properties, as by default they are not returned by
     // the Deezer API
-    public interface IExtendedArtistViewModel
+    public interface IExtendedArtistViewModel : IArtistViewModel
     {
         uint NumberOfFans { get; }
         uint NumberOfAlbums { get; }

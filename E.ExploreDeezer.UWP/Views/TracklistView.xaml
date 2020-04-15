@@ -70,7 +70,7 @@
                                              Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
                 <HyperlinkButton x:Name="SubtitleButton"
-                                 Content="{x:Bind ViewModel.Subtitle}"
+                                 Content="{Binding Subtitle}"
                                  FontSize="16" />
 
                 <HyperlinkButton Content="View on Deezer"

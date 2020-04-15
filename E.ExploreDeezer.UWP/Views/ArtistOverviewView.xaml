@@ -34,7 +34,7 @@
             <Image Grid.Row="0"
                    Grid.ColumnSpan="2"
                    Stretch="UniformToFill"
-                   Source="{x:Bind ViewModel.ArtistImage}" />
+                   Source="{Binding ArtistImage}" />
 
             <Rectangle Grid.Row="0"
                        Grid.ColumnSpan="2"
@@ -44,7 +44,7 @@
                        Grid.Column="1"
                        Margin="0,0,0,5"
                        VerticalAlignment="Bottom"
-                       Text="{x:Bind ViewModel.ArtistName}"
+                       Text="{Binding ArtistName}"
                        Foreground="White"
                        FontSize="18"/>
 
@@ -55,7 +55,7 @@
                    Height="196"
                    VerticalAlignment="Center"  
                    HorizontalAlignment="Center"
-                   Source="{x:Bind ViewModel.ArtistImage}" />
+                   Source="{Binding ArtistImage}" />
             
             
             

@@ -93,10 +93,6 @@ namespace E.ExploreDeezer.Core.Common
             this.tracklist = new MainThreadObservableCollectionAdapter<ITrackViewModel>(this.dataController.Tracklist,
                                                                                         PlatformServices.MainThreadDispatcher);
 
-            this.dataController.OnTracklistFetchStateChanged += OnFetchStateChanged;
-            this.dataController.OnCompleteItemFetchStateChanged += OnHeaderFetchStateChanged;
-
-
             this.Type = p.Type;
             switch (this.Type)
             {
@@ -108,6 +104,9 @@ namespace E.ExploreDeezer.Core.Common
                     ConfigureViewModelAsPlaylist(p.ItemAsPlaylist());
                     break;
             }
+
+            this.dataController.OnTracklistFetchStateChanged += OnFetchStateChanged;
+            this.dataController.OnCompleteItemFetchStateChanged += OnHeaderFetchStateChanged;
         }
 
         // ITracklistViewModel
@@ -209,6 +208,9 @@ namespace E.ExploreDeezer.Core.Common
                 case ETracklistViewModelType.Album:
                     if (this.dataController.CompleteAlbum != null)
                     {
+                        this.Title = this.dataController.CompleteAlbum.Title;
+                        this.Subtitle = this.dataController.CompleteAlbum.ArtistName;
+
                         this.NumberOfFans = this.dataController.CompleteAlbum.NumberOfFans;
                         this.NumberOfTracks = this.dataController.CompleteAlbum.NumberOfTracks;
                         this.WebsiteLink = new Uri(this.dataController.CompleteAlbum.WebsiteLink);
@@ -219,6 +221,9 @@ namespace E.ExploreDeezer.Core.Common
                 case ETracklistViewModelType.Playlist:
                     if (this.dataController.CompletePlaylist != null)
                     {
+                        this.Title = this.dataController.CompletePlaylist.Title;
+                        this.Subtitle = this.dataController.CompletePlaylist.CreatorName;
+
                         this.NumberOfFans = this.dataController.CompletePlaylist.NumberOfFans;
                         this.NumberOfTracks = this.dataController.CompletePlaylist.NumberOfTracks;
                         this.WebsiteLink = new Uri(this.dataController.CompletePlaylist.WebsiteLink);

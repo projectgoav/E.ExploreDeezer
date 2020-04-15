@@ -62,6 +62,8 @@ namespace E.ExploreDeezer.Core.Common
         private readonly MainThreadObservableCollectionAdapter<IPlaylistViewModel> featuredPlaylists;
 
         private Uri websiteLink;
+        private string artistName;
+        private string artistImage;
         private uint numberOfFans;
         private uint numberOfAlbums;
         private EFetchState albumFetchState;
@@ -89,6 +91,10 @@ namespace E.ExploreDeezer.Core.Common
             this.featuredPlaylists = new MainThreadObservableCollectionAdapter<IPlaylistViewModel>(this.dataController.Playlists,
                                                                                                    PlatformServices.MainThreadDispatcher);
 
+            // TODO: Default artwork for artist...
+            // NEEDS to be done before the fetch status changed is added, as event will fire before we've set fallback
+            this.ArtistImage = "ms-appx:///Assets/StoreLogo.png";
+
 
             this.dataController.OnAlbumFetchStateChanged += OnAlbumFetchStateChanged;
             this.dataController.OnTopTrackFetchStateChanged += OnTopTrackFetchStateChanged;
@@ -97,20 +103,22 @@ namespace E.ExploreDeezer.Core.Common
             this.dataController.OnCompleteArtistFetchStateChanged += OnCompleteArtistFetchStateChanged;
 
 
-            // TODO: Need to change these over to use the 'Complete' artist property on the 
-            //       data controller
-            //this.artist = p.Artist;
-
-            //this.ArtistName = this.artist.Name;
-            //this.ArtistImage = this.artist.ArtworkUri;
-
             this.dataController.FetchOverviewAsync(p.ArtistId);
         }
 
 
         // IArtistOverviewViewModel
-        public string ArtistName { get; } = null;
-        public string ArtistImage { get; } = "ms-appx:///Assets/StoreLogo.png";
+        public string ArtistName 
+        {
+            get => this.artistName;
+            private set => SetProperty(ref this.artistName, value);
+        }
+
+        public string ArtistImage 
+        {
+            get => this.artistImage;
+            private set => SetProperty(ref this.artistImage, value);
+        }
 
         public uint NumberOfFans
         {
@@ -213,6 +221,9 @@ namespace E.ExploreDeezer.Core.Common
 
             if (artist != null)
             {
+                this.ArtistName = artist.Name;
+                this.ArtistImage = artist.ArtworkUri;
+
                 this.NumberOfFans = artist.NumberOfFans;
                 this.NumberOfAlbums = artist.NumberOfAlbums;
                 this.DeezerWebsiteLink = new Uri(artist.WebsiteLink);
