@@ -56,11 +56,6 @@
                     <TextBlock Text="{x:Bind ViewModel.Subtitle}"
                                FontSize="16" />
 
-                    <TextBlock FontSize="14">
-                        <Run>Number of Trakcs:</Run>
-                        <Run Text="{x:Bind ViewModel.NumberOfTracks}" />
-                    </TextBlock>
-
                 </StackPanel>
 
 
