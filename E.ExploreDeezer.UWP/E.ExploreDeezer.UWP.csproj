@@ -131,17 +131,8 @@
     <Compile Include="Controls\Cells\TrackListCell.xaml.cs">
       <DependentUpon>TrackListCell.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\InformationCells\ImageInformationCell.xaml.cs">
-      <DependentUpon>ImageInformationCell.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\InformationCells\TextualnformationCell.xaml.cs">
-      <DependentUpon>TextualnformationCell.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\TrackCell.xaml.cs">
       <DependentUpon>TrackCell.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TracklistInformation.xaml.cs">
-      <DependentUpon>TracklistInformation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ValueConverters\FetchStateVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -202,19 +193,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\InformationCells\ImageInformationCell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\InformationCells\TextualnformationCell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\TrackCell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TracklistInformation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

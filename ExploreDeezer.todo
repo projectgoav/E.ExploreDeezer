@@ -8,13 +8,13 @@ Core/ViewModels:
  ✔ Search ViewModel @done (20-03-25 21:03)
  ✔ Genre ViewModel @done (20-03-25 21:03)
  ✔ Navigation Param construction should be merged into single place@ done (20-03-25 21:50)
- ☐ ObservableCollection should only implement IList (not generic).
-   ☐ Could be base class to proide some default options / methods
+ ✔ ObservableCollection should only implement IList (not generic). @done (20-04-14 16:16)
+   ✔ Could be base class to proide some default options / methods @done (20-04-14 16:16)
  ☐ Information cell text formatting
    ☐ Date/Times
    ☐ Duration
  ✔ Information data controllers @done (20-04-08 13:30)
- ☐ Fetch status for data controllers
+ ✔ Fetch status for data controllers @done (20-04-14 16:16)
  ☐ Implement deep linking, allowing info pages to link to artist & user pages?
  ✔ Genre data controller @done (20-04-08 13:41)
  ✔ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...) @done (20-04-08 16:03)
@@ -34,12 +34,13 @@ Views:
     and so can cause a whole load of issues...
   ✘ Look into a way in which the Views aren't recreated when navigating backwards @cancelled (20-04-07 14:12)
     This is done on purpose by the way 
-  ☐ Move information cells into their own files / controls
-  ☐ Information cells for links, which open the system's browser
+  ✔ Move information cells into their own files / controls @done (20-04-14 16:16)
+  ✔ Information cells for links, which open the system's browser @done (20-04-14 16:16)
   ☐ Information cells that allow for linking
   ✘ Investigate why x:Bind doesn't work in ArtistOverview View (Possibly due to the collection not being observable? ) @cancelled (20-04-08 13:41)
     This didn't seem to be an issue anymore?
   ✔ Investigate why x:Bind doesn't work for GenrOverview view (See above) @done (20-04-08 13:41)
-  ☐ Integrate fetch status to pages
+  ✔ Integrate fetch status to pages @done (20-04-14 16:16)
   ☐ Implement deep linking. See ViewModel task for this, as work migh be required in View layer
   ☐ Radio support
+  ☐ Add external link icon to links that open out-with the app

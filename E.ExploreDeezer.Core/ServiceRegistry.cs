@@ -28,14 +28,12 @@ namespace E.ExploreDeezer.Core
             ViewModelFactory = new ViewModelFactory();
             DeezerSession = new DeezerSession(new HttpClientHandler());
 
-            Register<TracklistDataController>(new TracklistDataController(DeezerSession));
-            Register<InformationDataController>(new InformationDataController(DeezerSession));
-
             // TODO: Need to work out how to dispose of services when they are dying off
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
             Register<IWhatsNewDataController>(new WhatsNewDataController(DeezerSession));
             Register<IChartsDataController>(new ChartsDataController(DeezerSession));
             Register<ISearchDataController>(new SearchDataController(DeezerSession));
+            Register<ITracklistDataController>(new TracklistDataController(DeezerSession));
         }
 
 

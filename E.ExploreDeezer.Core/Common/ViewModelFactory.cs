@@ -33,8 +33,7 @@ namespace E.ExploreDeezer.Core.Common
 
 
         public ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p)
-            => new TracklistViewModel(ServiceRegistry.DeezerSession,
-                                      ServiceRegistry.PlatformServices,
+            => new TracklistViewModel(ServiceRegistry.PlatformServices,
                                       p);
 
         public IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p)

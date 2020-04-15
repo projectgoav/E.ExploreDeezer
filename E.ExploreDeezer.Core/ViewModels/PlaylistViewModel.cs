@@ -19,7 +19,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         string ArtworkUri { get; }
 
-        string NumberOfTracks { get; }
+        uint NumberOfTracks { get; }
     }
 
     internal class PlaylistViewModel : IPlaylistViewModel
@@ -36,7 +36,7 @@ namespace E.ExploreDeezer.Core.ViewModels
             this.ArtworkUri = playlist?.Images?.HasPictureOfSize(PictureSize.Medium) ?? false ? playlist.Images.Medium
                                                                                               : "ms-appx:///Assets/StoreLogo.png";
 
-            this.NumberOfTracks = playlist?.NumberOfTracks.ToString() ?? string.Empty;
+            this.NumberOfTracks = playlist?.NumberOfTracks ?? 0;
         }
 
         // IPlaylistViewModel
@@ -50,6 +50,6 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         public string ArtworkUri { get; }
 
-        public string NumberOfTracks { get; }
+        public uint NumberOfTracks { get; }
     }
 }
