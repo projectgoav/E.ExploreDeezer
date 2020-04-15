@@ -3,7 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E.ExploreDeezer.UWP"
-    xmlns:converters="using:E.ExploreDeezer.UWP.ValueConverters">
+    xmlns:converters="using:E.ExploreDeezer.UWP.ValueConverters" 
+    xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
     <Application.Resources>
 
@@ -12,6 +13,18 @@
         <converters:ErrorFetchStateVisibilityConverter x:Key="ErrorFetchStateVisibility" />
         <converters:LoadingFetchStateVisibilityConverter x:Key="LoadingFetchStateVisibility" />
         <converters:ContentAvailableFetchStateVisibilityConverter x:Key="ContentAvailableFetchStateVisibility" />
+
+        
+        <!-- Colours -->
+        <media:AcrylicBrush x:Key="HeaderAcrylicBrush" 
+                            BackgroundSource="Backdrop"
+                            TintOpacity="0.33" 
+                            TintColor="#FF000000" 
+                            FallbackColor="#FF000000" />
+
+
+
+
 
     </Application.Resources>
     
