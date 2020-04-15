@@ -49,16 +49,45 @@
                        Foreground="White"
                        FontSize="18"/>
 
+            <ProgressRing Grid.Row="1"
+                          Grid.Column="1"
+                          Width="32"
+                          Height="32"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"
+                          Margin="5"
+                          IsActive="true"
+                          Visibility="{Binding HeaderFetchState,
+                                               Converter={StaticResource LoadingFetchStateVisibility}}" />
 
             <StackPanel Grid.Row="1"
                         Grid.Column="1"  
                         Orientation="Vertical"
                         VerticalAlignment="Top"
                         Margin="0,5,0,0"
-                        Spacing="5">
+                        Spacing="5"
+                        Visibility="{Binding HeaderFetchState,
+                                             Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
                 <TextBlock Text="{x:Bind ViewModel.Subtitle}"
                            FontSize="16" />
+
+                <HyperlinkButton Content="View on Deezer"
+                                 NavigateUri="{Binding WebsiteLink}" />
+
+                <!-- DISABLED FOR NOW AS THERE'S NO SPACE ON THE UI
+                <TextBlock FontSize="14">
+                    <Run>Number of Fans:</Run>
+                    <Run Text="{Binding NumberOfFans,
+                                        Converter={StaticResource NumberFormatter}}" />
+                </TextBlock>
+                -->
+
+                <TextBlock FontSize="14">
+                    <Run>Number of Tracks:</Run>
+                    <Run Text="{Binding NumberOfTracks,
+                                        Converter={StaticResource NumberFormatter}}" />
+                </TextBlock>
 
             </StackPanel>
 

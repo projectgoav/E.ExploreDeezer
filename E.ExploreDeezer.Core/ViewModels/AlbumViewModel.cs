@@ -12,21 +12,25 @@ namespace E.ExploreDeezer.Core.ViewModels
         string Title { get; }
         string ArtistName { get; }
 
+        string ArtworkUri { get; }
+    }
+
+    // Properties requiring a fetch of the complete album
+    public interface IExtendedAlbumViewModel
+    {
+        uint NumberOfFans { get; }
         uint NumberOfTracks { get; }
 
-        //TODO: Artwork :)
-        string ArtworkUri { get; }
-
-        bool IsPresent { get; }
+        string ShareLink { get; }
+        string WebsiteLink { get; }
     }
 
 
-    internal class AlbumViewModel : IAlbumViewModel
+    internal class AlbumViewModel : IAlbumViewModel,
+                                    IExtendedAlbumViewModel
     {
         public AlbumViewModel(IAlbum album)
         {
-            this.IsPresent = album != null;
-
             this.ItemId = album?.Id ?? 0;
 
             this.Title = album?.Title;
@@ -34,21 +38,27 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.ArtworkUri = album?.CoverArtwork?.Medium ?? "ms-appx:///Assets/StoreLogo.png"; //TODO: Fallback artwork
 
+            this.NumberOfFans = album?.Fans ?? 0u;
             this.NumberOfTracks = album?.TrackCount ?? 0u;
 
+            this.ShareLink = album?.ShareLink ?? string.Empty;
+            this.WebsiteLink = album?.Link ?? string.Empty;         
         }
 
 
         //IAlbumViewModel
         public ulong ItemId { get; }
         public string Title { get; }
-        public uint NumberOfTracks { get; }
         public string ArtistName { get; }
         public string ArtworkUri { get; }
 
         public bool IsPresent { get; }
 
+        // IExtendedAlbumViewModel
+        public uint NumberOfFans { get; }
+        public uint NumberOfTracks { get; }
 
-        public static IAlbumViewModel Empty => new AlbumViewModel(null);
+        public string ShareLink { get; }
+        public string WebsiteLink { get; }
     }
 }

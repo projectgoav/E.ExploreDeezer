@@ -15,7 +15,12 @@ namespace E.ExploreDeezer.Core.Common
         string Title { get; }
         string Subtitle { get; }
         string ArtworkUri { get; }
-        int NumberOfTracks { get; }
+
+        EFetchState HeaderFetchState { get; }
+
+        uint NumberOfFans { get; }
+        uint NumberOfTracks { get; }
+        Uri WebsiteLink { get; }
         
         EFetchState FetchState { get; }
         IObservableCollection<ITrackViewModel> Tracklist { get; }
@@ -69,9 +74,12 @@ namespace E.ExploreDeezer.Core.Common
 
         private string title;
         private string subtitle;
+        private Uri websiteLink;
         private string artworkUri;
-        private int numberOfTracks;
+        private uint numberOfFans;
+        private uint numberOfTracks;
         private EFetchState fetchState;
+        private EFetchState headerFetchState;
 
 
         public TracklistViewModel(IPlatformServices platformServices,
@@ -84,6 +92,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                         PlatformServices.MainThreadDispatcher);
 
             this.dataController.OnTracklistFetchStateChanged += OnFetchStateChanged;
+            this.dataController.OnCompleteItemFetchStateChanged += OnHeaderFetchStateChanged;
 
 
             this.Type = p.Type;
@@ -98,7 +107,6 @@ namespace E.ExploreDeezer.Core.Common
                     break;
             }
         }
-
 
         // ITracklistViewModel
         public ETracklistViewModelType Type { get; }
@@ -121,10 +129,22 @@ namespace E.ExploreDeezer.Core.Common
             private set => SetProperty(ref this.artworkUri, value);
         }
 
-        public int NumberOfTracks
+        public uint NumberOfTracks
         {
             get => this.numberOfTracks;
             private set => SetProperty(ref this.numberOfTracks, value);
+        }
+
+        public uint NumberOfFans
+        {
+            get => this.numberOfFans;
+            private set => SetProperty(ref this.numberOfFans, value);
+        }
+
+        public Uri WebsiteLink
+        {
+            get => this.websiteLink;
+            private set => SetProperty(ref this.websiteLink, value);
         }
 
         public EFetchState FetchState
@@ -133,11 +153,27 @@ namespace E.ExploreDeezer.Core.Common
             private set => SetProperty(ref this.fetchState, value);
         }
 
+        public EFetchState HeaderFetchState
+        {
+            get => this.headerFetchState;
+            private set
+            {
+                if (SetProperty(ref this.headerFetchState, value))
+                {
+                    UpdateHeaderProperties();
+                }
+            }
+        }
+
         public IObservableCollection<ITrackViewModel> Tracklist => this.tracklist;
 
 
         private void OnFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.FetchState = e.NewValue;
+
+        private void OnHeaderFetchStateChanged(object sender, FetchStateChangedEventArgs e)
+            => this.HeaderFetchState = e.NewValue;
+
 
 
 
@@ -146,7 +182,6 @@ namespace E.ExploreDeezer.Core.Common
             this.Title = album.Title;
             this.Subtitle = album.ArtistName;
             this.ArtworkUri = album.ArtworkUri;
-            this.NumberOfTracks = (int)album.NumberOfTracks;
 
             this.dataController.FetchTracklistAsync(ETracklistType.Album, album.ItemId);
         }
@@ -156,9 +191,39 @@ namespace E.ExploreDeezer.Core.Common
             this.Title = playlist.Title;
             this.Subtitle = playlist.CreatorName;
             this.ArtworkUri = playlist.ArtworkUri;
-            this.NumberOfTracks = (int)playlist.NumberOfTracks;
 
             this.dataController.FetchTracklistAsync(ETracklistType.Playlist, playlist.ItemId);
+        }
+
+        private void UpdateHeaderProperties()
+        {
+            switch(this.Type)
+            {
+                case ETracklistViewModelType.Album:
+                    if (this.dataController.CompleteAlbum != null)
+                    {
+                        this.NumberOfFans = this.dataController.CompleteAlbum.NumberOfFans;
+                        this.NumberOfTracks = this.dataController.CompleteAlbum.NumberOfTracks;
+                        this.WebsiteLink = new Uri(this.dataController.CompleteAlbum.WebsiteLink);
+                        return;
+                    }
+                    break;
+
+                case ETracklistViewModelType.Playlist:
+                    if (this.dataController.CompletePlaylist != null)
+                    {
+                        this.NumberOfFans = this.dataController.CompletePlaylist.NumberOfFans;
+                        this.NumberOfTracks = this.dataController.CompletePlaylist.NumberOfTracks;
+                        this.WebsiteLink = new Uri(this.dataController.CompletePlaylist.WebsiteLink);
+                        return;
+                    }
+                    break;
+            }
+
+            // No item
+            this.NumberOfFans = 0;
+            this.NumberOfTracks = 0;
+            this.WebsiteLink = null;
         }
 
 
@@ -167,6 +232,7 @@ namespace E.ExploreDeezer.Core.Common
             if (disposing)
             {
                 this.dataController.OnTracklistFetchStateChanged -= OnFetchStateChanged;
+                this.dataController.OnCompleteItemFetchStateChanged -= OnHeaderFetchStateChanged;
 
                 this.tracklist.Dispose();
             }

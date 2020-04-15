@@ -11,7 +11,7 @@ namespace E.ExploreDeezer.Core.Common
 
         public static TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
         {
-            if (albumViewModel == null || !albumViewModel.IsPresent)
+            if (albumViewModel == null)
                 throw new ArgumentException();
 
             return new TracklistViewModelParams(ETracklistViewModelType.Album, albumViewModel);
@@ -19,7 +19,7 @@ namespace E.ExploreDeezer.Core.Common
 
         public static TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
         {
-            if (playlistViewModel == null || !playlistViewModel.IsPresent)
+            if (playlistViewModel == null)
                 throw new ArgumentException();
 
             return new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistViewModel);
