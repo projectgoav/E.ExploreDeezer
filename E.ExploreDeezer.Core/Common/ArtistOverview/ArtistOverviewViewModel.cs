@@ -15,6 +15,10 @@ namespace E.ExploreDeezer.Core.Common
         string ArtistName { get; }
         string ArtistImage { get; }
 
+        uint NumberOfFans { get; }
+        uint NumberOfAlbums { get; }
+        Uri DeezerWebsiteLink { get; }
+
         EFetchState AlbumFetchState { get; }
         IObservableCollection<IAlbumViewModel> Albums { get; }
 
@@ -54,11 +58,15 @@ namespace E.ExploreDeezer.Core.Common
         private readonly MainThreadObservableCollectionAdapter<IArtistViewModel> relatedArtists;
         private readonly MainThreadObservableCollectionAdapter<IPlaylistViewModel> featuredPlaylists;
 
+        private Uri websiteLink;
+        private uint numberOfFans;
+        private uint numberOfAlbums;
         private EFetchState albumFetchState;
+        private EFetchState headerFetchState;
         private EFetchState topTrackFetchState;
         private EFetchState playlistFetchState;
         private EFetchState relatedArtistsFetchState;
-
+        
 
         public ArtistOverviewViewModel(IPlatformServices platformServices,
                                        ArtistOverviewViewModelParams p)
@@ -83,6 +91,7 @@ namespace E.ExploreDeezer.Core.Common
             this.dataController.OnTopTrackFetchStateChanged += OnTopTrackFetchStateChanged;
             this.dataController.OnPlaylistFetchStateChanged += OnPlaylistFetchStateChanged;
             this.dataController.OnRelatedArtistFetchStateChanged += OnRelatedArtistFetchStateChanged;
+            this.dataController.OnCompleteArtistFetchStateChanged += OnCompleteArtistFetchStateChanged;
 
 
             this.artist = p.Artist;
@@ -97,6 +106,38 @@ namespace E.ExploreDeezer.Core.Common
         // IArtistOverviewViewModel
         public string ArtistName { get; }
         public string ArtistImage { get; }
+
+        public uint NumberOfFans
+        {
+            get => this.numberOfFans;
+            private set => SetProperty(ref this.numberOfFans, value);
+        }
+
+        public uint NumberOfAlbums
+        {
+            get => this.numberOfAlbums;
+            private set => SetProperty(ref this.numberOfAlbums, value);
+        }
+
+        public Uri DeezerWebsiteLink
+        {
+            get => this.websiteLink;
+            private set => SetProperty(ref this.websiteLink, value);
+        }
+
+        public EFetchState HeaderFetchState
+        {
+            get => this.headerFetchState;
+            private set
+            {
+                if (SetProperty(ref this.headerFetchState, value))
+                {
+                    UpdateHeaderProperties();
+                }
+            }
+        }
+
+
 
         public EFetchState AlbumFetchState
         {
@@ -134,6 +175,15 @@ namespace E.ExploreDeezer.Core.Common
         public IObservableCollection<IArtistViewModel> RelatedArtists => this.relatedArtists;
 
 
+        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album)
+            => ViewModelParamFactory.CreateTracklistViewModelParams(album);
+
+        public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist)
+            => ViewModelParamFactory.CreateTracklistViewModelParams(playlist);
+
+        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist)
+            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artist);
+
 
         private void OnPlaylistFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.FeaturedPlaylistFetchState = e.NewValue;
@@ -148,16 +198,27 @@ namespace E.ExploreDeezer.Core.Common
         private void OnAlbumFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.AlbumFetchState = e.NewValue;
 
+        private void OnCompleteArtistFetchStateChanged(object sender, FetchStateChangedEventArgs e)
+            => this.HeaderFetchState = e.NewValue;
 
 
-        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(album);
+        private void UpdateHeaderProperties()
+        {
+            var artist = this.dataController.CompleteArtist;
 
-        public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(playlist);
-
-        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist)
-            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artist);
+            if (artist != null)
+            {
+                this.NumberOfFans = artist.NumberOfFans;
+                this.NumberOfAlbums = artist.NumberOfAlbums;
+                this.DeezerWebsiteLink = new Uri(artist.WebsiteLink);
+            }
+            else
+            {
+                this.NumberOfFans = 0;
+                this.NumberOfAlbums = 0;
+                this.DeezerWebsiteLink = null;
+            }
+        }
 
 
         protected override void Dispose(bool disposing)
@@ -168,6 +229,7 @@ namespace E.ExploreDeezer.Core.Common
                 this.dataController.OnTopTrackFetchStateChanged -= OnTopTrackFetchStateChanged;
                 this.dataController.OnPlaylistFetchStateChanged -= OnPlaylistFetchStateChanged;
                 this.dataController.OnRelatedArtistFetchStateChanged -= OnRelatedArtistFetchStateChanged;
+                this.dataController.OnCompleteArtistFetchStateChanged -= OnCompleteArtistFetchStateChanged;
 
                 this.albums.Dispose();
                 this.topTracks.Dispose();

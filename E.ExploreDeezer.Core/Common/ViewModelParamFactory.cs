@@ -27,7 +27,7 @@ namespace E.ExploreDeezer.Core.Common
 
         public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
         {
-            if (artistViewModel == null || !artistViewModel.IsPresent)
+            if (artistViewModel == null)
                 throw new ArgumentException();
 
             return new ArtistOverviewViewModelParams(artistViewModel);

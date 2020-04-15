@@ -16,6 +16,9 @@ namespace E.ExploreDeezer.Core.Common
 {
     internal interface IArtistOverviewDataController
     {
+        IExtendedArtistViewModel CompleteArtist { get; }
+        event FetchStateChangedEventHandler OnCompleteArtistFetchStateChanged;
+
         IObservableCollection<IAlbumViewModel> Albums { get; }
         event FetchStateChangedEventHandler OnAlbumFetchStateChanged;
 
@@ -41,13 +44,13 @@ namespace E.ExploreDeezer.Core.Common
         private readonly UpdatableFetchState albumFetchState;
         private readonly UpdatableFetchState topTrackFetchState;
         private readonly UpdatableFetchState playlistFetchState;
+        private readonly UpdatableFetchState completeArtistFetchState;
         private readonly UpdatableFetchState relatedArtistsFetchState;
         private readonly ResetableCancellationTokenSource tokenSource;
         private readonly PagedObservableCollection<IAlbumViewModel> albums;
         private readonly PagedObservableCollection<ITrackViewModel> topTracks;
         private readonly PagedObservableCollection<IPlaylistViewModel> playlists;
         private readonly PagedObservableCollection<IArtistViewModel> relatedArtists;
-
 
         public ArtistOverviewDataController(IDeezerSession session)
         {
@@ -59,6 +62,7 @@ namespace E.ExploreDeezer.Core.Common
             this.albumFetchState = new UpdatableFetchState();
             this.topTrackFetchState = new UpdatableFetchState();
             this.playlistFetchState = new UpdatableFetchState();
+            this.completeArtistFetchState = new UpdatableFetchState();
             this.relatedArtistsFetchState = new UpdatableFetchState();
 
             this.albums = new PagedObservableCollection<IAlbumViewModel>();
@@ -72,6 +76,15 @@ namespace E.ExploreDeezer.Core.Common
 
 
         // IArtistOverviewDataController
+        public IExtendedArtistViewModel CompleteArtist { get; private set; }
+
+        public event FetchStateChangedEventHandler OnCompleteArtistFetchStateChanged
+        {
+            add => this.completeArtistFetchState.OnFetchStateChanged += value;
+            remove => this.completeArtistFetchState.OnFetchStateChanged -= value;
+        }
+
+
         public IObservableCollection<IAlbumViewModel> Albums => this.albums;
 
         public event FetchStateChangedEventHandler OnAlbumFetchStateChanged
@@ -116,11 +129,32 @@ namespace E.ExploreDeezer.Core.Common
             this.tokenSource.Reset();
 
             this.ArtistId = artistId;
+            this.CompleteArtist = null;
 
             this.albumFetchState.SetLoading();
             this.topTrackFetchState.SetLoading();
             this.playlistFetchState.SetLoading();
+            this.completeArtistFetchState.SetLoading();
             this.relatedArtistsFetchState.SetLoading();
+
+            this.session.Artists.GetById(this.ArtistId, this.tokenSource.Token)
+                                .ContinueWith(t =>
+                                {
+                                    if (t.IsFaulted)
+                                    {
+                                        this.completeArtistFetchState.SetError();
+
+                                        var ex = t.Exception.GetBaseException();
+                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch complete artist model. {ex}");
+
+                                        throw ex;
+                                    }
+
+                                    this.CompleteArtist = new ArtistViewModel(t.Result);
+                                    this.completeArtistFetchState.SetAvailable();
+
+                                }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+
 
 
             this.albums.SetFetcher((start, count, ct) => this.session.Artists.GetArtistsAlbums(this.ArtistId, ct, (uint)start, (uint)count)
