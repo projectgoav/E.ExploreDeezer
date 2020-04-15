@@ -14,7 +14,9 @@
         <converters:LoadingFetchStateVisibilityConverter x:Key="LoadingFetchStateVisibility" />
         <converters:ContentAvailableFetchStateVisibilityConverter x:Key="ContentAvailableFetchStateVisibility" />
 
-        
+        <converters:NumberFormatValueConverter x:Key="NumberFormatter" />
+
+
         <!-- Colours -->
         <media:AcrylicBrush x:Key="HeaderAcrylicBrush" 
                             BackgroundSource="Backdrop"

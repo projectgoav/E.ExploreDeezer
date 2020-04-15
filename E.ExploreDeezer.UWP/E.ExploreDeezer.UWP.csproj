@@ -141,6 +141,7 @@
     <Compile Include="NavigationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UWPPlatformServices.cs" />
+    <Compile Include="ValueConverters\NumberFormatValueConverter.cs" />
     <Compile Include="Views\ArtistOverviewView.xaml.cs">
       <DependentUpon>ArtistOverviewView.xaml</DependentUpon>
     </Compile>

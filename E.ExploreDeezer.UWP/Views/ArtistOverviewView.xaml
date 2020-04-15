@@ -81,16 +81,18 @@
                                              Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
                 <HyperlinkButton Content="View on Deezer"
-                                 NavigateUri="{Binding DeezerWebsiteLink, Mode=OneWay}" />
+                                 NavigateUri="{Binding DeezerWebsiteLink}" />
 
                 <TextBlock FontSize="14">
                     <Run>Number of Fans:</Run>
-                    <Run Text="{Binding NumberOfFans, Mode=OneWay}" />
+                    <Run Text="{Binding NumberOfFans, 
+                                        Converter={StaticResource NumberFormatter}}" />
                 </TextBlock>
 
                 <TextBlock FontSize="14">
                     <Run>Number of Albums:</Run>
-                    <Run Text="{Binding NumberOfAlbums, Mode=OneWay}" />
+                    <Run Text="{Binding NumberOfAlbums,
+                                        Converter={StaticResource NumberFormatter}}" />
                 </TextBlock>
                 
                 

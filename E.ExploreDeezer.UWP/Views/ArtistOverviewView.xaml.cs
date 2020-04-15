@@ -54,13 +54,21 @@ namespace E.ExploreDeezer.UWP.Views
             this.AlbumGrid.SelectionChanged -= OnGridSelectionChanged;
             this.RelatedArtistsGrid.SelectionChanged -= OnGridSelectionChanged;
             this.FeaturedPlaylistsGrid.SelectionChanged += OnGridSelectionChanged;
+
+            (this.ViewModel as IDisposable)?.Dispose();
+            this.DataContext = null;
         }
 
         private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (sender == this.AlbumGrid)
             {
-                var album = this.ViewModel.Albums.ElementAt(this.AlbumGrid.SelectedIndex);
+                int index = this.AlbumGrid.SelectedIndex;
+
+                if (index == -1)
+                    return;
+
+                var album = this.ViewModel.Albums.GetItem(this.AlbumGrid.SelectedIndex);
                 var p = this.ViewModel.CreateTracklistViewModelParams(album);
 
                 ServiceRegistry.GetService<Frame>()
@@ -68,7 +76,12 @@ namespace E.ExploreDeezer.UWP.Views
             }
             else if (sender == this.RelatedArtistsGrid)
             {
-                var artist = this.ViewModel.RelatedArtists.ElementAt(this.RelatedArtistsGrid.SelectedIndex);
+                int index = this.RelatedArtistsGrid.SelectedIndex;
+
+                if (index == -1)
+                    return;
+
+                var artist = this.ViewModel.RelatedArtists.GetItem(this.RelatedArtistsGrid.SelectedIndex);
                 var p = this.ViewModel.CreateArtistOverviewViewModelParams(artist);
 
                 ServiceRegistry.GetService<Frame>()
@@ -76,7 +89,12 @@ namespace E.ExploreDeezer.UWP.Views
             }
             else if (sender == this.FeaturedPlaylistsGrid)
             {
-                var playlist = this.ViewModel.FeaturedPlaylists.ElementAt(this.FeaturedPlaylistsGrid.SelectedIndex);
+                int index = this.FeaturedPlaylistsGrid.SelectedIndex;
+
+                if (index == -1)
+                    return;
+
+                var playlist = this.ViewModel.FeaturedPlaylists.GetItem(this.FeaturedPlaylistsGrid.SelectedIndex);
                 var p = this.ViewModel.CreateTracklistViewModelParams(playlist);
 
                 ServiceRegistry.GetService<Frame>()
