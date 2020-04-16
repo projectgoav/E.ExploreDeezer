@@ -44,3 +44,6 @@ Views:
   ☐ Implement deep linking. See ViewModel task for this, as work migh be required in View layer
   ☐ Radio support
   ☐ Add external link icon to links that open out-with the app
+  ☐ Split out the Headers for Artist and Tracklist into a control to allow for the use of x:Bind
+     Their data context can be added in the code-behind or view a deadicated binding with an Information / Header ViewModel property exposed
+  ☐ Witcher 3 OST only shows 25 tracks instead of the full 55

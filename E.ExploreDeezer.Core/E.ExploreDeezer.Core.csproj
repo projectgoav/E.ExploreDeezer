@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="E.Deezer" Version="5.0.0-alpha4" />
+    <PackageReference Include="E.Deezer" Version="5.0.0-beta1" />
   </ItemGroup>
 
 </Project>
