@@ -10,6 +10,7 @@ using E.Deezer.Api;
 
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.Extensions;
 using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Common
@@ -138,35 +139,31 @@ namespace E.ExploreDeezer.Core.Common
             this.relatedArtistsFetchState.SetLoading();
 
             this.session.Artists.GetById(this.ArtistId, this.tokenSource.Token)
-                                .ContinueWith(t =>
+                                .ContinueWhenNotCancelled(t =>
                                 {
-                                    if (t.IsFaulted)
+                                    (bool faulted, Exception ex) = t.CheckIfFailed();
+                                    if (faulted)
                                     {
-                                        this.completeArtistFetchState.SetError();
-
-                                        var ex = t.Exception.GetBaseException();
-                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch complete artist model. {ex}");
-
+                                        this.albumFetchState.SetError();
+                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch complete artist. {ex}");
                                         throw ex;
                                     }
 
                                     this.CompleteArtist = new ArtistViewModel(t.Result);
                                     this.completeArtistFetchState.SetAvailable();
 
-                                }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                                }, this.tokenSource.Token);
 
 
 
             this.albums.SetFetcher((start, count, ct) => this.session.Artists.GetArtistsAlbums(this.ArtistId, ct, (uint)start, (uint)count)
-                                                                             .ContinueWith<IEnumerable<IAlbumViewModel>>(t =>
+                                                                             .ContinueWhenNotCancelled<IEnumerable<IAlbum>, IEnumerable<IAlbumViewModel>>(t =>
                                                                              {
-                                                                                 if (t.IsFaulted)
+                                                                                 (bool faulted, Exception ex) = t.CheckIfFailed();
+                                                                                 if (faulted)
                                                                                  {
                                                                                      this.albumFetchState.SetError();
-
-                                                                                     var ex = t.Exception.GetBaseException();
                                                                                      System.Diagnostics.Debug.WriteLine($"Failed to fetch artists albums. {ex}");
-
                                                                                      throw ex;
                                                                                  }
 
@@ -184,19 +181,17 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                                  return items;
 
-                                                                             }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                             }, ct));
 
 
             this.topTracks.SetFetcher((start, count, ct) => this.session.Artists.GetArtistsTopTracks(this.ArtistId, ct, (uint)start, (uint)count)
-                                                                                .ContinueWith<IEnumerable<ITrackViewModel>>(t =>
+                                                                                .ContinueWhenNotCancelled<IEnumerable<ITrack>, IEnumerable<ITrackViewModel>>(t =>
                                                                                 {
-                                                                                    if (t.IsFaulted)
+                                                                                    (bool faulted, Exception ex) = t.CheckIfFailed();
+                                                                                    if (faulted)
                                                                                     {
-                                                                                        this.topTrackFetchState.SetError();
-
-                                                                                        var ex = t.Exception.GetBaseException();
-                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch artists op tracks. {ex}");
-
+                                                                                        this.albumFetchState.SetError();
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch artists top tracks. {ex}");
                                                                                         throw ex;
                                                                                     }
 
@@ -214,19 +209,17 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                                     return items;
 
-                                                                                 }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                 }, ct));
 
 
             this.playlists.SetFetcher((start, count, ct) => this.session.Artists.GetPlaylistsFeaturingArtist(this.ArtistId, ct, (uint)start, (uint)count)
-                                                                                .ContinueWith<IEnumerable<IPlaylistViewModel>>(t =>
+                                                                                .ContinueWhenNotCancelled<IEnumerable<IPlaylist>, IEnumerable<IPlaylistViewModel>>(t =>
                                                                                 {
-                                                                                    if (t.IsFaulted)
+                                                                                    (bool faulted, Exception ex) = t.CheckIfFailed();
+                                                                                    if (faulted)
                                                                                     {
-                                                                                        this.playlistFetchState.SetError();
-
-                                                                                        var ex = t.Exception.GetBaseException();
-                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch artists playlists. {ex}");
-
+                                                                                        this.albumFetchState.SetError();
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch playlists featuring artist. {ex}");
                                                                                         throw ex;
                                                                                     }
 
@@ -244,19 +237,17 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                                     return items;
 
-                                                                                 }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                 }, ct));
 
 
             this.relatedArtists.SetFetcher((start, count, ct) => this.session.Artists.GetRelatedArtists(this.ArtistId, ct, (uint)start, (uint)count)
-                                                                                     .ContinueWith<IEnumerable<IArtistViewModel>>(t =>
+                                                                                     .ContinueWhenNotCancelled<IEnumerable<IArtist>, IEnumerable<IArtistViewModel>>(t =>
                                                                                      {
-                                                                                         if (t.IsFaulted)
+                                                                                         (bool faulted, Exception ex) = t.CheckIfFailed();
+                                                                                         if (faulted)
                                                                                          {
-                                                                                             this.relatedArtistsFetchState.SetError();
-
-                                                                                             var ex = t.Exception.GetBaseException();
-                                                                                             System.Diagnostics.Debug.WriteLine($"Failed to fetch related artists. {ex}");
-
+                                                                                             this.albumFetchState.SetError();
+                                                                                             System.Diagnostics.Debug.WriteLine($"Failed to fetch related artits. {ex}");
                                                                                              throw ex;
                                                                                          }
 
@@ -274,7 +265,7 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                                          return items;
 
-                                                                                     }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                     }, ct));
         }
 
 
