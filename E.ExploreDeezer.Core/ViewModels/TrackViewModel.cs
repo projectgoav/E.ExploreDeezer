@@ -23,7 +23,6 @@ namespace E.ExploreDeezer.Core.ViewModels
         string Artist { get; }
 
         string TrackNumber { get; }
-        string AllArtistNames { get; }
 
         string ArtworkUri { get; }
     }
@@ -46,8 +45,6 @@ namespace E.ExploreDeezer.Core.ViewModels
                                                                                             : "ms-appx:///Assets/StoreLogo.png";
                 
             this.TrackNumber = track?.TrackNumber.ToString() ?? string.Empty;
-
-            this.AllArtistNames = GetAllArtistNames(track);
         }
 
 
@@ -62,40 +59,5 @@ namespace E.ExploreDeezer.Core.ViewModels
         public string ArtworkUri { get; }
 
         public string TrackNumber { get; }
-        public string AllArtistNames { get; }
-
-
-
-        private string GetAllArtistNames(ITrack track)
-        {
-            if (track == null)
-                return string.Empty;
-
-            bool hasMainArtist = !string.IsNullOrEmpty(track.ArtistName);
-            bool hasContributors = track.Contributors.Any();
-
-            if (hasMainArtist && !hasContributors)
-            {
-                return track.ArtistName;
-            }
-
-            var sb = new StringBuilder(256);
-
-            sb.Append(track.ArtistName);
-            sb.Append(" ft. ");
-
-            sb.Append(track.Contributors.First()
-                                        .Name);
-
-            foreach (var artist in track.Contributors.Skip(1))
-            {
-                sb.Append(", ");
-                sb.Append(artist.Name);
-            }
-
-
-            return sb.ToString();
-        }
-
     }
 }

@@ -48,13 +48,26 @@ namespace E.ExploreDeezer.UWP.Controls
                 case ETrackLHSMode.Number:
                     this.TrackNumberLabel.Visibility = Visibility.Visible;
                     this.TrackImage.Visibility = Visibility.Collapsed;
+
+                    this.ArtistNameLabel.Visibility = Visibility.Visible;
+                    this.ArtistNameButton.Visibility = Visibility.Collapsed;
+
+                    this.DetailsStack.Spacing = 5;
+
                     break;
 
                 case ETrackLHSMode.Artwork:
                     this.TrackImage.Visibility = Visibility.Visible;
                     this.TrackNumberLabel.Visibility = Visibility.Collapsed;
+
+                    this.ArtistNameLabel.Visibility = Visibility.Collapsed;
+                    this.ArtistNameButton.Visibility = Visibility.Visible;
+
+                    this.DetailsStack.Spacing = 0;
                     break;
             }
+
         }
+
     }
 }

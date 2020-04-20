@@ -36,16 +36,22 @@
                Source="{x:Bind ViewModel.ArtworkUri}" /> <!-- TODO: Need to write a fallback converter before using x:bind -->
 
         <StackPanel Grid.Column="1"
+                    x:Name="DetailsStack"
                     Orientation="Vertical"
                     VerticalAlignment="Center"
-                    Margin="5,0,0,5"
-                    Spacing="5">
-
+                    Margin="5,0,0,5">
+     
             <TextBlock Text="{x:Bind ViewModel.Title}"
                        FontSize="16" />
-            
-            <TextBlock Text="{x:Bind ViewModel.AllArtistNames}"
+
+            <TextBlock x:Name="ArtistNameLabel"
+                       Text="{x:Bind ViewModel.Artist}"
                        FontSize="14" />
+
+            <HyperlinkButton x:Name="ArtistNameButton"
+                             Content="{x:Bind ViewModel.Artist}"
+                             FontSize="14" />
+
 
         </StackPanel>
 
