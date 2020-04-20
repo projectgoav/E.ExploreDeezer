@@ -40,13 +40,30 @@
                        Grid.ColumnSpan="2"
                        Fill="{ThemeResource HeaderAcrylicBrush}" />
 
-            <TextBlock Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0,0,0,5"
-                       VerticalAlignment="Bottom"
-                       Text="{Binding ArtistName}"
-                       Foreground="White"
-                       FontSize="18"/>
+            
+            <!-- On blurry background -->
+            <Grid Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,0,10,5"
+                  VerticalAlignment="Bottom">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                           Text="{Binding ArtistName}"
+                           Foreground="White"
+                           FontSize="18"/>
+
+                <HyperlinkButton Grid.Column="1"
+                                 Margin="5,0,0,0"
+                                 Content="View on Deezer"
+                                 NavigateUri="{Binding DeezerWebsiteLink}" />
+                       
+            </Grid>
+            
 
             <Image Grid.Column="0"
                    Grid.RowSpan="2"
@@ -80,8 +97,6 @@
                         Visibility="{Binding HeaderFetchState,
                                              Converter={StaticResource ContentAvailableFetchStateVisibility}}">
 
-                <HyperlinkButton Content="View on Deezer"
-                                 NavigateUri="{Binding DeezerWebsiteLink}" />
 
                 <TextBlock FontSize="14">
                     <Run>Number of Fans:</Run>
