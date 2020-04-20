@@ -22,8 +22,8 @@ namespace E.ExploreDeezer.Core.Collections
     }
 
 
-    internal abstract class ObservableCollectionBase<T> : IObservableCollection<T>,
-                                                          IDisposable
+    public abstract class ObservableCollectionBase<T> : IObservableCollection<T>,
+                                                        IDisposable
     {
         private const string READONLY_MESSAGE = "Collection is read-only.";
 

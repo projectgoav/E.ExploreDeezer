@@ -27,6 +27,7 @@ namespace E.ExploreDeezer.Core.Common
 
         UserOverviewViewModelParams CreateUserOverviewViewModelParams();
         ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams();
+        ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(ulong artistId);
     }
 
     public enum ETracklistViewModelType : byte
@@ -181,6 +182,9 @@ namespace E.ExploreDeezer.Core.Common
             Assert.That(this.Type == ETracklistViewModelType.Album);
             return new ArtistOverviewViewModelParams(this.dataController.CompleteAlbum.ArtistId);
         }
+
+        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(ulong artistId)
+            => new ArtistOverviewViewModelParams(artistId);
 
 
 

@@ -21,6 +21,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         string Title { get; }
         string Artist { get; }
+        ulong ArtistId { get; }
 
         string TrackNumber { get; }
 
@@ -39,6 +40,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
             this.Title = track?.Title ?? string.Empty;
             this.Artist = track?.ArtistName ?? string.Empty;
+            this.ArtistId = track?.Artist?.Id ?? 0u;
 
             // Too many ? ?? Are you sure??
             this.ArtworkUri = track?.Artwork?.HasPictureOfSize(PictureSize.Medium) ?? false ? track.Artwork.Medium
@@ -55,6 +57,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
         public string Title { get; }
         public string Artist { get; }
+        public ulong ArtistId { get; }
 
         public string ArtworkUri { get; }
 

@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core.ViewModels;
 
+using E.ExploreDeezer.UWP.Views;
+
 namespace E.ExploreDeezer.UWP.Controls
 {
     public sealed partial class TrackCell : UserControl
@@ -24,18 +26,23 @@ namespace E.ExploreDeezer.UWP.Controls
             this.InitializeComponent();
 
             this.DataContextChanged += OnDataContextChanged;
+            this.ArtistNameButton.Click += OnArtistClicked;
         }
 
         private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            this.ViewModel = args.NewValue as ITrackViewModel;
+            this.ViewModel = args.NewValue as IWrappedTrackViewModel;
 
             UpdateControls();
-
             Bindings.Update();
         }
 
-        public ITrackViewModel ViewModel { get; private set; }
+        public IWrappedTrackViewModel ViewModel { get; private set; }
+
+
+        private void OnArtistClicked(object sender, RoutedEventArgs e)
+            => this.ViewModel?.OnArtistSelected(this.ViewModel.ArtistId);
+
 
 
         private void UpdateControls()

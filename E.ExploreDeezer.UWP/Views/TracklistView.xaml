@@ -117,8 +117,7 @@
 
         <ListView x:Name="Tracklist"
                   Grid.Row="1"
-                  Margin="10,0,10,0"
-                  ItemsSource="{x:Bind ViewModel.Tracklist, Mode=OneWay}">
+                  Margin="10,0,10,0">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
