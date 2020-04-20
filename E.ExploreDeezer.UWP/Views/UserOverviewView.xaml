@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="E.ExploreDeezer.UWP.Views.ArtistOverviewView"
+    x:Class="E.ExploreDeezer.UWP.Views.UserOverviewView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:E.ExploreDeezer.UWP.Views"
@@ -34,13 +34,13 @@
             <Image Grid.Row="0"
                    Grid.ColumnSpan="2"
                    Stretch="UniformToFill"
-                   Source="{Binding ArtistImage}" />
+                   Source="{Binding ProfilePictureUri}" />
 
             <Rectangle Grid.Row="0"
                        Grid.ColumnSpan="2"
                        Fill="{ThemeResource HeaderAcrylicBrush}" />
 
-            
+
             <!-- On blurry background -->
             <Grid Grid.Row="0"
                   Grid.Column="1"
@@ -53,17 +53,19 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                           Text="{Binding ArtistName}"
+                           Text="{Binding Username}"
                            Foreground="White"
                            FontSize="18"/>
 
+                <!-- TODO: Add website link 
                 <HyperlinkButton Grid.Column="1"
                                  Margin="5,0,0,0"
                                  Content="View on Deezer"
                                  NavigateUri="{Binding DeezerWebsiteLink}" />
-                       
+                -->
+
             </Grid>
-            
+
 
             <Image Grid.Column="0"
                    Grid.RowSpan="2"
@@ -72,10 +74,10 @@
                    Height="196"
                    VerticalAlignment="Center"  
                    HorizontalAlignment="Center"
-                   Source="{Binding ArtistImage}" />
-            
-            
-            
+                   Source="{Binding ProfilePictureUri}" />
+
+
+
             <!-- Information Loading View -->
             <ProgressRing Grid.Row="1"
                           Grid.Column="1"
@@ -89,6 +91,7 @@
                                                Converter={StaticResource LoadingFetchStateVisibility}}"/>
 
             <!-- Information Panel -->
+            <!--
             <StackPanel Grid.Row="1"
                         Grid.Column="1"
                         Margin="0,5,0,0"
@@ -109,52 +112,20 @@
                     <Run Text="{Binding NumberOfAlbums,
                                         Converter={StaticResource NumberFormatter}}" />
                 </TextBlock>
-                
-                
+
+
             </StackPanel>
-            
+            -->
+
         </Grid>
 
         <Pivot Grid.Row="1">
 
-            <!-- Albums -->
-            <PivotItem Header="Albums">
-
-                <GridView x:Name="AlbumGrid"
-                          ItemsSource="{Binding Albums}">
-
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:AlbumGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-
-                </GridView>
-
-            </PivotItem>
-
-
-            <!-- Top tracks -->
-            <PivotItem Header="Top Tracks">
-
-                <ListView x:Name="TopTrackList"
-                              ItemsSource="{Binding TopTracks}">
-
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:TrackListCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-
-                </ListView>
-
-            </PivotItem>
-
             <!-- Playlists -->
-            <PivotItem Header="Featured In">
+            <PivotItem Header="Playlists">
 
-                <GridView x:Name="FeaturedPlaylistsGrid"
-                              ItemsSource="{Binding FeaturedPlaylists}">
+                <GridView x:Name="PlaylistGrid"
+                          ItemsSource="{x:Bind ViewModel.Playlists}">
 
                     <GridView.ItemTemplate>
                         <DataTemplate>
@@ -167,23 +138,23 @@
             </PivotItem>
 
 
-            <!-- Related Artists -->
+            <!-- Flow -->
+            <PivotItem Header="Flow">
 
-            <PivotItem Header="Related Artists">
+                <ListView x:Name="Flow"
+                          ItemsSource="{x:Bind ViewModel.Flow}">
 
-                <GridView x:Name="RelatedArtistsGrid"
-                              ItemsSource="{Binding RelatedArtists}">
-
-                    <GridView.ItemTemplate>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
-                            <controls:ArtistGridCell />
+                            <controls:TrackListCell />
                         </DataTemplate>
-                    </GridView.ItemTemplate>
+                    </ListView.ItemTemplate>
 
-                </GridView>
+                </ListView>
 
             </PivotItem>
-            
+
+
         </Pivot>
 
     </Grid>

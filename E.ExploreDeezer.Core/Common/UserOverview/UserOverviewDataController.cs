@@ -158,7 +158,7 @@ namespace E.ExploreDeezer.Core.Common
 
         private void FetchPlaylists(ulong userId, CancellationToken token)
         {
-            /* PLaylists for a user both favourites and personal playlists in a combined list.
+            /* Playlists for a user both favourites and personal playlists in a combined list.
              * This function aims to download the entire list of playlists and populate the
              * collection with only those whom the specified userId has created.
              * 
@@ -189,8 +189,13 @@ namespace E.ExploreDeezer.Core.Common
                                                                     return Array.Empty<IPlaylistViewModel>();
                                                                 }
 
-                                                                return t.Result.Select(x => new PlaylistViewModel(x));
 
+                                                                return t.Result.Where(x => x != null
+                                                                                            && x.Creator != null
+                                                                                            && x.Creator.Id == userId
+                                                                                            && !x.IsLovedTrack)
+                                                                               .Select(x => new PlaylistViewModel(x));
+                                                                              
                                                             }, token)
                                                             .Result; //Blocks a threadpool thread, so construct the parent task as 'LongRunning' to prevent this from causing issues
 

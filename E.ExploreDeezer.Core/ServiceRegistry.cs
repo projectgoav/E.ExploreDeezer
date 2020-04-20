@@ -35,6 +35,7 @@ namespace E.ExploreDeezer.Core
             Register<ISearchDataController>(new SearchDataController(DeezerSession));
             Register<ITracklistDataController>(new TracklistDataController(DeezerSession));
             Register<IArtistOverviewDataController>(new ArtistOverviewDataController(DeezerSession));
+            Register<IUserOverviewDataController>(new UserOverviewDataController(DeezerSession));
         }
 
 

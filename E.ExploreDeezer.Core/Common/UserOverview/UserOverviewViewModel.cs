@@ -49,8 +49,8 @@ namespace E.ExploreDeezer.Core.Common
         private EFetchState playlistFetchState;
 
 
-        public UserOverviewViewModel(UserOverviewViewModelParams p,
-                                     IPlatformServices platformServices)
+        public UserOverviewViewModel(IPlatformServices platformServices,
+                                     UserOverviewViewModelParams p)
             : base(platformServices)
         {
 
@@ -86,7 +86,13 @@ namespace E.ExploreDeezer.Core.Common
         public EFetchState HeaderFetchState
         {
             get => this.headerFetchState;
-            private set => SetProperty(ref this.headerFetchState, value);
+            private set
+            {
+                if (SetProperty(ref this.headerFetchState, value))
+                {
+                    UpdateHeader();
+                }
+            }
         }
 
         public EFetchState FlowFetchState
@@ -114,10 +120,25 @@ namespace E.ExploreDeezer.Core.Common
             => this.FlowFetchState = e.NewValue;
 
         private void OnPlaylistFetchStateChanged(object sender, FetchStateChangedEventArgs e)
-            => this.playlistFetchState = e.NewValue;
+            => this.PlaylistFetchState = e.NewValue;
 
         private void OnHeaderFetchStateChanged(object sender, FetchStateChangedEventArgs e)
-            => this.headerFetchState = e.NewValue;
+            => this.HeaderFetchState = e.NewValue;
+
+
+        private void UpdateHeader()
+        {
+            if (this.dataController.CompleteProfile != null)
+            {
+                this.Username = this.dataController.CompleteProfile.Username;
+                this.ProfilePictureUri = this.dataController.CompleteProfile.ProfilePicture;
+            }
+            else
+            {
+                this.Username = string.Empty;
+                this.ProfilePictureUri = null;
+            }
+        }
 
 
         protected override void Dispose(bool disposing)

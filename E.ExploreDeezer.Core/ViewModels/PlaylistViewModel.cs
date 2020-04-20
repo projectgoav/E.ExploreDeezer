@@ -13,6 +13,8 @@ namespace E.ExploreDeezer.Core.ViewModels
         ulong ItemId { get; }
 
         string Title { get; }
+
+        ulong CreatorId { get; }
         string CreatorName { get; }
 
         string ArtworkUri { get; }
@@ -32,10 +34,12 @@ namespace E.ExploreDeezer.Core.ViewModels
                                        IExtendedPlaylistViewModel
     {
         public PlaylistViewModel(IPlaylist playlist)
-        {;
+        {
             this.ItemId = playlist?.Id ?? 0u;
 
             this.Title = playlist?.Title ?? string.Empty;
+
+            this.CreatorId = playlist?.Creator?.Id ?? 0u;
             this.CreatorName = playlist?.Creator?.Username ?? string.Empty;
 
             this.ArtworkUri = playlist?.Images?.HasPictureOfSize(PictureSize.Medium) ?? false ? playlist.Images.Medium
@@ -51,6 +55,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         public ulong ItemId { get; }
 
         public string Title { get; }
+        public ulong CreatorId { get; }
         public string CreatorName { get; }
         public string ArtworkUri { get; }
 

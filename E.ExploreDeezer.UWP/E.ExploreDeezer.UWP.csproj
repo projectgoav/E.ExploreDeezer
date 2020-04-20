@@ -154,6 +154,9 @@
     <Compile Include="Views\TracklistView.xaml.cs">
       <DependentUpon>TracklistView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserOverviewView.xaml.cs">
+      <DependentUpon>UserOverviewView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\WhatsNewView.xaml.cs">
       <DependentUpon>WhatsNewView.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TracklistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserOverviewView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

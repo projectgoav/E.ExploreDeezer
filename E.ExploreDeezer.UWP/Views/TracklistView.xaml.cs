@@ -61,12 +61,24 @@ namespace E.ExploreDeezer.UWP.Views
             switch(this.ViewModel.Type)
             {
                 case ETracklistViewModelType.Album:
-                    var p = this.ViewModel.CreateArtistOverviewViewModelParams();
+                    {
+                        var p = this.ViewModel.CreateArtistOverviewViewModelParams();
 
-                    ServiceRegistry.GetService<Frame>()
-                                   .Navigate(typeof(ArtistOverviewView), p);
+                        ServiceRegistry.GetService<Frame>()
+                                       .Navigate(typeof(ArtistOverviewView), p);
 
-                    break;
+                        break;
+                    }
+
+                case ETracklistViewModelType.Playlist:
+                    {
+                        var p = this.ViewModel.CreateUserOverviewViewModelParams();
+
+                        ServiceRegistry.GetService<Frame>()
+                                       .Navigate(typeof(UserOverviewView), p);
+
+                        break;
+                    }
             }
         }
 

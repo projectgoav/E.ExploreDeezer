@@ -25,6 +25,7 @@ namespace E.ExploreDeezer.Core.Common
         EFetchState FetchState { get; }
         IObservableCollection<ITrackViewModel> Tracklist { get; }
 
+        UserOverviewViewModelParams CreateUserOverviewViewModelParams();
         ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams();
     }
 
@@ -169,11 +170,18 @@ namespace E.ExploreDeezer.Core.Common
         public IObservableCollection<ITrackViewModel> Tracklist => this.tracklist;
 
 
+        public UserOverviewViewModelParams CreateUserOverviewViewModelParams()
+        {
+            Assert.That(this.Type == ETracklistViewModelType.Playlist);
+            return new UserOverviewViewModelParams(this.dataController.CompletePlaylist.CreatorId);
+        }
+
         public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams()
         {
             Assert.That(this.Type == ETracklistViewModelType.Album);
             return new ArtistOverviewViewModelParams(this.dataController.CompleteAlbum.ArtistId);
         }
+
 
 
         private void OnFetchStateChanged(object sender, FetchStateChangedEventArgs e)
