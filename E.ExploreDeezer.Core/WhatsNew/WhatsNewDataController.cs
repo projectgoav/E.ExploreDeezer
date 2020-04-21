@@ -6,21 +6,21 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using E.Deezer;
+using E.Deezer.Api;
 
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
+using E.ExploreDeezer.Core.Extensions;
 
 namespace E.ExploreDeezer.Core.WhatsNew
 {
     internal interface IWhatsNewDataController
     {
-        EFetchState NewReleaseFetchState { get; }
         IObservableCollection<IAlbumViewModel> NewReleases { get; }
         event FetchStateChangedEventHandler OnNewReleaseFetchStateChanged;
 
-        EFetchState DeezerPicksFetchState { get; }
         IObservableCollection<IAlbumViewModel> DeezerPicks { get; }
         event FetchStateChangedEventHandler OnDeezerPicksFetchStateChanged;
 
@@ -61,8 +61,6 @@ namespace E.ExploreDeezer.Core.WhatsNew
 
 
         // IWhatsNewDataController
-        public EFetchState NewReleaseFetchState => this.newReleaseFetchState.CurrentState;
-
         public IObservableCollection<IAlbumViewModel> NewReleases => this.newReleases;
 
         public event FetchStateChangedEventHandler OnNewReleaseFetchStateChanged
@@ -71,8 +69,6 @@ namespace E.ExploreDeezer.Core.WhatsNew
             remove => this.newReleaseFetchState.OnFetchStateChanged -= value;
         }
 
-
-        public EFetchState DeezerPicksFetchState => this.deezerPicksFetchState.CurrentState;
 
         public IObservableCollection<IAlbumViewModel> DeezerPicks => this.deezerPicks;
 
@@ -111,16 +107,14 @@ namespace E.ExploreDeezer.Core.WhatsNew
 
 
             this.newReleases.SetFetcher((start, count, ct) => this.session.Genre.GetNewReleasesForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                                .ContinueWith<IEnumerable<IAlbumViewModel>>(t =>
+                                                                                .ContinueWhenNotCancelled<IEnumerable<IAlbum>, IEnumerable<IAlbumViewModel>>(t =>
                                                                                 {
-                                                                                    if (t.IsFaulted)
+                                                                                    (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                    if (faulted)
                                                                                     {
                                                                                         this.newReleaseFetchState.SetError();
-
-                                                                                        var ex = t.Exception.GetBaseException();
-                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch some new releases. {ex}");
-
-                                                                                        throw ex;
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch new releases. {ex}");
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -137,19 +131,17 @@ namespace E.ExploreDeezer.Core.WhatsNew
 
                                                                                     return items;
 
-                                                                                }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                }, ct));
 
             this.deezerPicks.SetFetcher((start, count, ct) => this.session.Genre.GetDeezerSelectionForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                                .ContinueWith<IEnumerable<IAlbumViewModel>>(t =>
+                                                                                .ContinueWhenNotCancelled<IEnumerable<IAlbum>, IEnumerable<IAlbumViewModel>>(t =>
                                                                                 {
-                                                                                    if (t.IsFaulted)
+                                                                                    (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                    if (faulted)
                                                                                     {
                                                                                         this.deezerPicksFetchState.SetError();
-
-                                                                                        var ex = t.Exception.GetBaseException();
-                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch some new releases. {ex}");
-
-                                                                                        throw ex;
+                                                                                        System.Diagnostics.Debug.WriteLine($"Failed to fetch deezer picks. {ex}");
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -166,7 +158,7 @@ namespace E.ExploreDeezer.Core.WhatsNew
 
                                                                                     return items;
 
-                                                                                }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                }, ct));
         }
 
 
