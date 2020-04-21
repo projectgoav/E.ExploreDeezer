@@ -120,16 +120,36 @@
             <!-- Albums -->
             <PivotItem Header="Albums">
 
-                <GridView x:Name="AlbumGrid"
-                          ItemsSource="{Binding Albums}">
+                <Grid>
+                
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding AlbumFetchState,
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:AlbumGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
+                    <ProgressRing IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding AlbumFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
 
-                </GridView>
+                    <GridView x:Name="AlbumGrid"
+                              ItemsSource="{Binding Albums}"
+                              Visibility="{Binding AlbumFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:AlbumGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                </Grid>
 
             </PivotItem>
 
@@ -137,32 +157,74 @@
             <!-- Top tracks -->
             <PivotItem Header="Top Tracks">
 
-                <ListView x:Name="TopTrackList"
-                              ItemsSource="{Binding TopTracks}">
+                <Grid>
 
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:TrackListCell />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding TopTrackFetchState,
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
-                </ListView>
+                    <ProgressRing IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding TopTrackFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+
+                    <ListView x:Name="TopTrackList"
+                              ItemsSource="{Binding TopTracks}"
+                              Visibility="{Binding TopTrackFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:TrackListCell />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
+
+                </Grid>
 
             </PivotItem>
 
             <!-- Playlists -->
             <PivotItem Header="Featured In">
 
-                <GridView x:Name="FeaturedPlaylistsGrid"
-                              ItemsSource="{Binding FeaturedPlaylists}">
+                <Grid>
 
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:PlaylistGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding FeaturedPlaylistFetchState,
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
-                </GridView>
+                    <ProgressRing IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding FeaturedPlaylistFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+
+                    <GridView x:Name="FeaturedPlaylistsGrid"
+                              ItemsSource="{Binding FeaturedPlaylists}"
+                              Visibility="{Binding FeaturedPlaylistFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:PlaylistGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                </Grid>
 
             </PivotItem>
 
@@ -171,16 +233,37 @@
 
             <PivotItem Header="Related Artists">
 
-                <GridView x:Name="RelatedArtistsGrid"
-                              ItemsSource="{Binding RelatedArtists}">
+                <Grid>
 
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <controls:ArtistGridCell />
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
+                    <TextBlock Text="No content found"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding RelatedArtistFetchState,
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
-                </GridView>
+                    <ProgressRing IsActive="True"
+                                  Width="50"
+                                  Height="50"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Visibility="{Binding RelatedArtistFetchState,
+                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
+
+
+                    <GridView x:Name="RelatedArtistsGrid"
+                              ItemsSource="{Binding RelatedArtists}"
+                              Visibility="{Binding RelatedArtistFetchState,
+                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <controls:ArtistGridCell />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
+
+                </Grid>
 
             </PivotItem>
             

@@ -77,7 +77,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding NewReleaseFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -115,7 +115,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding DeezerPicksFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"

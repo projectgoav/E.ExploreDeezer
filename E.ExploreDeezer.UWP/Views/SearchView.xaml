@@ -32,11 +32,11 @@
 
                 <Grid>
 
-                    <TextBlock Text="No content found"
+                    <TextBlock Text="No results"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding AlbumResultFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -69,11 +69,11 @@
 
                 <Grid>
 
-                    <TextBlock Text="No content found"
+                    <TextBlock Text="No results"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding ArtistResultFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -108,11 +108,11 @@
 
                 <Grid>
 
-                    <TextBlock Text="No content found"
+                    <TextBlock Text="No results"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding PlaylistResultFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -146,11 +146,11 @@
 
                 <Grid>
 
-                    <TextBlock Text="No content found"
+                    <TextBlock Text="No results"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding TrackResultFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"

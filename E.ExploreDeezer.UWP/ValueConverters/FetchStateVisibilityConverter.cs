@@ -15,12 +15,16 @@ namespace E.ExploreDeezer.UWP.ValueConverters
     {
 
         public FetchStateVisibilityConverter(EFetchState expectedState)
+            : this(new EFetchState[1] { expectedState} )
+        { }
+
+        public FetchStateVisibilityConverter(IEnumerable<EFetchState> expectedStates)
         {
-            this.ExpectedState = expectedState;
+            this.ExpectedStates = new HashSet<EFetchState>(expectedStates);
         }
 
 
-        public EFetchState ExpectedState { get; private set; }
+        public IEnumerable<EFetchState> ExpectedStates { get; private set; }
 
 
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -29,8 +33,8 @@ namespace E.ExploreDeezer.UWP.ValueConverters
 
             EFetchState fetchState = (EFetchState)value;
 
-            return fetchState == this.ExpectedState ? Visibility.Visible
-                                                    : Visibility.Collapsed;
+            return this.ExpectedStates.Contains(fetchState) ? Visibility.Visible
+                                                            : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
@@ -65,6 +69,13 @@ namespace E.ExploreDeezer.UWP.ValueConverters
     {
         public ContentAvailableFetchStateVisibilityConverter()
             : base(EFetchState.Available)
+        { }
+    }
+
+    public class EmptyOrErrorFetchStateVisibilityConverter : FetchStateVisibilityConverter
+    {
+        public EmptyOrErrorFetchStateVisibilityConverter()
+            : base(new EFetchState[2] { EFetchState.Empty, EFetchState.Error })
         { }
     }
 }

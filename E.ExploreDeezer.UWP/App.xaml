@@ -12,6 +12,7 @@
         <converters:EmptyFetchStateVisibilityConverter x:Key="EmptyFetchStateVisibility" />
         <converters:ErrorFetchStateVisibilityConverter x:Key="ErrorFetchStateVisibility" />
         <converters:LoadingFetchStateVisibilityConverter x:Key="LoadingFetchStateVisibility" />
+        <converters:EmptyOrErrorFetchStateVisibilityConverter x:Key="EmptyOrErrorFetchStateVisibility" />
         <converters:ContentAvailableFetchStateVisibilityConverter x:Key="ContentAvailableFetchStateVisibility" />
 
         <converters:NumberFormatValueConverter x:Key="NumberFormatter" />

@@ -76,7 +76,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding AlbumChartFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -116,7 +116,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding ArtistChartFetchState,         
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -152,7 +152,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding PlaylistChartFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
@@ -188,7 +188,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding TrackChartFetchState,
-                                                    Converter={StaticResource EmptyFetchStateVisibility}}" />
+                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
 
                     <ProgressRing IsActive="True"
                                   Width="75"
