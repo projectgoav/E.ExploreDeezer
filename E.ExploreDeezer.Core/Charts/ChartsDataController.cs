@@ -153,6 +153,7 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                 { 
                                                                                     this.albumFetchState.SetError();
                                                                                     System.Diagnostics.Debug.WriteLine($"Failed to fetch album chart. {ex}");
+                                                                                    return null;
                                                                                 }
 
                                                                                 var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -181,6 +182,7 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                  {
                                                                                      this.artistFetchState.SetError();
                                                                                      System.Diagnostics.Debug.WriteLine($"Failed to fetch artist chart. {ex}");
+                                                                                     return null;
                                                                                  }
 
                                                                                  var items = t.Result.Select(x => new ArtistViewModel(x));
@@ -209,6 +211,7 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                 {
                                                                                     this.trackFetchState.SetError();
                                                                                     System.Diagnostics.Debug.WriteLine($"Failed to fetch track chart. {ex}");
+                                                                                    return null;
                                                                                 }
 
                                                                                 var items = t.Result.Select(x => new TrackViewModel(x, 
@@ -239,6 +242,7 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                {
                                                                                    this.playlistFetchState.SetError();
                                                                                    System.Diagnostics.Debug.WriteLine($"Failed to fetch playlist chart. {ex}");
+                                                                                   return null;
                                                                                }
 
                                                                                var items = t.Result.Select(x => new PlaylistViewModel(x));

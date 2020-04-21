@@ -115,6 +115,7 @@ namespace E.ExploreDeezer.Core.WhatsNew
                                                                                     {
                                                                                         this.newReleaseFetchState.SetError();
                                                                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch new releases. {ex}");
+                                                                                        return null;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -142,6 +143,7 @@ namespace E.ExploreDeezer.Core.WhatsNew
                                                                                     {
                                                                                         this.deezerPicksFetchState.SetError();
                                                                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch deezer picks. {ex}");
+                                                                                        return null;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new AlbumViewModel(x));

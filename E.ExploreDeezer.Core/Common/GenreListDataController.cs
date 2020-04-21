@@ -10,6 +10,8 @@ using E.Deezer;
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
+using E.ExploreDeezer.Core.Extensions;
+using E.Deezer.Api;
 
 namespace E.ExploreDeezer.Core.Common
 {
@@ -28,7 +30,6 @@ namespace E.ExploreDeezer.Core.Common
 
     internal interface IGenreListDataController
     {
-        EFetchState CurrentFetchState { get; }
         IObservableCollection<IGenreViewModel> TheList { get; }
         event FetchStateChangedEventHandler OnFetchStateChanged;
 
@@ -53,8 +54,6 @@ namespace E.ExploreDeezer.Core.Common
 
 
         // IGenreListDataController
-        public EFetchState CurrentFetchState => this.fetchState.CurrentState;
-
         public IObservableCollection<IGenreViewModel> TheList => this.genreList;
 
         public event FetchStateChangedEventHandler OnFetchStateChanged
@@ -73,13 +72,14 @@ namespace E.ExploreDeezer.Core.Common
             this.fetchState.SetLoading();
 
             return this.session.Genre.GetCommonGenre(this.tokenSource.Token)
-                                        .ContinueWith(t =>
+                                        .ContinueWhenNotCancelled(t =>
                                         {
-                                            if (t.IsFaulted)
+                                            (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                            if (faulted)
                                             {
-                                                //TODO: Proper logging
-                                                System.Diagnostics.Debug.WriteLine($"Failed to fetch genre list.\n{t.Exception.GetBaseException()}");
                                                 this.fetchState.SetError();
+                                                System.Diagnostics.Debug.WriteLine($"Failed to fetch genre list. {ex}");
                                                 return;
                                             }
 
@@ -94,7 +94,7 @@ namespace E.ExploreDeezer.Core.Common
                                                 this.fetchState.SetAvailable();
                                             }
 
-                                        }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                                        }, this.tokenSource.Token);
         }
 
 

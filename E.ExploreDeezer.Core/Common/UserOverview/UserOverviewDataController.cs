@@ -131,7 +131,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                             {
                                                                                 System.Diagnostics.Debug.WriteLine($"Failed to fetch user flow. {ex}");
                                                                                 this.flowFetchState.SetError();
-                                                                                throw ex;
+                                                                                return null;
                                                                             }
 
                                                                             var items = t.Result.Select(x => new TrackViewModel(x, 

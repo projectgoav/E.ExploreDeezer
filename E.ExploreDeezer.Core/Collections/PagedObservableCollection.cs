@@ -227,11 +227,10 @@ namespace E.ExploreDeezer.Core.Collections
                 {
                     if (t.IsFaulted)
                     {
-                        //TODO
                         return;
                     }
 
-                    if (t.Result.Any())
+                    if (t.Result != null && t.Result.Any())
                     {
                         this.pages.Add(pageNumber, new List<T>(t.Result));
                         NotifyPageAdded(pageNumber);

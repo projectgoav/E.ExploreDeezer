@@ -146,7 +146,6 @@ namespace E.ExploreDeezer.Core.Common
                                     {
                                         this.albumFetchState.SetError();
                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch complete artist. {ex}");
-                                        throw ex;
                                     }
 
                                     this.CompleteArtist = new ArtistViewModel(t.Result);
@@ -164,7 +163,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                  {
                                                                                      this.albumFetchState.SetError();
                                                                                      System.Diagnostics.Debug.WriteLine($"Failed to fetch artists albums. {ex}");
-                                                                                     throw ex;
+                                                                                     return null;
                                                                                  }
 
                                                                                  var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -192,7 +191,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                     {
                                                                                         this.albumFetchState.SetError();
                                                                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch artists top tracks. {ex}");
-                                                                                        throw ex;
+                                                                                        return null;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new TrackViewModel(x, 
@@ -222,7 +221,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                     {
                                                                                         this.albumFetchState.SetError();
                                                                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch playlists featuring artist. {ex}");
-                                                                                        throw ex;
+                                                                                        return null;
                                                                                     }
 
                                                                                     var items = t.Result.Select(x => new PlaylistViewModel(x));
@@ -250,7 +249,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                          {
                                                                                              this.albumFetchState.SetError();
                                                                                              System.Diagnostics.Debug.WriteLine($"Failed to fetch related artits. {ex}");
-                                                                                             throw ex;
+                                                                                             return null;
                                                                                          }
 
                                                                                          var items = t.Result.Select(x => new ArtistViewModel(x));

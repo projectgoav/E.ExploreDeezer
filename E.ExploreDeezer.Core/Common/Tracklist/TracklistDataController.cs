@@ -7,10 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using E.Deezer;
+using E.Deezer.Api;
 
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
+using E.ExploreDeezer.Core.Extensions;
 
 namespace E.ExploreDeezer.Core.Common
 {
@@ -21,7 +23,6 @@ namespace E.ExploreDeezer.Core.Common
         IExtendedPlaylistViewModel CompletePlaylist { get; }
         event FetchStateChangedEventHandler OnCompleteItemFetchStateChanged;
 
-        EFetchState TracklistFetchState { get; }
         IObservableCollection<ITrackViewModel> Tracklist { get; }
         event FetchStateChangedEventHandler OnTracklistFetchStateChanged;
 
@@ -76,8 +77,6 @@ namespace E.ExploreDeezer.Core.Common
         }
 
 
-        public EFetchState TracklistFetchState => this.fetchState.CurrentState;
-
         public IObservableCollection<ITrackViewModel> Tracklist => this.tracklist;
 
         public event FetchStateChangedEventHandler OnTracklistFetchStateChanged
@@ -114,34 +113,32 @@ namespace E.ExploreDeezer.Core.Common
                 case ETracklistType.Album:
 
                     this.session.Albums.GetById(this.ItemId, this.tokenSource.Token)
-                                       .ContinueWith(t =>
+                                       .ContinueWhenNotCancelled(t =>
                                        {
-                                           if (t.IsFaulted)
+                                           (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                           if (faulted)
                                            {
                                                this.completeItemFetchState.SetError();
-
-                                               var ex = t.Exception.GetBaseException();
                                                System.Diagnostics.Debug.WriteLine($"Failed to fetch complete album {ex}");
-
-                                               throw ex;
+                                               return;
                                            }
 
                                            this.CompleteAlbum = new AlbumViewModel(t.Result);
                                            this.completeItemFetchState.SetAvailable();
 
-                                       }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                                       }, this.tokenSource.Token);
 
                     this.tracklist.SetFetcher((start, count, ct) => this.session.Albums.GetAlbumTracks(this.ItemId, ct, (uint)start, (uint)count)
-                                                                                       .ContinueWith<IEnumerable<ITrackViewModel>>(t =>
+                                                                                       .ContinueWhenNotCancelled<IEnumerable<ITrack>, IEnumerable<ITrackViewModel>>(t =>
                                                                                        {
-                                                                                           if (t.IsFaulted)
+                                                                                           (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                           if (faulted)
                                                                                            {
                                                                                                this.fetchState.SetError();
-
-                                                                                               var ex = t.Exception.GetBaseException();
-                                                                                               System.Diagnostics.Debug.WriteLine($"Failed to get album tracklist. {ex}");
-
-                                                                                               throw ex;
+                                                                                               System.Diagnostics.Debug.WriteLine($"Failed to fetch tracklist. {ex}");
+                                                                                               return null;
                                                                                            }
 
                                                                                            var items = t.Result.Select(x => new TrackViewModel(x, 
@@ -161,43 +158,43 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                                            return items;
 
-                                                                                       }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                                       }, ct));
 
                     break;
 
                 case ETracklistType.Playlist:
 
                     this.session.Playlists.GetById(this.ItemId, this.tokenSource.Token)
-                                          .ContinueWith(t =>
+                                          .ContinueWhenNotCancelled(t =>
                                           {
-                                              if (t.IsFaulted)
+                                              (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                              if (faulted)
                                               {
                                                   this.completeItemFetchState.SetError();
-
-                                                  var ex = t.Exception.GetBaseException();
                                                   System.Diagnostics.Debug.WriteLine($"Failed to fetch complete playlist. {ex}");
 
-                                                  throw ex;
+                                                  return;
                                               }
 
                                               this.CompletePlaylist = new PlaylistViewModel(t.Result);
                                               this.completeItemFetchState.SetAvailable();
 
-                                          }, this.tokenSource.Token, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                                          }, this.tokenSource.Token);
 
 
                     this.tracklist.SetFetcher((start, count, ct) => this.session.Playlists.GetTracks(this.ItemId, ct, (uint)start, (uint)count)
-                                                                   .ContinueWith<IEnumerable<ITrackViewModel>>(t =>
+                                                                   .ContinueWhenNotCancelled<IEnumerable<ITrack>, IEnumerable<ITrackViewModel>>(t =>
                                                                    {
-                                                                       if (t.IsFaulted)
+                                                                       (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                       if (faulted)
                                                                        {
                                                                            this.fetchState.SetError();
-
-                                                                           var ex = t.Exception.GetBaseException();
-                                                                           System.Diagnostics.Debug.WriteLine($"Failed to get album tracklist. {ex}");
-
-                                                                           throw ex;
+                                                                           System.Diagnostics.Debug.WriteLine($"Failed to fetch tracklist. {ex}");
+                                                                           return null;
                                                                        }
+
 
                                                                        var items = t.Result.Select(x => new TrackViewModel(x, 
                                                                                                                            ETrackLHSMode.Artwork, 
@@ -216,7 +213,7 @@ namespace E.ExploreDeezer.Core.Common
 
                                                                        return items;
 
-                                                                   }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                   }, ct));
 
                     break;
 
