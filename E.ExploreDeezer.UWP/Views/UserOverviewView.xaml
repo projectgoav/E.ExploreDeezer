@@ -18,7 +18,7 @@
 
         <!-- Header -->
         <Grid Grid.Row="0"
-              Height="205">
+              Height="215">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
