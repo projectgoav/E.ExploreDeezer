@@ -59,11 +59,12 @@ namespace E.ExploreDeezer.UWP.Views
         {
             if (this.PlaylistGrid.SelectedIndex >= 0)
             {
-                var playlist = this.ViewModel.Playlists.GetItem(this.PlaylistGrid.SelectedIndex);
-                var p = this.ViewModel.CreateTracklistViewModelParams(playlist);
+                int index = this.PlaylistGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .Navigate(typeof(TracklistView), p);
+                if (index == -1)
+                    return;
+
+                Navigation.ShowPlaylistTracklist(this.ViewModel.Playlists.GetItem(index));
             }
         }
     }

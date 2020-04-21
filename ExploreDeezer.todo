@@ -20,7 +20,8 @@ Core/ViewModels:
  ✔ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...) @done (20-04-08 16:03)
  ☐ Radio support
  ☐ Convert over the data controllers to use the helpful task extensions to avoid writing all the same continuation and error checking nonsense
- ☐ User page (ViewModel & DataController)
+ ✔ User page (ViewModel & DataController) @done (20-04-20 20:34)
+ ☐ Improve how deep-linking will work with tracks in albums, playlists & track lists for charts etc
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -49,4 +50,4 @@ Views:
   ☐ Split out the Headers for Artist and Tracklist into a control to allow for the use of x:Bind
      Their data context can be added in the code-behind or view a deadicated binding with an Information / Header ViewModel property exposed
   ✔ Witcher 3 OST only shows 25 tracks instead of the full 55 @done (20-04-16 15:53)
-  ☐ User page
+  ✔ User page @done (20-04-20 20:34)

@@ -63,8 +63,6 @@ namespace E.ExploreDeezer.UWP.Views
             this.AlbumChartGrid.SelectionChanged += OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged += OnGridSelectionChanged;
             this.ArtistChartGrid.SelectionChanged += OnGridSelectionChanged;
-
-            this.GenreSelector.SelectionChanged += GenreSelectionChanged;
         }
 
         private void RemoveEvents()
@@ -72,8 +70,6 @@ namespace E.ExploreDeezer.UWP.Views
             this.AlbumChartGrid.SelectionChanged -= OnGridSelectionChanged;
             this.PlaylistsChartGrid.SelectionChanged -= OnGridSelectionChanged;
             this.ArtistChartGrid.SelectionChanged -= OnGridSelectionChanged;
-
-            this.GenreSelector.SelectionChanged -= GenreSelectionChanged;
         }
 
 
@@ -82,41 +78,34 @@ namespace E.ExploreDeezer.UWP.Views
         {
             if (sender == this.AlbumChartGrid)
             {
-                var selectedItem = this.ViewModel.AlbumChart.ElementAt(this.AlbumChartGrid.SelectedIndex);
-                var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+                int index = this.AlbumChartGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
-                return;
+                if (index == -1)
+                    return;
+
+                Navigation.ShowAlbumTracklist(this.ViewModel.AlbumChart.GetItem(index));
             }
             else if (sender == this.PlaylistsChartGrid)
             {
-                var selectedItem = this.ViewModel.PlaylistChart.ElementAt(this.PlaylistsChartGrid.SelectedIndex);
-                var p = this.ViewModel.GetTracklistViewModelParams(selectedItem);
+                int index = this.PlaylistsChartGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
-                return;
+                if (index == -1)
+                    return;
 
+                Navigation.ShowPlaylistTracklist(this.ViewModel.PlaylistChart.GetItem(index));
             }
             else if (sender == this.ArtistChartGrid)
             {
-                var selectedItem = this.ViewModel.ArtistChart.ElementAt(this.ArtistChartGrid.SelectedIndex);
-                var p = this.ViewModel.GetArtistOverviewViewModelParams(selectedItem);
+                int index = this.ArtistChartGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(ArtistOverviewView), p);
+                if (index == -1)
+                    return;
+
+                Navigation.ShowArtistOverview(this.ViewModel.ArtistChart.GetItem(index));
             }
 
             else
-                return; // TODO
-        }
-
-
-        private void GenreSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //var selectedGenre = this.ViewModel.GenreList.ElementAt(this.GenreSelector.SelectedIndex);
-            //this.ViewModel.SetSelectedGenre(selectedGenre);
+                return;
         }
     }
 }

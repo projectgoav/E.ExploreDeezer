@@ -26,7 +26,6 @@ namespace E.ExploreDeezer.Core.WhatsNew
         IObservableCollection<IAlbumViewModel> DeezerPicks { get; }
 
         int SelectedGenreIndex { get; set; }
-        TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
     }
 
     internal class WhatsNewViewModel : ViewModelBase,
@@ -114,10 +113,6 @@ namespace E.ExploreDeezer.Core.WhatsNew
             }
         }
 
-
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
 
 
         private void OnGenreListFetchStateChanged(object sender, FetchStateChangedEventArgs args)

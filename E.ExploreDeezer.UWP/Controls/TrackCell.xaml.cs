@@ -15,7 +15,6 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core.ViewModels;
 
-using E.ExploreDeezer.UWP.Views;
 
 namespace E.ExploreDeezer.UWP.Controls
 {
@@ -31,17 +30,17 @@ namespace E.ExploreDeezer.UWP.Controls
 
         private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
-            this.ViewModel = args.NewValue as IWrappedTrackViewModel;
+            this.ViewModel = args.NewValue as ITrackViewModel;
 
             UpdateControls();
             Bindings.Update();
         }
 
-        public IWrappedTrackViewModel ViewModel { get; private set; }
+        public ITrackViewModel ViewModel { get; private set; }
 
 
         private void OnArtistClicked(object sender, RoutedEventArgs e)
-            => this.ViewModel?.OnArtistSelected(this.ViewModel.ArtistId);
+            => Navigation.ShowArtistOverview(this.ViewModel.ArtistId);
 
 
 

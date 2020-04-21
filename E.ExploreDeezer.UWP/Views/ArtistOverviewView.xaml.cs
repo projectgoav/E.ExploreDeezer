@@ -68,11 +68,7 @@ namespace E.ExploreDeezer.UWP.Views
                 if (index == -1)
                     return;
 
-                var album = this.ViewModel.Albums.GetItem(this.AlbumGrid.SelectedIndex);
-                var p = this.ViewModel.CreateTracklistViewModelParams(album);
-
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
+                Navigation.ShowAlbumTracklist(this.ViewModel.Albums.GetItem(index));
             }
             else if (sender == this.RelatedArtistsGrid)
             {
@@ -81,11 +77,7 @@ namespace E.ExploreDeezer.UWP.Views
                 if (index == -1)
                     return;
 
-                var artist = this.ViewModel.RelatedArtists.GetItem(this.RelatedArtistsGrid.SelectedIndex);
-                var p = this.ViewModel.CreateArtistOverviewViewModelParams(artist);
-
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(ArtistOverviewView), p);
+                Navigation.ShowArtistOverview(this.ViewModel.RelatedArtists.GetItem(index));
             }
             else if (sender == this.FeaturedPlaylistsGrid)
             {
@@ -94,11 +86,7 @@ namespace E.ExploreDeezer.UWP.Views
                 if (index == -1)
                     return;
 
-                var playlist = this.ViewModel.FeaturedPlaylists.GetItem(this.FeaturedPlaylistsGrid.SelectedIndex);
-                var p = this.ViewModel.CreateTracklistViewModelParams(playlist);
-
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
+                Navigation.ShowPlaylistTracklist(this.ViewModel.FeaturedPlaylists.GetItem(index));
             }
         }
     }

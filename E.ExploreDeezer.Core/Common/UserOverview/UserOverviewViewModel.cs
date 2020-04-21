@@ -20,8 +20,6 @@ namespace E.ExploreDeezer.Core.Common
 
         EFetchState PlaylistFetchState { get; }
         IObservableCollection<IPlaylistViewModel> Playlists { get; }
-
-        TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist);
     }
 
     public struct UserOverviewViewModelParams
@@ -111,9 +109,6 @@ namespace E.ExploreDeezer.Core.Common
 
         public IObservableCollection<IPlaylistViewModel> Playlists => this.playlists;
 
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(playlistViewModel);
 
 
         private void OnFlowFetchStateChanged(object sender, FetchStateChangedEventArgs e)

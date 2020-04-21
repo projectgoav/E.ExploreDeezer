@@ -9,6 +9,8 @@ using Windows.UI.Xaml.Media.Animation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.UWP.Views;
+using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.Common;
 
 namespace E.ExploreDeezer.UWP
 {
@@ -16,6 +18,21 @@ namespace E.ExploreDeezer.UWP
     {
         Yes,
         No
+    }
+
+    internal interface INavigationService
+    {
+        void ShowAlbumTracklist(ulong albumId);
+        void ShowAlbumTracklist(IAlbumViewModel album);
+
+        void ShowPlaylistTracklist(ulong playlistId);
+        void ShowPlaylistTracklist(IPlaylistViewModel playlist);
+
+        void ShowArtistOverview(ulong artistId);
+        void ShowArtistOverview(IArtistViewModel artist);
+
+        void ShowUserOverview(ulong userId);
+        void ShowUserOverview(IUserProfileViewModel userProfile);
     }
 
 
@@ -60,6 +77,75 @@ namespace E.ExploreDeezer.UWP
             else
                 return string.Empty;
         }
+
+
+
+        internal static void ShowAlbumTracklist(IAlbumViewModel album)
+        {
+            var p = ViewModelParamFactory.CreateAlbumTracklistViewModelParams(album);
+            ShowTracklist(p);
+        }
+
+        internal static void ShowAlbumTracklist(ulong albumId)
+        {
+            var p = ViewModelParamFactory.CreateAlbumTracklistViewModelParams(albumId);
+            ShowTracklist(p);
+        }
+
+
+        internal static void ShowPlaylistTracklist(IPlaylistViewModel playlist)
+        {
+            var p = ViewModelParamFactory.CreatePlaylistTracklistViewModelParams(playlist);
+            ShowTracklist(p);
+        }
+
+        internal static void ShowPlaylistTracklist(ulong playlistId)
+        {
+            var p = ViewModelParamFactory.CreatePlaylistTracklistViewModelParams(playlistId);
+            ShowTracklist(p);
+        }
+
+
+        internal static void ShowTracklist(TracklistViewModelParams p)
+            => ServiceRegistry.GetService<Frame>()
+                              .ShowNewPage(typeof(TracklistView), p);
+
+
+
+        internal static void ShowArtistOverview(IArtistViewModel artist)
+        {
+            var p = ViewModelParamFactory.CreateArtistOverviewViewModelParams(artist);
+            DoShowArtistOverview(p);
+        }
+
+        internal static void ShowArtistOverview(ulong artistId)
+        {
+            var p = ViewModelParamFactory.CreateArtistOverviewViewModelParams(artistId);
+            DoShowArtistOverview(p);
+        }
+
+        private static void DoShowArtistOverview(ArtistOverviewViewModelParams p)
+            => ServiceRegistry.GetService<Frame>()
+                              .ShowNewPage(typeof(ArtistOverviewView), p);
+
+
+
+        internal static void ShowUserOverview(IUserProfileViewModel userProfile)
+        {
+            var p = ViewModelParamFactory.CreateUserOverviewViewModelParams(userProfile);
+            DoShowUserOverview(p);
+        }
+
+        internal static void ShowUserOverview(ulong userId)
+        {
+            var p = ViewModelParamFactory.CreateUserOverviewViewModelParams(userId);
+            DoShowUserOverview(p);
+        }
+
+        private static void DoShowUserOverview(UserOverviewViewModelParams p)
+            => ServiceRegistry.GetService<Frame>()
+                              .ShowNewPage(typeof(UserOverviewView), p);
+
     }
 
     internal static class FrameExtensions

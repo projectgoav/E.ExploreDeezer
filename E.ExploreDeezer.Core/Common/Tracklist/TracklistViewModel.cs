@@ -40,34 +40,16 @@ namespace E.ExploreDeezer.Core.Common
     public struct TracklistViewModelParams
     {
         public TracklistViewModelParams(ETracklistViewModelType type,
-                                        object item)
+                                        ulong itemId)
         {
             this.Type = type;
-            this.Item = item;
+            this.ItemId = itemId;
         }
 
 
-        public object Item { get; }
+        public ulong ItemId { get; }
         public ETracklistViewModelType Type { get; }
     }
-
-
-    internal static class TracklistViewModelParamsExtensions
-    {
-        public static IAlbumViewModel ItemAsAlbum(this TracklistViewModelParams p)
-        {
-            Assert.That(p.Type == ETracklistViewModelType.Album);
-            return p.Item as IAlbumViewModel;
-        }
-
-        public static IPlaylistViewModel ItemAsPlaylist(this TracklistViewModelParams p)
-        {
-            Assert.That(p.Type == ETracklistViewModelType.Playlist);
-            return p.Item as IPlaylistViewModel;
-        }
-    }
-
-
 
     internal class TracklistViewModel : ViewModelBase,
                                         ITracklistViewModel
@@ -96,14 +78,20 @@ namespace E.ExploreDeezer.Core.Common
                                                                                         PlatformServices.MainThreadDispatcher);
 
             this.Type = p.Type;
-            switch (this.Type)
+
+            this.Title = string.Empty;
+            this.Subtitle = string.Empty;
+            this.ArtworkUri = "ms-appx://Assets/StoreLogo.png";
+            this.WebsiteLink = null;
+
+            switch(this.Type)
             {
                 case ETracklistViewModelType.Album:
-                    ConfigureViewModelAsAlbum(p.ItemAsAlbum());
+                    this.dataController.FetchTracklistAsync(ETracklistType.Album, p.ItemId);
                     break;
 
                 case ETracklistViewModelType.Playlist:
-                    ConfigureViewModelAsPlaylist(p.ItemAsPlaylist());
+                    this.dataController.FetchTracklistAsync(ETracklistType.Playlist, p.ItemId);
                     break;
             }
 
@@ -194,25 +182,6 @@ namespace E.ExploreDeezer.Core.Common
         private void OnHeaderFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.HeaderFetchState = e.NewValue;
 
-
-        private void ConfigureViewModelAsAlbum(IAlbumViewModel album)
-        {
-            this.Title = album.Title;
-            this.Subtitle = album.ArtistName;
-            this.ArtworkUri = album.ArtworkUri;
-
-            this.dataController.FetchTracklistAsync(ETracklistType.Album, album.ItemId);
-        }
-
-        private void ConfigureViewModelAsPlaylist(IPlaylistViewModel playlist)
-        {
-            this.Title = playlist.Title;
-            this.Subtitle = playlist.CreatorName;
-            this.ArtworkUri = playlist.ArtworkUri;
-
-            this.dataController.FetchTracklistAsync(ETracklistType.Playlist, playlist.ItemId);
-        }
-
         private void UpdateHeaderProperties()
         {
             switch(this.Type)
@@ -222,6 +191,7 @@ namespace E.ExploreDeezer.Core.Common
                     {
                         this.Title = this.dataController.CompleteAlbum.Title;
                         this.Subtitle = this.dataController.CompleteAlbum.ArtistName;
+                        this.ArtworkUri = this.dataController.CompleteAlbum.ArtworkUri;
 
                         this.NumberOfFans = this.dataController.CompleteAlbum.NumberOfFans;
                         this.NumberOfTracks = this.dataController.CompleteAlbum.NumberOfTracks;
@@ -235,6 +205,7 @@ namespace E.ExploreDeezer.Core.Common
                     {
                         this.Title = this.dataController.CompletePlaylist.Title;
                         this.Subtitle = this.dataController.CompletePlaylist.CreatorName;
+                        this.ArtworkUri = this.dataController.CompletePlaylist.ArtworkUri;
 
                         this.NumberOfFans = this.dataController.CompletePlaylist.NumberOfFans;
                         this.NumberOfTracks = this.dataController.CompletePlaylist.NumberOfTracks;

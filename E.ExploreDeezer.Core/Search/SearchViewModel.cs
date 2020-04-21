@@ -24,13 +24,6 @@ namespace E.ExploreDeezer.Core.Search
 
         EFetchState PlaylistResultFetchState { get; }
         IObservableCollection<IPlaylistViewModel> Playlists { get; }
-
-
-        TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel);
-
-        TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
-
-        ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel);
     }
 
     internal class SearchViewModel : ViewModelBase,
@@ -122,17 +115,6 @@ namespace E.ExploreDeezer.Core.Search
         }
 
         public IObservableCollection<IPlaylistViewModel> Playlists => this.playlists;
-
-
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(playlistViewModel);
-
-        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
-            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artistViewModel);
 
 
         private void OnAlbumFetchStateChanged(object sender, FetchStateChangedEventArgs args)

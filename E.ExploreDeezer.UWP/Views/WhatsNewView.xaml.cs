@@ -62,19 +62,15 @@ namespace E.ExploreDeezer.UWP.Views
             IAlbumViewModel selectedItem = null;
 
             if (sender == this.NewAlbumGrid)
-                selectedItem = this.ViewModel.NewReleases.ElementAt(this.NewAlbumGrid.SelectedIndex);
+                selectedItem = this.ViewModel.NewReleases.GetItem(this.NewAlbumGrid.SelectedIndex);
 
             else if (sender == this.DeezerPicksGrid)
-                selectedItem = this.ViewModel.DeezerPicks.ElementAt(this.DeezerPicksGrid.SelectedIndex);
+                selectedItem = this.ViewModel.DeezerPicks.GetItem(this.DeezerPicksGrid.SelectedIndex);
 
             else
                 return; // TODO
 
-            // TODO : Centralise the navigation somewhere?
-            var p = this.ViewModel.CreateTracklistViewModelParams(selectedItem);
-
-            ServiceRegistry.GetService<Frame>()
-                           .ShowNewPage(typeof(TracklistView), p);
+            Navigation.ShowAlbumTracklist(selectedItem);
         }
     }
 }

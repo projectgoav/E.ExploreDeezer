@@ -32,11 +32,6 @@ namespace E.ExploreDeezer.Core.Charts
         IObservableCollection<IGenreViewModel> GenreList { get; }
 
         int SelectedGenreIndex { get; set; }
-
-        TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel);
-        TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel);
-
-        ArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel);
     }
 
     internal class ChartsViewModel : ViewModelBase,
@@ -165,17 +160,6 @@ namespace E.ExploreDeezer.Core.Charts
                 }
             }
         }
-
-
-
-        public TracklistViewModelParams GetTracklistViewModelParams(IAlbumViewModel albumViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(albumViewModel);
-
-        public TracklistViewModelParams GetTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(playlistViewModel);
-
-        public ArtistOverviewViewModelParams GetArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
-            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artistViewModel);
 
 
 

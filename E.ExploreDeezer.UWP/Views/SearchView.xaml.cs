@@ -56,27 +56,30 @@ namespace E.ExploreDeezer.UWP.Views
         {
             if (sender == this.AlbumResultGrid)
             {
-                var album = this.SearchViewModel.Albums.ElementAt(this.AlbumResultGrid.SelectedIndex);
-                var p = this.SearchViewModel.CreateTracklistViewModelParams(album);
+                int index = this.AlbumResultGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
+                if (index == -1)
+                    return;
+
+                Navigation.ShowAlbumTracklist(this.SearchViewModel.Albums.GetItem(index));
             }
             else if (sender == this.ArtistResultGrid)
             {
-                var artist = this.SearchViewModel.Artists.ElementAt(this.ArtistResultGrid.SelectedIndex);
-                var p = this.SearchViewModel.CreateArtistOverviewViewModelParams(artist);
+                int index = this.ArtistResultGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(ArtistOverviewView), p);
+                if (index == -1)
+                    return;
+
+                Navigation.ShowArtistOverview(this.SearchViewModel.Artists.GetItem(index));
             }
             else if (sender == this.PlaylistsResultGrid)
             {
-                var playlist = this.SearchViewModel.Playlists.ElementAt(this.PlaylistsResultGrid.SelectedIndex);
-                var p = this.SearchViewModel.CreateTracklistViewModelParams(playlist);
+                int index = this.PlaylistsResultGrid.SelectedIndex;
 
-                ServiceRegistry.GetService<Frame>()
-                               .ShowNewPage(typeof(TracklistView), p);
+                if (index == -1)
+                    return;
+
+                Navigation.ShowPlaylistTracklist(this.SearchViewModel.Playlists.GetItem(index));
             }
         }
     }

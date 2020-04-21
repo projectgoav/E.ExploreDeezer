@@ -30,18 +30,10 @@ namespace E.ExploreDeezer.Core.Common
 
         EFetchState FeaturedPlaylistFetchState { get; }
         IObservableCollection<IPlaylistViewModel> FeaturedPlaylists { get; }
-
-        TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album);
-        TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist);
-        ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist);
     }
 
     public struct ArtistOverviewViewModelParams
     {
-        public ArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
-            : this(artistViewModel.Id)
-        { }
-
         public ArtistOverviewViewModelParams(ulong artistId)
         {
             this.ArtistId = artistId;
@@ -186,16 +178,6 @@ namespace E.ExploreDeezer.Core.Common
         }
 
         public IObservableCollection<IArtistViewModel> RelatedArtists => this.relatedArtists;
-
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel album)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(album);
-
-        public TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlist)
-            => ViewModelParamFactory.CreateTracklistViewModelParams(playlist);
-
-        public ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artist)
-            => ViewModelParamFactory.CreateArtistOverviewViewModelParams(artist);
 
 
         private void OnPlaylistFetchStateChanged(object sender, FetchStateChangedEventArgs e)

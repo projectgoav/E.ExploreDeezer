@@ -35,7 +35,7 @@
             <Image Grid.Row="0"
                    Grid.ColumnSpan="2"
                    Stretch="UniformToFill"
-                   Source="{x:Bind ViewModel.ArtworkUri}" />
+                   Source="{Binding ArtworkUri}" />
 
             <Rectangle Grid.Row="0"
                        Grid.ColumnSpan="2"
@@ -52,7 +52,7 @@
                     <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{x:Bind ViewModel.Title}"
+                <TextBlock Text="{Binding Title}"
                            Foreground="White"
                            FontSize="18"/>
 
@@ -110,14 +110,15 @@
                    Height="196"
                    VerticalAlignment="Center"  
                    HorizontalAlignment="Center"
-                   Source="{x:Bind ViewModel.ArtworkUri}" />
+                   Source="{Binding ArtworkUri}" />
 
         </Grid>
 
 
         <ListView x:Name="Tracklist"
                   Grid.Row="1"
-                  Margin="10,0,10,0">
+                  Margin="10,0,10,0"
+                  ItemsSource="{x:Bind ViewModel.Tracklist}">
 
             <ListView.ItemTemplate>
                 <DataTemplate>

@@ -8,29 +8,47 @@ namespace E.ExploreDeezer.Core.Common
 {
     public static class ViewModelParamFactory
     {
-
-        public static TracklistViewModelParams CreateTracklistViewModelParams(IAlbumViewModel albumViewModel)
+        public static TracklistViewModelParams CreateAlbumTracklistViewModelParams(IAlbumViewModel albumViewModel)
         {
-            if (albumViewModel == null)
-                throw new ArgumentException();
-
-            return new TracklistViewModelParams(ETracklistViewModelType.Album, albumViewModel);
+            Assert.That(albumViewModel != null);
+            return CreateAlbumTracklistViewModelParams(albumViewModel.ItemId);
         }
 
-        public static TracklistViewModelParams CreateTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
-        {
-            if (playlistViewModel == null)
-                throw new ArgumentException();
+        public static TracklistViewModelParams CreateAlbumTracklistViewModelParams(ulong albumId)
+            => new TracklistViewModelParams(ETracklistViewModelType.Album, albumId);
 
-            return new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistViewModel);
+
+
+        public static TracklistViewModelParams CreatePlaylistTracklistViewModelParams(IPlaylistViewModel playlistViewModel)
+        {
+            Assert.That(playlistViewModel != null);
+
+            return CreatePlaylistTracklistViewModelParams(playlistViewModel.ItemId);
         }
+
+        public static TracklistViewModelParams CreatePlaylistTracklistViewModelParams(ulong playlistId)
+            => new TracklistViewModelParams(ETracklistViewModelType.Playlist, playlistId);
+
+
 
         public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
         {
-            if (artistViewModel == null)
-                throw new ArgumentException();
-
-            return new ArtistOverviewViewModelParams(artistViewModel);
+            Assert.That(artistViewModel != null);
+            return CreateArtistOverviewViewModelParams(artistViewModel.Id);
         }
+
+        public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(ulong artistId)
+            => new ArtistOverviewViewModelParams(artistId);
+
+
+
+        public static UserOverviewViewModelParams CreateUserOverviewViewModelParams(IUserProfileViewModel userProfile)
+        {
+            Assert.That(userProfile != null);
+            return CreateUserOverviewViewModelParams(userProfile.Id);
+        }
+
+        public static UserOverviewViewModelParams CreateUserOverviewViewModelParams(ulong userId)
+            => new UserOverviewViewModelParams(userId);
     }
 }
