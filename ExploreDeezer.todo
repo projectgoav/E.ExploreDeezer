@@ -16,12 +16,14 @@ Core/ViewModels:
  ✔ Information data controllers @done (20-04-08 13:30)
  ✔ Fetch status for data controllers @done (20-04-14 16:16)
  ☐ Implement deep linking, allowing info pages to link to artist & user pages?
+   Done for lists of tracks throughout the app.
+   Info page has been removed for now, so will keep this task around to track that
  ✔ Genre data controller @done (20-04-08 13:41)
  ✔ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...) @done (20-04-08 16:03)
  ☐ Radio support
  ☐ Convert over the data controllers to use the helpful task extensions to avoid writing all the same continuation and error checking nonsense
  ✔ User page (ViewModel & DataController) @done (20-04-20 20:34)
- ☐ Improve how deep-linking will work with tracks in albums, playlists & track lists for charts etc
+ ✔ Improve how deep-linking will work with tracks in albums, playlists & track lists for charts etc @done (20-04-21 13:54)
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -31,7 +33,7 @@ Views:
   ✔ Search View - Should close off all search views when clearing search term @done (20-04-06 14:55)
   ✔ Search View - Clearing search or selecting another tab should prune the nav stack of all search related views @done (20-04-06 14:55)
   ✔ Genre View @done (20-03-25 21:03)
-  ☐ Navigation handling *could* be merged into a single place
+  ✔ Navigation handling *could* be merged into a single place @done (20-04-21 13:54)
   ☐ Each tab should have a backstack, which would made switch between tabs easier and more consistent.  
     This is because by default it looks like the way the navigation view changes between tabs means you lose backstack values
     and so can cause a whole load of issues...
@@ -44,7 +46,7 @@ Views:
     This didn't seem to be an issue anymore?
   ✔ Investigate why x:Bind doesn't work for GenrOverview view (See above) @done (20-04-08 13:41)
   ✔ Integrate fetch status to pages @done (20-04-14 16:16)
-  ☐ Implement deep linking. See ViewModel task for this, as work migh be required in View layer
+  ✔ Implement deep linking. See ViewModel task for this, as work migh be required in View layer @done (20-04-21 13:54)
   ☐ Radio support
   ☐ Add external link icon to links that open out-with the app
   ☐ Split out the Headers for Artist and Tracklist into a control to allow for the use of x:Bind

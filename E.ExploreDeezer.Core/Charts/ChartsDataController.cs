@@ -6,30 +6,27 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using E.Deezer;
+using E.Deezer.Api;
 
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
-
+using E.ExploreDeezer.Core.Extensions;
 
 namespace E.ExploreDeezer.Core.Charts
 {
     internal interface IChartsDataController
     {
-        EFetchState AlbumChartFetchState { get; }
         IObservableCollection<IAlbumViewModel> AlbumChart { get; }
         event FetchStateChangedEventHandler OnAlbumChartFetchStateChanged;
 
-        EFetchState ArtistChartFetchState { get; }
         IObservableCollection<IArtistViewModel> ArtistChart { get; }
         event FetchStateChangedEventHandler OnArtistChartFetchStateChanged;
 
-        EFetchState PlaylistChartFetchState { get; }
         IObservableCollection<IPlaylistViewModel> PlaylistChart { get; }
         event FetchStateChangedEventHandler OnPlaylistChartFetchStateChanged;
 
-        EFetchState TrackChartFetchState { get; }
         IObservableCollection<ITrackViewModel> TrackChart { get; }
         event FetchStateChangedEventHandler OnTrackChartFetchStateChanged;
 
@@ -81,8 +78,6 @@ namespace E.ExploreDeezer.Core.Charts
 
 
         // IChartsDataController
-        public EFetchState AlbumChartFetchState => this.albumFetchState.CurrentState;
-
         public IObservableCollection<IAlbumViewModel> AlbumChart => this.albums;
 
         public event FetchStateChangedEventHandler OnAlbumChartFetchStateChanged
@@ -91,8 +86,6 @@ namespace E.ExploreDeezer.Core.Charts
             remove => this.albumFetchState.OnFetchStateChanged -= value;
         }
 
-
-        public EFetchState ArtistChartFetchState => this.artistFetchState.CurrentState;
 
         public IObservableCollection<IArtistViewModel> ArtistChart => this.artists;
 
@@ -103,8 +96,6 @@ namespace E.ExploreDeezer.Core.Charts
         }
 
 
-        public EFetchState PlaylistChartFetchState => this.playlistFetchState.CurrentState;
-
         public IObservableCollection<IPlaylistViewModel> PlaylistChart => this.playlists;
 
         public event FetchStateChangedEventHandler OnPlaylistChartFetchStateChanged
@@ -113,8 +104,6 @@ namespace E.ExploreDeezer.Core.Charts
             remove => this.playlistFetchState.OnFetchStateChanged -= value;
         }
 
-
-        public EFetchState TrackChartFetchState => this.trackFetchState.CurrentState;
 
         public IObservableCollection<ITrackViewModel> TrackChart => this.tracks;
 
@@ -156,16 +145,14 @@ namespace E.ExploreDeezer.Core.Charts
 
 
             this.albums.SetFetcher((start, count, ct) => this.session.Charts.GetAlbumChartForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                            .ContinueWith<IEnumerable<IAlbumViewModel>>(t =>
+                                                                            .ContinueWhenNotCancelled<IEnumerable<IAlbum>, IEnumerable<IAlbumViewModel>>(t =>
                                                                             {
-                                                                                if (t.IsFaulted)
-                                                                                {
+                                                                                (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                if (faulted)
+                                                                                { 
                                                                                     this.albumFetchState.SetError();
-
-                                                                                    var ex = t.Exception.GetBaseException();
                                                                                     System.Diagnostics.Debug.WriteLine($"Failed to fetch album chart. {ex}");
-
-                                                                                    throw ex;
                                                                                 }
 
                                                                                 var items = t.Result.Select(x => new AlbumViewModel(x));
@@ -182,50 +169,46 @@ namespace E.ExploreDeezer.Core.Charts
 
                                                                                 return items;
 
-                                                                            }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                            }, ct));
 
 
             this.artists.SetFetcher((start, count, ct) => this.session.Charts.GetArtistChartForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                            .ContinueWith<IEnumerable<IArtistViewModel>>(t =>
-                                                                            {
-                                                                                if (t.IsFaulted)
-                                                                                {
-                                                                                    this.artistFetchState.SetError();
+                                                                             .ContinueWhenNotCancelled<IEnumerable<IArtist>, IEnumerable<IArtistViewModel>>(t =>
+                                                                             {
+                                                                                 (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                 if (faulted)
+                                                                                 {
+                                                                                     this.artistFetchState.SetError();
+                                                                                     System.Diagnostics.Debug.WriteLine($"Failed to fetch artist chart. {ex}");
+                                                                                 }
+
+                                                                                 var items = t.Result.Select(x => new ArtistViewModel(x));
  
-                                                                                    var ex = t.Exception.GetBaseException();
-                                                                                    System.Diagnostics.Debug.WriteLine($"Failed to fetch artists chart. {ex}");
+                                                                                 bool hasContents = this.artists.Count > 0 || items.Any();
+                                                                                 if (hasContents)
+                                                                                 {
+                                                                                     this.artistFetchState.SetAvailable();
+                                                                                 }
+                                                                                 else
+                                                                                 {
+                                                                                     this.artistFetchState.SetEmpty();
+                                                                                 }
+                                                                                  
+                                                                                 return items;
 
-                                                                                    throw ex;
-                                                                                }
-
-                                                                                var items = t.Result.Select(x => new ArtistViewModel(x));
-
-                                                                                bool hasContents = this.artists.Count > 0 || items.Any();
-                                                                                if (hasContents)
-                                                                                {
-                                                                                    this.artistFetchState.SetAvailable();
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    this.artistFetchState.SetEmpty();
-                                                                                }
-                                                                                 
-                                                                                return items;
-
-                                                                           }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                           }, ct));
 
 
             this.tracks.SetFetcher((start, count, ct) => this.session.Charts.GetTrackChartForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                            .ContinueWith<IEnumerable<ITrackViewModel>>(t =>
+                                                                            .ContinueWhenNotCancelled<IEnumerable<ITrack>, IEnumerable<ITrackViewModel>>(t =>
                                                                             {
-                                                                                if (t.IsFaulted)
+                                                                                (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                                if (faulted)
                                                                                 {
                                                                                     this.trackFetchState.SetError();
-
-                                                                                    var ex = t.Exception.GetBaseException();
-                                                                                    System.Diagnostics.Debug.WriteLine($"Failed to fetch tracks chart. {ex}");
-
-                                                                                    throw ex;
+                                                                                    System.Diagnostics.Debug.WriteLine($"Failed to fetch track chart. {ex}");
                                                                                 }
 
                                                                                 var items = t.Result.Select(x => new TrackViewModel(x, 
@@ -244,20 +227,18 @@ namespace E.ExploreDeezer.Core.Charts
 
                                                                                 return items;
 
-                                                                           }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                           }, ct));
 
 
             this.playlists.SetFetcher((start, count, ct) => this.session.Charts.GetPlaylistChartForGenre(this.CurrentGenreFilter, ct, (uint)start, (uint)count)
-                                                                           .ContinueWith<IEnumerable<IPlaylistViewModel>>(t =>
+                                                                           .ContinueWhenNotCancelled<IEnumerable<IPlaylist>, IEnumerable<IPlaylistViewModel>>(t =>
                                                                            {
-                                                                               if (t.IsFaulted)
+                                                                               (bool faulted, Exception ex) = t.CheckIfFailed();
+
+                                                                               if (faulted)
                                                                                {
                                                                                    this.playlistFetchState.SetError();
-
-                                                                                   var ex = t.Exception.GetBaseException();
-                                                                                   System.Diagnostics.Debug.WriteLine($"Failed to fetch playlists chart. {ex}");
-
-                                                                                   throw ex;
+                                                                                   System.Diagnostics.Debug.WriteLine($"Failed to fetch playlist chart. {ex}");
                                                                                }
 
                                                                                var items = t.Result.Select(x => new PlaylistViewModel(x));
@@ -274,7 +255,7 @@ namespace E.ExploreDeezer.Core.Charts
 
                                                                                return items;
 
-                                                                           }, ct, TaskContinuationOptions.NotOnCanceled | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default));
+                                                                           }, ct));
         }
 
 
