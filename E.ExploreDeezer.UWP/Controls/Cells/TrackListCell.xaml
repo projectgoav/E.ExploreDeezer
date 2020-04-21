@@ -25,6 +25,7 @@
                Source="{x:Bind ViewModel.ArtworkUri}" />
 
         <StackPanel Grid.Column="1"
+                    x:Name="DetailsStack"
                     Margin="5,0,0,0"
                     Orientation="Vertical"
                     VerticalAlignment="Center">
@@ -36,10 +37,15 @@
                        TextWrapping="WrapWholeWords"
                        TextTrimming="WordEllipsis"/>
             
-            <TextBlock Text="{x:Bind ViewModel.Artist}"
+            <TextBlock x:Name="ArtistNameLabel"
+                       Text="{x:Bind ViewModel.Artist}"
                        FontSize="14"
                        TextWrapping="NoWrap"
                        TextTrimming="CharacterEllipsis"/>
+
+            <HyperlinkButton x:Name="ArtistNameLink"
+                             Content="{x:Bind ViewModel.Artist}"
+                             FontSize="14" />
 
         </StackPanel>
         

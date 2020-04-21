@@ -228,7 +228,9 @@ namespace E.ExploreDeezer.Core.Charts
                                                                                     throw ex;
                                                                                 }
 
-                                                                                var items = t.Result.Select(x => new TrackViewModel(x));
+                                                                                var items = t.Result.Select(x => new TrackViewModel(x, 
+                                                                                                                                    ETrackLHSMode.Artwork, 
+                                                                                                                                    ETrackArtistMode.NameWithLink));
 
                                                                                 bool hasContents = this.tracks.Count > 0 || items.Any();
                                                                                 if (hasContents)

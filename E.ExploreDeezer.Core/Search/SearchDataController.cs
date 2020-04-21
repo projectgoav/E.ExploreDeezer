@@ -203,7 +203,9 @@ namespace E.ExploreDeezer.Core.Search
                                                                               throw ex;
                                                                           }
 
-                                                                          var items = t.Result.Select(x => new TrackViewModel(x));
+                                                                          var items = t.Result.Select(x => new TrackViewModel(x, 
+                                                                                                                              ETrackLHSMode.Artwork, 
+                                                                                                                              ETrackArtistMode.NameWithLink));
 
                                                                           bool hasContents = this.trackResults.Count > 0 || items.Any();
                                                                           if (hasContents)

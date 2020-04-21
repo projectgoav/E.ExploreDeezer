@@ -8,16 +8,22 @@ using E.Deezer.Api;
 
 namespace E.ExploreDeezer.Core.ViewModels
 {
-    public enum ETrackLHSMode
+    public enum ETrackLHSMode : byte
     {
         Number,
         Artwork
     }
 
+    public enum ETrackArtistMode : byte
+    {
+        Name,
+        NameWithLink
+    }
+
     public interface ITrackViewModel
     {
-        bool IsPresent { get; }
         ETrackLHSMode LHSMode { get; }
+        ETrackArtistMode ArtistMode { get; }
 
         string Title { get; }
         string Artist { get; }
@@ -32,11 +38,14 @@ namespace E.ExploreDeezer.Core.ViewModels
     internal class TrackViewModel : ITrackViewModel
     {
 
-        public TrackViewModel(ITrack track, ETrackLHSMode lhsMode = ETrackLHSMode.Number)
+        public TrackViewModel(ITrack track, 
+                              ETrackLHSMode lhsMode,
+                              ETrackArtistMode artistMode)
         {
             this.IsPresent = track != null;
 
             this.LHSMode = lhsMode;
+            this.ArtistMode = artistMode;
 
             this.Title = track?.Title ?? string.Empty;
             this.Artist = track?.ArtistName ?? string.Empty;
@@ -54,6 +63,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         public bool IsPresent { get; }
 
         public ETrackLHSMode LHSMode { get; }
+        public ETrackArtistMode ArtistMode { get; }
 
         public string Title { get; }
         public string Artist { get; }

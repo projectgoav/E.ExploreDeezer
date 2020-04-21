@@ -195,7 +195,9 @@ namespace E.ExploreDeezer.Core.Common
                                                                                         throw ex;
                                                                                     }
 
-                                                                                    var items = t.Result.Select(x => new TrackViewModel(x));
+                                                                                    var items = t.Result.Select(x => new TrackViewModel(x, 
+                                                                                                                                        ETrackLHSMode.Artwork, 
+                                                                                                                                        ETrackArtistMode.Name));
 
                                                                                     bool hasContents = this.topTracks.Count > 0 || items.Any();
                                                                                     if (hasContents)
