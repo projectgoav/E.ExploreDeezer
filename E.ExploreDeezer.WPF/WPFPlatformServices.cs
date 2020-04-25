@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-using E.ExploreDeezer.Mvvm;
 
-namespace E.ExploreDeezer
+using E.ExploreDeezer.Core.Mvvm;
+
+namespace E.ExploreDeezer.WPF
 {
     internal class WPFPlatformServices : IPlatformServices,
                                          IMainThreadDispatcher
-                                       
     {
         private readonly Dispatcher dispatcher;
 
@@ -22,20 +21,19 @@ namespace E.ExploreDeezer
         }
 
 
+
         // IPlatformServices
         public IMainThreadDispatcher MainThreadDispatcher => this;
+
+        public IPresenter Presenter { get; } = null;
 
 
         // IMainThreadDispatcher
         public void ExecuteOnMainThread(Action action)
-        {
-            this.dispatcher.Invoke(action);
-        }
+            => this.dispatcher.Invoke(action);
 
         public Task ExecuteOnMainThreadAsync(Action action)
-        {
-            return this.dispatcher.BeginInvoke(action)
-                                  .Task;
-        }
+            => this.dispatcher.BeginInvoke(action)
+                              .Task;
     }
 }

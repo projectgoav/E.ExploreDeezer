@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace E.ExploreDeezer
+namespace E.ExploreDeezer.WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

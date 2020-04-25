@@ -1,8 +1,8 @@
 ﻿<UserControl
-    x:Class="E.ExploreDeezer.UWP.Controls.AlbumGridCell"
+    x:Class="E.ExploreDeezer.WPF.Controls.AlbumGridCell"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:E.ExploreDeezer.UWP.Controls"
+    xmlns:local="using:E.ExploreDeezer.WPF.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -23,17 +23,17 @@
                Margin="0,0,0,5"
                Width="170"
                Height="170"
-               Source="{x:Bind ViewModel.ArtworkUri}"/>
+               Source="{Binding ArtworkUri}"/>
 
         <TextBlock Grid.Row="1"
                    Margin="0,0,0,5"
-                   Text="{x:Bind ViewModel.Title}"
+                   Text="{Binding Title}"
                    FontSize="16"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>
 
         <TextBlock Grid.Row="2"
-                   Text="{x:Bind ViewModel.ArtistName}"
+                   Text="{Binding ArtistName}"
                    FontSize="14"
                    TextWrapping="NoWrap"
                    TextTrimming="CharacterEllipsis"/>

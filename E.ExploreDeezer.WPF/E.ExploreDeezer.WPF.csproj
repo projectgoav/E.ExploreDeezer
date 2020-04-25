@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x86;x64</Platforms>
+    <StartupObject>E.ExploreDeezer.WPF.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Toolkit.Wpf.UI.XamlHost" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\E.ExploreDeezer.Core\E.ExploreDeezer.Core.csproj" />
+    <ProjectReference Include="..\E.ExploreDeezer.UI\E.ExploreDeezer.UI.csproj" />
+    <ProjectReference Include="..\E.ExploreDeezer.WPF.Host\E.ExploreDeezer.WPF.Host.csproj" />
+  </ItemGroup>
+
+</Project>
