@@ -200,6 +200,9 @@ namespace E.ExploreDeezer.Core.Collections
                         if (t.IsFaulted)
                             return; //TODO: Throw something or report an error?
 
+                        if (t.Result == null)
+                            return; //Previous task has failed, no work required
+
                         if (t.Result.Any())
                         {
                             this.pages.Add(0, new List<T>(t.Result));

@@ -219,7 +219,7 @@ namespace E.ExploreDeezer.Core.Common
                                                                                     (bool faulted, Exception ex) = t.CheckIfFailed();
                                                                                     if (faulted)
                                                                                     {
-                                                                                        this.albumFetchState.SetError();
+                                                                                        this.playlistFetchState.SetError();
                                                                                         System.Diagnostics.Debug.WriteLine($"Failed to fetch playlists featuring artist. {ex}");
                                                                                         return null;
                                                                                     }
