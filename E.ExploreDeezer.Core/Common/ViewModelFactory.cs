@@ -44,6 +44,7 @@ namespace E.ExploreDeezer.Core.Common
 
         public IMyDeezerViewModel CreateMyDeezerViewModel()
             => new MyDeezerViewModel(ServiceRegistry.AuthenticationService,
+                                     ServiceRegistry.GetService<IMyDeezerDataController>(),
                                      ServiceRegistry.PlatformServices);
 
 

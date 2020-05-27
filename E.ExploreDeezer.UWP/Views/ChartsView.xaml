@@ -99,13 +99,9 @@
                         </GridView.ItemTemplate>
 
                     </GridView>
-                    
-                    
+                      
                 </Grid>
                 
-                
-
-
             </PivotItem>
 
             <PivotItem Header="Artists">
