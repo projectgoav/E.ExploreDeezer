@@ -51,7 +51,7 @@ namespace E.ExploreDeezer.Core.MyDeezer
             this.secureStorage.ReadValue(OAUTH_TOKEN_KEY)
                               .ContinueWith(t =>
                               {
-                                  if (t.Result != null)
+                                  if (t.Result != null && t.Result.Length > 0)
                                   {
                                       DoLogin(t.Result)
                                         .Wait();
@@ -72,6 +72,8 @@ namespace E.ExploreDeezer.Core.MyDeezer
                 this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
 
                 this.IsLoggedIn = false;
+
+                this.secureStorage.WriteValue(OAUTH_TOKEN_KEY, string.Empty);
             });
 
             return logoutTask;

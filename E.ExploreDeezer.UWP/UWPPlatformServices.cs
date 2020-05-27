@@ -74,6 +74,14 @@ namespace E.ExploreDeezer.UWP
 
             var provider = new DataProtectionProvider("LOCAL=user");
 
+            if (bytes.Length == 0)
+            {
+                var settings = GetSettings();
+                settings.Values.Remove(key);
+
+                return Task.FromResult(true);
+            }
+           
             return provider.ProtectAsync(bytes.AsBuffer())
                            .AsTask()
                            .ContinueWith(t =>

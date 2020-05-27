@@ -52,6 +52,17 @@
         <Pivot Grid.Row="1"
                Visibility="{x:Bind ViewModel.IsLoggedIn, Mode=OneWay}">
 
+            <Pivot.RightHeader>
+
+                <Button x:Name="LogoutButton"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0,0,10,0"
+                        Content="Logout" />
+
+            </Pivot.RightHeader>
+
+
             <!-- Favourite Albums -->
             <PivotItem Header="Favourite Albums">
 

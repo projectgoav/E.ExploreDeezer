@@ -42,7 +42,9 @@ namespace E.ExploreDeezer.UWP.Views
             this.DataContext = vm;
 
             this.LoginButton.Click += OnLoginButtonClicked;
+            this.LogoutButton.Click += OnLogoutButtonClicked;
         }
+
 
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
@@ -62,6 +64,8 @@ namespace E.ExploreDeezer.UWP.Views
             loginDialog.ShowAsync();
         }
 
+        private void OnLogoutButtonClicked(object sender, RoutedEventArgs e)
+            => this.ViewModel.LogoutUser();
 
     }
 }

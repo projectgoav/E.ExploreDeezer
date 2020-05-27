@@ -25,6 +25,8 @@ namespace E.ExploreDeezer.Core.MyDeezer
         EFetchState ArtistFetchState { get; }
         IObservableCollection<IArtistViewModel> FavouriteArtists { get; }
 
+        void LogoutUser();
+
     }
      
     internal class MyDeezerViewModel : ViewModelBase,
@@ -111,6 +113,10 @@ namespace E.ExploreDeezer.Core.MyDeezer
 
         public IObservableCollection<IArtistViewModel> FavouriteArtists => this.favouriteArtists;
 
+
+
+        public void LogoutUser()
+            => this.authService.Logout();
 
 
         private void OnAuthenticationStatusChanged(object sender, OnAuthenticationStatusChangedEventArgs e)
