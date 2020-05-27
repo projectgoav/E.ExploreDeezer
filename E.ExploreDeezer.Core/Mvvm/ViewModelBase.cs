@@ -52,7 +52,7 @@ namespace E.ExploreDeezer.Core.Mvvm
         }
 
 
-        private void RaisePropertyChangedSafe(string propertyName)
+        protected void RaisePropertyChangedSafe(string propertyName)
         {
             this.PlatformServices
                 .MainThreadDispatcher

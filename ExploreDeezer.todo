@@ -21,9 +21,22 @@ Core/ViewModels:
  ✔ Genre data controller @done (20-04-08 13:41)
  ✔ Reduce the amount of work required when switching between tabs (bring up / tear down of all the ViewModels and associated infrastructure...) @done (20-04-08 16:03)
  ☐ Radio support
- ☐ Convert over the data controllers to use the helpful task extensions to avoid writing all the same continuation and error checking nonsense
+ ✔ Convert over the data controllers to use the helpful task extensions to avoid writing all the same continuation and error checking nonsense @done (20-05-27 10:42)
  ✔ User page (ViewModel & DataController) @done (20-04-20 20:34)
  ✔ Improve how deep-linking will work with tracks in albums, playlists & track lists for charts etc @done (20-04-21 13:54)
+ ☐ Ability to login via OAuth and store the provided token for later use 
+   Need to re-read the docs on this to see if we can get a AT & RT, not just an AT from Deezer
+ ☐ Favouriting
+   ☐ Albums
+   ☐ Artists
+   ☐ Tracks
+   ☐ Playlists
+ ☐ Playlist support
+   ☐ Add tracks
+   ☐ Create new with selected tracks
+   ☐ Modify existing playlists
+ ☐ View user favourites
+ ☐ Unit testing..... (UGH)
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -53,3 +66,9 @@ Views:
      Their data context can be added in the code-behind or view a deadicated binding with an Information / Header ViewModel property exposed
   ✔ Witcher 3 OST only shows 25 tracks instead of the full 55 @done (20-04-16 15:53)
   ✔ User page @done (20-04-20 20:34)
+  ☐ OAuth login
+  ☐ User favourite view
+  ☐ Add to playlist view
+  ☐ Create new playlist view (Might be combined with the above?)
+  ☐ Modify/Edit playlist view
+

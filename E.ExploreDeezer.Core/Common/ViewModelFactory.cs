@@ -4,7 +4,9 @@ using System.Text;
 
 using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.Search;
+using E.ExploreDeezer.Core.MyDeezer;
 using E.ExploreDeezer.Core.WhatsNew;
+using E.ExploreDeezer.Core.OAuth;
 
 namespace E.ExploreDeezer.Core.Common
 {
@@ -13,6 +15,9 @@ namespace E.ExploreDeezer.Core.Common
         IWhatsNewViewModel CreateWhatsNewViewModel();
         IChartsViewModel CreateChartsViewModel();
         ISearchViewModel CreateSearchViewModel();
+
+        ILoginViewModel CreateLoginViewModel();
+        IMyDeezerViewModel CreateMyDeezerViewModel();
 
         ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p);
         IUserOverviewViewModel CreateUserOverviewViewModel(UserOverviewViewModelParams p);
@@ -29,6 +34,17 @@ namespace E.ExploreDeezer.Core.Common
 
         public IChartsViewModel CreateChartsViewModel()
             => new ChartsViewModel(ServiceRegistry.PlatformServices);
+
+
+
+        public ILoginViewModel CreateLoginViewModel()
+            => new LoginViewModel(ServiceRegistry.GetService<IOAuthClient>(),
+                                  ServiceRegistry.AuthenticationService,
+                                  ServiceRegistry.PlatformServices);
+
+        public IMyDeezerViewModel CreateMyDeezerViewModel()
+            => new MyDeezerViewModel(ServiceRegistry.AuthenticationService,
+                                     ServiceRegistry.PlatformServices);
 
 
 

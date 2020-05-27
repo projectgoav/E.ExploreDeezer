@@ -140,6 +140,10 @@ namespace E.ExploreDeezer.UWP
                     case Navigation.CHART_MENU_TAG:
                         this.MainNav.SelectedItem = this.MainNav.MenuItems[1];
                         break;
+
+                    case Navigation.MYDEEZER_MENU_TAG:
+                        this.MainNav.SelectedItem = this.MainNav.MenuItems[2];
+                        break;
                 }
             }
         }

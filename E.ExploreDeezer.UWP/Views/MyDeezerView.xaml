@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="E.ExploreDeezer.UWP.Views.MyDeezerView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:E.ExploreDeezer.UWP.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="My Deezer"
+                   Margin="10,0,0,0"
+                   FontSize="32"/>
+
+        <!-- Logged Out View -->
+        <StackPanel Grid.Row="1"
+                    Margin="10,10,10,0"
+                    Orientation="Vertical"
+                    Spacing="5"
+                    HorizontalAlignment="Center"
+                    Visibility="{x:Bind ViewModel.IsLoggedOut, Mode=OneWay}">
+
+            <TextBlock FontSize="18"
+                       Text="Login to your Deezer account for the following features:" />
+
+            <TextBlock>  
+                <LineBreak />
+                <Run Text="- Access to your favourites" />
+                <LineBreak />
+                <Run Text="- Playlist management" />
+                <LineBreak />
+            </TextBlock>
+
+            <Button x:Name="LoginButton"
+                    HorizontalAlignment="Center"
+                    Content="Login with Deezer" />
+
+        </StackPanel>
+
+
+
+        <!-- Logged In View -->
+        <Pivot Grid.Row="1"
+               Visibility="{x:Bind ViewModel.IsLoggedIn, Mode=OneWay}">
+
+            
+        </Pivot>
+
+    </Grid>
+</Page>

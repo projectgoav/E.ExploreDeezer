@@ -9,11 +9,13 @@ using System.Net.Http;
 using E.Deezer;
 
 using E.ExploreDeezer.Core.Mvvm;
+using E.ExploreDeezer.Core.OAuth;
 using E.ExploreDeezer.Core.Charts;
 using E.ExploreDeezer.Core.Search;
 using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.Core.MyDeezer;
 
 namespace E.ExploreDeezer.Core
 {
@@ -28,6 +30,8 @@ namespace E.ExploreDeezer.Core
             ViewModelFactory = new ViewModelFactory();
             DeezerSession = new DeezerSession(new HttpClientHandler());
 
+            AuthenticationService = new AuthenticationService(DeezerSession);
+
             // TODO: Need to work out how to dispose of services when they are dying off
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
             Register<IWhatsNewDataController>(new WhatsNewDataController(DeezerSession));
@@ -36,12 +40,15 @@ namespace E.ExploreDeezer.Core
             Register<ITracklistDataController>(new TracklistDataController(DeezerSession));
             Register<IArtistOverviewDataController>(new ArtistOverviewDataController(DeezerSession));
             Register<IUserOverviewDataController>(new UserOverviewDataController(DeezerSession));
+
+            Register<IOAuthClient>(new OAuthClient("app", "secret", "https://example.com", DeezerPermissions.BasicAccess | DeezerPermissions.ManageLibrary | DeezerPermissions.DeleteLibrary | DeezerPermissions.OfflineAccess));
         }
 
 
         public static IDeezerSession DeezerSession { get; private set; }
         public static IPlatformServices PlatformServices { get; private set; }
         public static IViewModelFactory ViewModelFactory { get; private set; }
+        public static IAuthenticationService AuthenticationService { get; private set; }
 
 
         /* TODO: This *could* disappear and rely on the ViewModel layer
