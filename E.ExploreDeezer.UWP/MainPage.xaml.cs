@@ -29,7 +29,8 @@ namespace E.ExploreDeezer.UWP
         {
             this.InitializeComponent();
 
-            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher));
+            ServiceRegistry.Initialise(new UWPPlatformServices(this.Dispatcher),
+                                       new Secrets());
             ServiceRegistry.Register<Frame>(this.ContentView);
 
             this.searchViewModel = ServiceRegistry.ViewModelFactory.CreateSearchViewModel();

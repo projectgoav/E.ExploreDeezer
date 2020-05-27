@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using E.Deezer;
-
+using E.ExploreDeezer.Core.Mvvm;
 using E.ExploreDeezer.Core.OAuth;
 
 namespace E.ExploreDeezer.Core.MyDeezer
@@ -34,32 +34,34 @@ namespace E.ExploreDeezer.Core.MyDeezer
     internal class AuthenticationService : IAuthenticationService,
                                            IDisposable
     {
+        private const string OAUTH_TOKEN_KEY = "oauth_token";
+
         private readonly IDeezerSession session;
+        private readonly ISecureStorage secureStorage;
 
         private event OnAuthenticationStatusChangedEventHandler OnAuthenticationStatusChangedInternal;
 
 
-        public AuthenticationService(IDeezerSession session)
+        public AuthenticationService(IDeezerSession session,
+                                     ISecureStorage secureStorage)
         {
             this.session = session;
+            this.secureStorage = secureStorage;
 
+            this.secureStorage.ReadValue(OAUTH_TOKEN_KEY)
+                              .ContinueWith(t =>
+                              {
+                                  if (t.Result != null)
+                                  {
+                                      DoLogin(t.Result)
+                                        .Wait();
+                                  }
+                              });
         }
 
         // IAuthenticationService
         public Task<bool> Login(OAuthResponse response)
-        {
-            var loginTask = this.session.Login(response.AccessToken, CancellationToken.None); //TODO: Need to store this token and handle expiry
-
-            loginTask.ContinueWith(t =>
-            {
-                if (t.IsFaulted || t.IsCanceled)
-                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
-                else
-                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(t.Result));
-            });
-
-            return loginTask;
-        }
+            => DoLogin(response.AccessToken);
 
         public Task<bool> Logout()
         {
@@ -68,6 +70,8 @@ namespace E.ExploreDeezer.Core.MyDeezer
             logoutTask.ContinueWith(t =>
             {
                 this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
+
+                this.IsLoggedIn = false;
             });
 
             return logoutTask;
@@ -79,11 +83,39 @@ namespace E.ExploreDeezer.Core.MyDeezer
             add
             {
                 this.OnAuthenticationStatusChangedInternal += value;
-                value(this, new OnAuthenticationStatusChangedEventArgs(false));
+                value(this, new OnAuthenticationStatusChangedEventArgs(this.IsLoggedIn));
             }
             remove => this.OnAuthenticationStatusChangedInternal -= value;
         }
 
+
+        private Task<bool> DoLogin(string accessToken)
+        {
+            var loginTask = this.session.Login(accessToken, CancellationToken.None); //TODO: Need to store this token and handle expiry
+
+            loginTask.ContinueWith(t =>
+            {
+                if (t.IsFaulted || t.IsCanceled)
+                {
+                    this.IsLoggedIn = false;
+
+                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
+                }
+                else
+                {
+                    this.IsLoggedIn = true;
+
+                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(t.Result));
+                    this.secureStorage.WriteValue(OAUTH_TOKEN_KEY, accessToken);
+
+                }
+            });
+
+            return loginTask;
+        }
+
+
+        private bool IsLoggedIn { get; set; }
 
         // IDisposable
         public void Dispose()

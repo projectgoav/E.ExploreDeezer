@@ -9,6 +9,7 @@ namespace E.ExploreDeezer.Core.Mvvm
     public interface IPlatformServices
     {
         IPresenter Presenter { get; }
+        ISecureStorage SecureStorage { get; }
         IMainThreadDispatcher MainThreadDispatcher { get; }
     }
 
@@ -23,5 +24,11 @@ namespace E.ExploreDeezer.Core.Mvvm
     public interface IPresenter
     {
         void ShowViewModel(IViewModel viewModelToShow);
+    }
+
+    public interface ISecureStorage
+    {
+        Task<string> ReadValue(string key);
+        Task<bool> WriteValue(string key, string value);
     }
 }

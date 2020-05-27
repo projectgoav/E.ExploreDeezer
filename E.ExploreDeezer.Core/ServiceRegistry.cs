@@ -39,7 +39,8 @@ namespace E.ExploreDeezer.Core
             ViewModelFactory = new ViewModelFactory();
             DeezerSession = new DeezerSession(new HttpClientHandler());
 
-            AuthenticationService = new AuthenticationService(DeezerSession);
+            AuthenticationService = new AuthenticationService(DeezerSession,
+                                                              platformServices.SecureStorage);
 
             // TODO: Need to work out how to dispose of services when they are dying off
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
