@@ -67,7 +67,13 @@ namespace E.ExploreDeezer.UWP.Views
             this.LoadingContainer.Visibility = Visibility.Visible;
             this.LoginWebView.Visibility = Visibility.Collapsed;
 
-            //TODO: Intercept the page loading URIs
+            if (this.ViewModel.IsTokenCallback(args.Uri))
+            {
+                this.ViewModel.ParseTokenCallback(args.Uri);
+                args.Cancel = true;
+
+                this.Hide();
+            }
         }
 
 

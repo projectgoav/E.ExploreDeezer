@@ -6,22 +6,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Title="Deezer Login"
     PrimaryButtonText="Cancel"
     PrimaryButtonClick="OnCancelClicked">
 
     
     <Grid HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
+          VerticalAlignment="Stretch"
+          Height="700"
+          Width="500">
 
-        <WebView x:Name="LoginWebView" 
-                 MinHeight="500"
-                 MinWidth="500"/>
+        <WebView x:Name="LoginWebView" />
 
         <StackPanel x:Name="LoadingContainer"
-                    Orientation="Vertical"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
+                    Orientation="Vertical"
+                    Spacing="5"
                     Margin="0,10,0,10">
 
             <ProgressRing IsActive="True"

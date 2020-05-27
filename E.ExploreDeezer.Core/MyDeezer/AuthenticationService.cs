@@ -4,8 +4,10 @@ using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using E.Deezer;
-using Microsoft.Win32.SafeHandles;
+
+using E.ExploreDeezer.Core.OAuth;
 
 namespace E.ExploreDeezer.Core.MyDeezer
 {
@@ -23,6 +25,9 @@ namespace E.ExploreDeezer.Core.MyDeezer
 
     public interface IAuthenticationService
     {
+        Task<bool> Login(OAuthResponse response);
+        Task<bool> Logout();
+
         event OnAuthenticationStatusChangedEventHandler OnAuthenticationStatusChanged;
     }
 
@@ -41,6 +46,34 @@ namespace E.ExploreDeezer.Core.MyDeezer
         }
 
         // IAuthenticationService
+        public Task<bool> Login(OAuthResponse response)
+        {
+            var loginTask = this.session.Login(response.AccessToken, CancellationToken.None); //TODO: Need to store this token and handle expiry
+
+            loginTask.ContinueWith(t =>
+            {
+                if (t.IsFaulted || t.IsCanceled)
+                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
+                else
+                    this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(t.Result));
+            });
+
+            return loginTask;
+        }
+
+        public Task<bool> Logout()
+        {
+            var logoutTask = this.session.Logout(CancellationToken.None);
+
+            logoutTask.ContinueWith(t =>
+            {
+                this.OnAuthenticationStatusChangedInternal?.Invoke(this, new OnAuthenticationStatusChangedEventArgs(false));
+            });
+
+            return logoutTask;
+        }
+
+
         public event OnAuthenticationStatusChangedEventHandler OnAuthenticationStatusChanged
         {
             add

@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using E.Deezer;
+using System.IO;
 
 namespace E.ExploreDeezer.Core.OAuth
 {
@@ -86,11 +92,8 @@ namespace E.ExploreDeezer.Core.OAuth
 
             string tokenUri = GenerateTokenUri(code);
 
-            //TODO: Need to make the call to to actually get the token!
-            
-            return Task.FromResult<OAuthLoginResult>(new OAuthLoginResult(OAuthLoginState.UnknownError, null));
+            return FetchToken(tokenUri);
         }
-
 
 
         private string GenerateLoginUri(DeezerPermissions requestedPermissions)
@@ -141,6 +144,40 @@ namespace E.ExploreDeezer.Core.OAuth
             sb.Append(Constants.JSON_OUTPUT_QUERY_VALUE);
 
             return sb.ToString();
+        }
+
+        private Task<OAuthLoginResult> FetchToken(string tokenUri)
+        {
+            var httpClient = new HttpClient(new HttpClientHandler(), disposeHandler: true);
+            return httpClient.GetAsync(tokenUri)
+                                .ContinueWith(async t =>
+                                {
+                                    using (httpClient)
+                                    {
+                                        if (t.IsFaulted || t.IsCanceled)
+                                            return new OAuthLoginResult(OAuthLoginState.UnknownError, null);
+
+                                        var response = t.Result;
+
+                                        if (!response.IsSuccessStatusCode)
+                                            return new OAuthLoginResult(OAuthLoginState.UnknownError, null);
+
+                                        var responseBody = await response.Content.ReadAsStreamAsync();
+
+                                        if (responseBody == null)
+                                            return new OAuthLoginResult(OAuthLoginState.UnknownError, null);
+
+                                        using (var reader = new StreamReader(responseBody))
+                                        using (var jsonReader = new JsonTextReader(reader))
+                                        {
+                                            var json = JObject.Load(jsonReader);
+                                            var result = OAuthResponse.FromJson(json);
+
+                                            return new OAuthLoginResult(OAuthLoginState.Success, result);
+                                        }
+                                    }
+                                })
+                                .Unwrap();
         }
     }
 }

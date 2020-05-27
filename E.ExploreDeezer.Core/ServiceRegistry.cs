@@ -19,11 +19,20 @@ using E.ExploreDeezer.Core.MyDeezer;
 
 namespace E.ExploreDeezer.Core
 {
+    public interface ISecrets
+    {
+        string AppId { get; }
+        string AppSecret { get; }
+        string OAuthRedirectUri { get; }
+        DeezerPermissions DesiredPermissions { get; }
+    }
+
     public static class ServiceRegistry
     {
         private static readonly Dictionary<Type, object> additionalServices = new Dictionary<Type, object>();
 
-        public static void Initialise(IPlatformServices platformServices)
+        public static void Initialise(IPlatformServices platformServices,
+                                      ISecrets secrets)
         {
             PlatformServices = platformServices;
 
@@ -41,7 +50,12 @@ namespace E.ExploreDeezer.Core
             Register<IArtistOverviewDataController>(new ArtistOverviewDataController(DeezerSession));
             Register<IUserOverviewDataController>(new UserOverviewDataController(DeezerSession));
 
-            Register<IOAuthClient>(new OAuthClient("app", "secret", "https://example.com", DeezerPermissions.BasicAccess | DeezerPermissions.ManageLibrary | DeezerPermissions.DeleteLibrary | DeezerPermissions.OfflineAccess));
+
+
+            Register<IOAuthClient>(new OAuthClient(secrets.AppId,
+                                                   secrets.AppSecret,
+                                                   secrets.OAuthRedirectUri,
+                                                   secrets.DesiredPermissions));
         }
 
 

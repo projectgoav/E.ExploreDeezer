@@ -11,6 +11,9 @@ namespace E.ExploreDeezer.Core.MyDeezer
                                        IDisposable
     {
         string LoginUri { get; }
+
+        bool IsTokenCallback(Uri uri);
+        void ParseTokenCallback(Uri uri);
     }
 
     internal class LoginViewModel : ViewModelBase,
@@ -33,6 +36,30 @@ namespace E.ExploreDeezer.Core.MyDeezer
 
         // ILoginViewModel
         public string LoginUri { get; }
+
+        public bool IsTokenCallback(Uri uri)
+        {
+            return this.oauthClient.CanParseRedirect(uri);
+        }
+
+        public void ParseTokenCallback(Uri uri)
+        {
+            this.oauthClient.TryParseRedirect(uri)
+                            .ContinueWith(t =>
+                            {
+                                if (t.Result.State == OAuthLoginState.Success)
+                                {
+                                    this.authService.Login(t.Result.TokenResponse);
+                                }
+                                else if (t.Result.State == OAuthLoginState.UnknownError)
+                                {
+                                    //TODO: Failed to get token... Need to show a message here...
+                                }
+
+                                // If the user cancels it we just hide the login view, so don't worry
+                                // about doing anything.
+                            });
+        }
 
 
         protected override void Dispose(bool disposing)
