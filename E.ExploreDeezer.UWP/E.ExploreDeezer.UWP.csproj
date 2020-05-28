@@ -119,6 +119,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AlbumGrid.xaml.cs">
+      <DependentUpon>AlbumGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ArtistGrid.xaml.cs">
+      <DependentUpon>ArtistGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Cells\AlbumGridCell.xaml.cs">
       <DependentUpon>AlbumGridCell.xaml</DependentUpon>
     </Compile>
@@ -134,6 +140,9 @@
     <Compile Include="Controls\TrackCell.xaml.cs">
       <DependentUpon>TrackCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TrackList.xaml.cs">
+      <DependentUpon>TrackList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Secrets.cs" />
     <Compile Include="ValueConverters\FetchStateVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -143,6 +152,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UWPPlatformServices.cs" />
     <Compile Include="ValueConverters\NumberFormatValueConverter.cs" />
+    <Compile Include="ViewModels\ContentUserControlViewModel.cs" />
     <Compile Include="Views\ArtistOverviewView.xaml.cs">
       <DependentUpon>ArtistOverviewView.xaml</DependentUpon>
     </Compile>
@@ -188,6 +198,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\AlbumGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ArtistGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Cells\AlbumGridCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TrackCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TrackList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

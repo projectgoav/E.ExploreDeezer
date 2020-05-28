@@ -14,7 +14,7 @@ namespace E.ExploreDeezer.Core.Mvvm
     }
 
 
-    internal abstract class ViewModelBase : IViewModel,
+    public abstract class ViewModelBase : IViewModel,
                                             IDisposable
     {
         private static CancellationToken PRE_CANCELLED_TOKEN = new CancellationToken(canceled: true);
