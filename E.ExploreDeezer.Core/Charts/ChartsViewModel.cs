@@ -13,7 +13,7 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Charts
 {
-    public interface IChartsViewModel : INotifyPropertyChanged,
+    public interface IChartsViewModel : IViewModel,
                                         IDisposable
     {
         EFetchState AlbumChartFetchState { get; }

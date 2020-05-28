@@ -69,75 +69,11 @@
             </Pivot.RightHeader>
 
             <PivotItem Header="Albums">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding AlbumChartFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding AlbumChartFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-                    
-                    
-                    <GridView x:Name="AlbumChartGrid"
-                              ItemsSource="{x:Bind ViewModel.AlbumChart, Mode=OneWay}"
-                              Visibility="{Binding AlbumChartFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}" >
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-                      
-                </Grid>
-                
+                <controls:AlbumGrid x:Name="AlbumGrid" />
             </PivotItem>
 
             <PivotItem Header="Artists">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding ArtistChartFetchState,         
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding ArtistChartFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <GridView x:Name="ArtistChartGrid"
-                              ItemsSource="{x:Bind ViewModel.ArtistChart, Mode=OneWay}"
-                              Visibility="{Binding ArtistChartFetchState,
-                                                    Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ArtistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-
-                </Grid>
-   
+                <controls:ArtistGrid x:Name="ArtistGrid" />
             </PivotItem>
 
             <PivotItem Header="Playlists">
@@ -177,40 +113,7 @@
             </PivotItem>
 
             <PivotItem Header="Tracks">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding TrackChartFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding TrackChartFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-
-                    <ListView x:Name="TracksListGrid"
-                              ItemsSource="{x:Bind ViewModel.TrackChart, Mode=OneWay}"
-                              Visibility="{Binding TrackChartFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:TrackListCell />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
-
-                </Grid>
-              
+                <controls:TrackList x:Name="TrackList" />
             </PivotItem>
 
         </Pivot>

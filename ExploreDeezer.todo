@@ -35,8 +35,9 @@ Core/ViewModels:
    ☐ Add tracks
    ☐ Create new with selected tracks
    ☐ Modify existing playlists
- ☐ View user favourites
+ ✔ View user favourites @done (20-05-28 15:28)
  ☐ Unit testing..... (UGH)
+ ☐ User favourite radio
 
 Views:
   ☐ Merge all the item cells into a single 'MediaItem' cell @single-cell
@@ -67,8 +68,11 @@ Views:
   ✔ Witcher 3 OST only shows 25 tracks instead of the full 55 @done (20-04-16 15:53)
   ✔ User page @done (20-04-20 20:34)
   ☐ OAuth login
-  ☐ User favourite view
+  ✔ User favourite view @done (20-05-28 15:28)
   ☐ Add to playlist view
   ☐ Create new playlist view (Might be combined with the above?)
   ☐ Modify/Edit playlist view
+  ☐ User favourite Radio
+  ☐ Move all views over to use the common Album/Artist/Track grid
+  ☐ Create common playlist grid (is this required??)
 
