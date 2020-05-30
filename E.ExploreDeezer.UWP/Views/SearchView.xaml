@@ -29,155 +29,22 @@
 
             <!-- Album Results -->
             <PivotItem Header="Albums">
-
-                <Grid>
-
-                    <TextBlock Text="No results"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding AlbumResultFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding AlbumResultFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <GridView x:Name="AlbumResultGrid"
-                              ItemsSource="{Binding Albums}"
-                              Visibility="{Binding AlbumResultFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-
-                </Grid>
-
+                <controls:AlbumGrid x:Name="AlbumGrid" />
             </PivotItem>
 
             <!-- Artist Results -->
             <PivotItem Header="Artists">
-
-                <Grid>
-
-                    <TextBlock Text="No results"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding ArtistResultFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding ArtistResultFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-
-                    <GridView x:Name="ArtistResultGrid"
-                              ItemsSource="{Binding Artists}"
-                              Visibility="{Binding ArtistResultFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-                    
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ArtistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>                    
-                    
-                    
-                </Grid>
-                
+                <controls:ArtistGrid x:Name="ArtistGrid" />
             </PivotItem>
 
             <!-- Playlist results -->
             <PivotItem Header="Playlists">
-
-                <Grid>
-
-                    <TextBlock Text="No results"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding PlaylistResultFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding PlaylistResultFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-
-                    <GridView x:Name="PlaylistsResultGrid"
-                              ItemsSource="{Binding Playlists}"
-                              Visibility="{Binding PlaylistResultFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:PlaylistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-
-                </Grid>
-
+                <controls:PlaylistGrid x:Name="PlaylistGrid" />
             </PivotItem>
 
             <!-- Track results -->
             <PivotItem Header="Tracks">
-
-                <Grid>
-
-                    <TextBlock Text="No results"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding TrackResultFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding TrackResultFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-
-
-                    <ListView x:Name="TracksResultGrid"
-                              ItemsSource="{Binding Tracks}"
-                              Visibility="{Binding TrackResultFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:TrackListCell />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
-
-                </Grid>
-
+                <controls:TrackList x:Name="TrackList" />
             </PivotItem>
 
         </Pivot>

@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Search;
+using E.ExploreDeezer.UWP.ViewModels;
+using E.ExploreDeezer.Core.ViewModels;
 
 namespace E.ExploreDeezer.UWP.Views
 {
@@ -23,22 +25,64 @@ namespace E.ExploreDeezer.UWP.Views
     /// </summary>
     public sealed partial class SearchView : Page
     {
+        private ContentUserControlViewModel<IAlbumViewModel> albumResultViewModel;
+        private ContentUserControlViewModel<ITrackViewModel> trackResultViewModel;
+        private ContentUserControlViewModel<IArtistViewModel> artistResultViewModel;
+        private ContentUserControlViewModel<IPlaylistViewModel> playlistResultViewModel;
+
         public SearchView()
         {
             this.InitializeComponent();
         }
 
-        private ISearchViewModel SearchViewModel => this.DataContext as ISearchViewModel;
+
+        public ISearchViewModel ViewModel { get; private set; }
+
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            this.DataContext = e.Parameter;
+            this.ViewModel = e.Parameter as ISearchViewModel;
+            this.DataContext = this.ViewModel;
 
-            this.AlbumResultGrid.SelectionChanged += OnGridSelectionChanged;
-            this.ArtistResultGrid.SelectionChanged += OnGridSelectionChanged;
-            this.PlaylistsResultGrid.SelectionChanged += OnGridSelectionChanged;
+            this.albumResultViewModel = new ContentUserControlViewModel<IAlbumViewModel>(this.ViewModel,
+                                                                                         nameof(ISearchViewModel.Albums),
+                                                                                         nameof(ISearchViewModel.AlbumResultFetchState),
+                                                                                         () => this.ViewModel.Albums,
+                                                                                         () => this.ViewModel.AlbumResultFetchState,
+                                                                                         OnAlbumSelected,
+                                                                                         ServiceRegistry.PlatformServices);
+
+            this.trackResultViewModel = new ContentUserControlViewModel<ITrackViewModel>(this.ViewModel,
+                                                                                         nameof(ISearchViewModel.Tracks),
+                                                                                         nameof(ISearchViewModel.TrackResultFetchState),
+                                                                                         () => this.ViewModel.Tracks,
+                                                                                         () => this.ViewModel.TrackResultFetchState,
+                                                                                         _ => { },
+                                                                                         ServiceRegistry.PlatformServices);
+
+            this.artistResultViewModel = new ContentUserControlViewModel<IArtistViewModel>(this.ViewModel,
+                                                                                           nameof(ISearchViewModel.Artists),
+                                                                                           nameof(ISearchViewModel.ArtistResultFetchState),
+                                                                                           () => this.ViewModel.Artists,
+                                                                                           () => this.ViewModel.ArtistResultFetchState,
+                                                                                           OnArtistSelected,
+                                                                                           ServiceRegistry.PlatformServices);
+
+            this.playlistResultViewModel = new ContentUserControlViewModel<IPlaylistViewModel>(this.ViewModel,
+                                                                                               nameof(ISearchViewModel.Playlists),
+                                                                                               nameof(ISearchViewModel.PlaylistResultFetchState),
+                                                                                               () => this.ViewModel.Playlists,
+                                                                                               () => this.ViewModel.PlaylistResultFetchState,
+                                                                                               OnPlaylistSelected,
+                                                                                               ServiceRegistry.PlatformServices);
+
+
+            this.AlbumGrid.DataContext = this.albumResultViewModel;
+            this.TrackList.DataContext = this.trackResultViewModel;
+            this.ArtistGrid.DataContext = this.artistResultViewModel;
+            this.PlaylistGrid.DataContext = this.playlistResultViewModel;
         }
 
 
@@ -46,41 +90,44 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
-            this.AlbumResultGrid.SelectionChanged -= OnGridSelectionChanged;
-            this.ArtistResultGrid.SelectionChanged -= OnGridSelectionChanged;
-            this.PlaylistsResultGrid.SelectionChanged -= OnGridSelectionChanged;
+            this.AlbumGrid.DataContext = null;
+            this.TrackList.DataContext = null;
+            this.ArtistGrid.DataContext = null;
+            this.PlaylistGrid.DataContext = null;
+
+            this.albumResultViewModel.Dispose();
+            this.trackResultViewModel.Dispose();
+            this.artistResultViewModel.Dispose();
+            this.playlistResultViewModel.Dispose();
+
+            // Don't dispose the SearchViewModel as
+            // is owned by the MainView 
+            this.DataContext = null;
         }
 
 
-        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnAlbumSelected(int index)
         {
-            if (sender == this.AlbumResultGrid)
-            {
-                int index = this.AlbumResultGrid.SelectedIndex;
+            if (index == -1)
+                return;
 
-                if (index == -1)
-                    return;
+            Navigation.ShowAlbumTracklist(this.ViewModel.Albums.GetItem(index));
+        }
 
-                Navigation.ShowAlbumTracklist(this.SearchViewModel.Albums.GetItem(index));
-            }
-            else if (sender == this.ArtistResultGrid)
-            {
-                int index = this.ArtistResultGrid.SelectedIndex;
+        private void OnArtistSelected(int index)
+        {
+            if (index == -1)
+                return;
 
-                if (index == -1)
-                    return;
+            Navigation.ShowArtistOverview(this.ViewModel.Artists.GetItem(index));
+        }
 
-                Navigation.ShowArtistOverview(this.SearchViewModel.Artists.GetItem(index));
-            }
-            else if (sender == this.PlaylistsResultGrid)
-            {
-                int index = this.PlaylistsResultGrid.SelectedIndex;
+        private void OnPlaylistSelected(int index)
+        {
+            if (index == -1)
+                return;
 
-                if (index == -1)
-                    return;
-
-                Navigation.ShowPlaylistTracklist(this.SearchViewModel.Playlists.GetItem(index));
-            }
+            Navigation.ShowPlaylistTracklist(this.ViewModel.Playlists.GetItem(index));
         }
     }
 }

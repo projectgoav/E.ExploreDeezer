@@ -9,7 +9,7 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Search
 {
-    public interface ISearchViewModel
+    public interface ISearchViewModel : IViewModel
     {
         string CurrentQuery { get; set; }
 

@@ -67,14 +67,12 @@
             <PivotItem Header="Favourite Albums">
                 <controls:AlbumGrid x:Name="FavouriteAlbumGrid" />
             </PivotItem>
-
-            
+         
             <!-- Favourite Artists -->
             <PivotItem Header="Favourite Artists">
                 <controls:ArtistGrid x:Name="FavouriteArtistGrid" />
             </PivotItem>
-
-            
+          
             <!-- Favourite Tracks -->
             <PivotItem Header="Favourite Tracks">
                 <controls:TrackList x:Name="FavouriteTrackList" />
