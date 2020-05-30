@@ -137,6 +137,9 @@
     <Compile Include="Controls\Cells\TrackListCell.xaml.cs">
       <DependentUpon>TrackListCell.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlaylistGrid.xaml.cs">
+      <DependentUpon>PlaylistGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TrackCell.xaml.cs">
       <DependentUpon>TrackCell.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Cells\TrackListCell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlaylistGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

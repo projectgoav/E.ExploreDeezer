@@ -77,39 +77,7 @@
             </PivotItem>
 
             <PivotItem Header="Playlists">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding PlaylistChartFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding PlaylistChartFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <GridView x:Name="PlaylistsChartGrid"
-                              ItemsSource="{x:Bind ViewModel.PlaylistChart, Mode=OneWay}"
-                              Visibility="{Binding PlaylistChartFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-                    
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:PlaylistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-                    
-                </Grid>
-                
+                <controls:PlaylistGrid x:Name="PlaylistGrid" />
             </PivotItem>
 
             <PivotItem Header="Tracks">

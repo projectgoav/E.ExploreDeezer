@@ -16,9 +16,8 @@ using Windows.UI.Xaml.Navigation;
 
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Charts;
-using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.UWP.ViewModels;
-using Windows.ApplicationModel.Chat;
+using E.ExploreDeezer.Core.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -32,6 +31,7 @@ namespace E.ExploreDeezer.UWP.Views
         private ContentUserControlViewModel<ITrackViewModel> trackChartViewModel;
         private ContentUserControlViewModel<IAlbumViewModel> albumChartViewModel;
         private ContentUserControlViewModel<IArtistViewModel> artistChartViewModel;
+        private ContentUserControlViewModel<IPlaylistViewModel> playlistChartViewModel;
 
 
         public ChartsView()
@@ -74,12 +74,19 @@ namespace E.ExploreDeezer.UWP.Views
                                                                                           OnArtistSelected,
                                                                                           ServiceRegistry.PlatformServices);
 
+            this.playlistChartViewModel = new ContentUserControlViewModel<IPlaylistViewModel>(this.ViewModel,
+                                                                                              nameof(IChartsViewModel.PlaylistChart),
+                                                                                              nameof(IChartsViewModel.PlaylistChartFetchState),
+                                                                                              () => this.ViewModel.PlaylistChart,
+                                                                                              () => this.ViewModel.PlaylistChartFetchState,
+                                                                                              OnPlaylistSelected,
+                                                                                              ServiceRegistry.PlatformServices);
+
 
             this.TrackList.DataContext = this.trackChartViewModel;
             this.AlbumGrid.DataContext = this.albumChartViewModel;
             this.ArtistGrid.DataContext = this.artistChartViewModel;
-
-            SetupEvents();
+            this.PlaylistGrid.DataContext = this.playlistChartViewModel;
         }
 
 
@@ -87,43 +94,19 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
-            RemoveEvents();
+            this.TrackList.DataContext = null;
+            this.AlbumGrid.DataContext = null;
+            this.ArtistGrid.DataContext = null;
+            this.PlaylistGrid.DataContext = null;
 
             this.trackChartViewModel.Dispose();
             this.albumChartViewModel.Dispose();
             this.artistChartViewModel.Dispose();
+            this.playlistChartViewModel.Dispose();
 
             this.ViewModel.Dispose();
 
             this.DataContext = null;
-        }
-
-
-        private void SetupEvents()
-        {
-            this.PlaylistsChartGrid.SelectionChanged += OnGridSelectionChanged;
-        }
-
-        private void RemoveEvents()
-        {
-            this.PlaylistsChartGrid.SelectionChanged -= OnGridSelectionChanged;
-        }
-
-
-
-        private void OnGridSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (sender == this.PlaylistsChartGrid)
-            {
-                int index = this.PlaylistsChartGrid.SelectedIndex;
-
-                if (index == -1)
-                    return;
-
-                Navigation.ShowPlaylistTracklist(this.ViewModel.PlaylistChart.GetItem(index));
-            }
-            else
-                return;
         }
 
 
@@ -133,6 +116,14 @@ namespace E.ExploreDeezer.UWP.Views
                 return;
 
             Navigation.ShowAlbumTracklist(this.ViewModel.AlbumChart.GetItem(index));
+        }
+
+        private void OnPlaylistSelected(int index)
+        {
+            if (index == -1)
+                return;
+
+            Navigation.ShowPlaylistTracklist(this.ViewModel.PlaylistChart.GetItem(index));
         }
 
         private void OnArtistSelected(int index)
