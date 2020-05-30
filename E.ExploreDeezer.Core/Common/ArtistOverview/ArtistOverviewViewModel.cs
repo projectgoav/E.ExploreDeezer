@@ -10,7 +10,8 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Common
 {
-    public interface IArtistOverviewViewModel
+    public interface IArtistOverviewViewModel : IViewModel,
+                                                IDisposable
     {
         string ArtistName { get; }
         string ArtistImage { get; }
