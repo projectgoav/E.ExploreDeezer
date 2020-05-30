@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Navigation;
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.Common;
 using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.UWP.ViewModels;
+using E.Deezer.Api;
 
 namespace E.ExploreDeezer.UWP.Views
 {
@@ -24,13 +26,16 @@ namespace E.ExploreDeezer.UWP.Views
     /// </summary>
     public sealed partial class UserOverviewView : Page
     {
+        private ContentUserControlViewModel<ITrackViewModel> userFlowViewModel;
+        private ContentUserControlViewModel<IPlaylistViewModel> userPlaylistsViewModel;
+
         public UserOverviewView()
         {
             this.InitializeComponent();
         }
 
 
-        public IUserOverviewViewModel ViewModel => this.DataContext as IUserOverviewViewModel;
+        public IUserOverviewViewModel ViewModel { get; private set; }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -38,10 +43,27 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             Assert.ObjectOfType<UserOverviewViewModelParams>(e.Parameter);
+            this.ViewModel = ServiceRegistry.ViewModelFactory.CreateUserOverviewViewModel((UserOverviewViewModelParams)e.Parameter);
+            this.DataContext = this.ViewModel;
 
-            this.DataContext = ServiceRegistry.ViewModelFactory.CreateUserOverviewViewModel((UserOverviewViewModelParams)e.Parameter);
+            this.userFlowViewModel = new ContentUserControlViewModel<ITrackViewModel>(this.ViewModel,
+                                                                                      nameof(IUserOverviewViewModel.Flow),
+                                                                                      nameof(IUserOverviewViewModel.FlowFetchState),
+                                                                                      () => this.ViewModel.Flow,
+                                                                                      () => this.ViewModel.FlowFetchState,
+                                                                                      _ => { },
+                                                                                      ServiceRegistry.PlatformServices);
 
-            this.PlaylistGrid.SelectionChanged += OnPlaylistSelectionChanged;
+            this.userPlaylistsViewModel = new ContentUserControlViewModel<IPlaylistViewModel>(this.ViewModel,
+                                                                                              nameof(IUserOverviewViewModel.Playlists),
+                                                                                              nameof(IUserOverviewViewModel.PlaylistFetchState),
+                                                                                              () => this.ViewModel.Playlists,
+                                                                                              () => this.ViewModel.PlaylistFetchState,
+                                                                                              OnPlaylistSelected,
+                                                                                              ServiceRegistry.PlatformServices);
+
+            this.FlowList.DataContext = this.userFlowViewModel;
+            this.PlaylistGrid.DataContext = this.userPlaylistsViewModel;
 
         }
 
@@ -49,23 +71,23 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
-            this.PlaylistGrid.SelectionChanged -= OnPlaylistSelectionChanged;
+            this.FlowList.DataContext = null;
+            this.PlaylistGrid.DataContext = null;
 
-            (this.ViewModel as IDisposable)?.Dispose();
+            this.userFlowViewModel.Dispose();
+            this.userPlaylistsViewModel.Dispose();
+
+            this.ViewModel.Dispose();
+            this.DataContext = null;
         }
 
 
-        private void OnPlaylistSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnPlaylistSelected(int index)
         {
-            if (this.PlaylistGrid.SelectedIndex >= 0)
-            {
-                int index = this.PlaylistGrid.SelectedIndex;
+            if (index == -1)
+                return;
 
-                if (index == -1)
-                    return;
-
-                Navigation.ShowPlaylistTracklist(this.ViewModel.Playlists.GetItem(index));
-            }
+            Navigation.ShowPlaylistTracklist(this.ViewModel.Playlists.GetItem(index));
         }
     }
 }

@@ -123,79 +123,14 @@
 
             <!-- Playlists -->
             <PivotItem Header="Playlists">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding PlaylistFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="50"
-                                  Height="50"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding PlaylistFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <GridView x:Name="PlaylistGrid"
-                              ItemsSource="{x:Bind ViewModel.Playlists}"
-                              Visibility="{Binding PlaylistFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:PlaylistGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-
-                </Grid>
-
+                <controls:PlaylistGrid x:Name="PlaylistGrid" />
             </PivotItem>
 
 
             <!-- Flow -->
             <PivotItem Header="Flow">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding FlowFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="50"
-                                  Height="50"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding FlowFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <ListView x:Name="Flow"
-                              ItemsSource="{x:Bind ViewModel.Flow}"
-                              Visibility="{Binding FlowFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:TrackListCell />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-
-                    </ListView>
-                    
-                </Grid>
-
+                <controls:TrackList x:Name="FlowList" />
             </PivotItem>
-
 
         </Pivot>
 

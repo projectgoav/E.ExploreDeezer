@@ -41,6 +41,8 @@ namespace E.ExploreDeezer.UWP.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+
             this.ViewModel = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
             this.DataContext = this.ViewModel;
 

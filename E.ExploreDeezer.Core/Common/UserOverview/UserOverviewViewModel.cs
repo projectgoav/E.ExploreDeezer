@@ -8,7 +8,8 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Common
 {
-    public interface IUserOverviewViewModel
+    public interface IUserOverviewViewModel : IViewModel,
+                                              IDisposable
     {
         string Username { get; }
         string ProfilePictureUri { get; }
