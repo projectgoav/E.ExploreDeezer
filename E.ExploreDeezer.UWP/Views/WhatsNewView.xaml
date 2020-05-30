@@ -67,82 +67,14 @@
 
                
             </Pivot.RightHeader>
-            
-            
+
+
             <PivotItem Header="New Albums">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding NewReleaseFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding NewReleaseFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-                    <GridView x:Name="NewAlbumGrid"
-                              ItemsSource="{x:Bind ViewModel.NewReleases, Mode=OneWay}"
-                              Visibility="{Binding NewReleaseFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}" >
-
-                        <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:AlbumGridCell />
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-
-                    </GridView>
-
-
-
-                </Grid>
-                
+                <controls:AlbumGrid x:Name="NewAlbumGrid" />
             </PivotItem>
 
             <PivotItem Header="Deezer Picks">
-
-                <Grid>
-
-                    <TextBlock Text="No content found"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Visibility="{Binding DeezerPicksFetchState,
-                                                    Converter={StaticResource EmptyOrErrorFetchStateVisibility}}" />
-
-                    <ProgressRing IsActive="True"
-                                  Width="75"
-                                  Height="75"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"
-                                  Visibility="{Binding DeezerPicksFetchState,
-                                                       Converter={StaticResource LoadingFetchStateVisibility}}" />
-
-
-
-
-                    <GridView x:Name="DeezerPicksGrid"
-                              ItemsSource="{x:Bind ViewModel.DeezerPicks, Mode=OneWay}"
-                              Visibility="{Binding DeezerPicksFetchState,
-                                                   Converter={StaticResource ContentAvailableFetchStateVisibility}}">
-                    
-                            <GridView.ItemTemplate>
-                                <DataTemplate>
-                                    <controls:AlbumGridCell />
-                                </DataTemplate>
-                            </GridView.ItemTemplate>
-
-                    </GridView>
-                            
-                </Grid>
-                  
+                <controls:AlbumGrid x:Name="DeezerPicksGrid" />
             </PivotItem>
 
         </Pivot>

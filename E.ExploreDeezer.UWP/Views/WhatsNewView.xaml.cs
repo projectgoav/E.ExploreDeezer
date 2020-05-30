@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Navigation;
 using E.ExploreDeezer.Core;
 using E.ExploreDeezer.Core.WhatsNew;
 using E.ExploreDeezer.Core.ViewModels;
+using E.ExploreDeezer.UWP.ViewModels;
+using Windows.Networking.Vpn;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,20 +28,40 @@ namespace E.ExploreDeezer.UWP.Views
     /// </summary>
     public sealed partial class WhatsNewView : Page
     {
+        private ContentUserControlViewModel<IAlbumViewModel> newAlbumsViewModel;
+        private ContentUserControlViewModel<IAlbumViewModel> deezerPicksViewModel;
+
         public WhatsNewView()
         {
             this.InitializeComponent();
         }
 
-        public IWhatsNewViewModel ViewModel => this.DataContext as IWhatsNewViewModel;
+        public IWhatsNewViewModel ViewModel { get; private set; }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.DataContext = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
+            this.ViewModel = ServiceRegistry.ViewModelFactory.CreateWhatsNewViewModel();
+            this.DataContext = this.ViewModel;
 
-            this.NewAlbumGrid.SelectionChanged += GridSelectionChanged;
-            this.DeezerPicksGrid.SelectionChanged += GridSelectionChanged;
+            this.newAlbumsViewModel = new ContentUserControlViewModel<IAlbumViewModel>(this.ViewModel,
+                                                                                       nameof(IWhatsNewViewModel.NewReleases),
+                                                                                       nameof(IWhatsNewViewModel.NewReleaseFetchState),
+                                                                                       () => this.ViewModel.NewReleases,
+                                                                                       () => this.ViewModel.NewReleaseFetchState,
+                                                                                       OnNewReleaseSelected,
+                                                                                       ServiceRegistry.PlatformServices);
+
+            this.deezerPicksViewModel = new ContentUserControlViewModel<IAlbumViewModel>(this.ViewModel,
+                                                                                         nameof(IWhatsNewViewModel.DeezerPicks),
+                                                                                         nameof(IWhatsNewViewModel.DeezerPicksFetchState),
+                                                                                         () => this.ViewModel.DeezerPicks,
+                                                                                         () => this.ViewModel.DeezerPicksFetchState,
+                                                                                         OnDeezerPickSelected,
+                                                                                         ServiceRegistry.PlatformServices);
+
+            this.NewAlbumGrid.DataContext = this.newAlbumsViewModel;
+            this.DeezerPicksGrid.DataContext = this.deezerPicksViewModel;
         }
 
 
@@ -47,30 +69,31 @@ namespace E.ExploreDeezer.UWP.Views
         {
             base.OnNavigatedFrom(e);
 
-            this.NewAlbumGrid.SelectionChanged -= GridSelectionChanged;
-            this.DeezerPicksGrid.SelectionChanged -= GridSelectionChanged;
+            this.NewAlbumGrid.DataContext = null;
+            this.DeezerPicksGrid.DataContext = null;
+
+            this.newAlbumsViewModel.Dispose();
+            this.deezerPicksViewModel.Dispose();
 
             this.ViewModel.Dispose();
-
             this.DataContext = null;
         }
 
 
-
-        private void GridSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void OnNewReleaseSelected(int index)
         {
-            IAlbumViewModel selectedItem = null;
+            if (index == -1)
+                return;
 
-            if (sender == this.NewAlbumGrid)
-                selectedItem = this.ViewModel.NewReleases.GetItem(this.NewAlbumGrid.SelectedIndex);
+            Navigation.ShowAlbumTracklist(this.ViewModel.NewReleases.GetItem(index));
+        }
 
-            else if (sender == this.DeezerPicksGrid)
-                selectedItem = this.ViewModel.DeezerPicks.GetItem(this.DeezerPicksGrid.SelectedIndex);
+        private void OnDeezerPickSelected(int index)
+        {
+            if (index == -1)
+                return;
 
-            else
-                return; // TODO
-
-            Navigation.ShowAlbumTracklist(selectedItem);
+            Navigation.ShowAlbumTracklist(this.ViewModel.DeezerPicks.GetItem(index));
         }
     }
 }

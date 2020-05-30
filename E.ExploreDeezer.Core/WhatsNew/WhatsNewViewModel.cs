@@ -14,7 +14,8 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.WhatsNew
 {
-    public interface IWhatsNewViewModel : IDisposable
+    public interface IWhatsNewViewModel : IViewModel,
+                                          IDisposable
     {
         EFetchState GenreListFetchState { get; }
         IObservableCollection<IGenreViewModel> GenreList { get; }
