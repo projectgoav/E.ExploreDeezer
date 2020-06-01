@@ -292,14 +292,6 @@ namespace E.ExploreDeezer.Core.Common
             }, this.tokenSource.Token);
 
 
-        // Querying favourites rapidly can cause throttling 
-        // on the Deezer API end. This very crude method
-        // simply sleeps the calling thread for a random period
-        // of time from 10 -> MAX_THROTTLE_MS..
-        private void PreventThrottling()
-            => Thread.Sleep(this.rand.Next(10, MAX_THROTTLE_MS));
-
-
         // IDisposable
         public void Dispose()
         {
