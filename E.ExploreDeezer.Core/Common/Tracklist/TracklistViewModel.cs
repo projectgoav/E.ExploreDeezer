@@ -8,7 +8,8 @@ using E.ExploreDeezer.Core.Collections;
 
 namespace E.ExploreDeezer.Core.Common
 {
-    public interface ITracklistViewModel
+    public interface ITracklistViewModel : IViewModel,
+                                           IDisposable
     {
         ETracklistViewModelType Type { get; }
 
@@ -18,6 +19,7 @@ namespace E.ExploreDeezer.Core.Common
 
         bool CanFavourite { get; }
         bool IsFavourited { get; }
+        void ToggleFavourited();
 
         EFetchState HeaderFetchState { get; }
 
@@ -57,6 +59,13 @@ namespace E.ExploreDeezer.Core.Common
     internal class TracklistViewModel : ViewModelBase,
                                         ITracklistViewModel
     {
+        private static readonly Dictionary<ETracklistViewModelType, EFavouriteType> FAVOURITE_TYPE_LOOKUP =
+            new Dictionary<ETracklistViewModelType, EFavouriteType>()
+            {
+                { ETracklistViewModelType.Album, EFavouriteType.Album },
+                { ETracklistViewModelType.Playlist, EFavouriteType.Playlist },
+            };
+
         private readonly IFavouritesService favouritesService;
         private readonly ITracklistDataController dataController;
         private readonly MainThreadObservableCollectionAdapter<ITrackViewModel> tracklist;
@@ -186,6 +195,12 @@ namespace E.ExploreDeezer.Core.Common
 
         public IObservableCollection<ITrackViewModel> Tracklist => this.tracklist;
 
+        public void ToggleFavourited()
+        {
+            EFavouriteType favType = FAVOURITE_TYPE_LOOKUP[this.Type];
+            this.favouritesService.ToggleFavourited(this.ItemId, favType);
+        }
+
 
         public UserOverviewViewModelParams CreateUserOverviewViewModelParams()
         {
@@ -255,8 +270,10 @@ namespace E.ExploreDeezer.Core.Common
 
         private void UpdateFavouriteState()
         {
-            CanFavourite = this.favouritesService.CanFavourite(this.ItemId);
-            IsFavourited = this.favouritesService.IsFavourited(this.ItemId);
+            EFavouriteType favType = FAVOURITE_TYPE_LOOKUP[this.Type];
+
+            CanFavourite = this.favouritesService.CanFavourite(this.ItemId, favType);
+            IsFavourited = this.favouritesService.IsFavourited(this.ItemId, favType);
         }
 
 

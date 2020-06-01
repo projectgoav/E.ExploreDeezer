@@ -61,6 +61,8 @@ namespace E.ExploreDeezer.Core.Common
 
         public IArtistOverviewViewModel CreateArtistOverviewViewModel(ArtistOverviewViewModelParams p)
             => new ArtistOverviewViewModel(ServiceRegistry.PlatformServices,
+                                           ServiceRegistry.GetService<IArtistOverviewDataController>(),
+                                           ServiceRegistry.FavouritesService,
                                            p);
     }
 }

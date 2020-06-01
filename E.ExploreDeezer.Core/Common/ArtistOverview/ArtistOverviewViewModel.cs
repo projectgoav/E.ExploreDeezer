@@ -18,7 +18,11 @@ namespace E.ExploreDeezer.Core.Common
 
         uint NumberOfFans { get; }
         uint NumberOfAlbums { get; }
-        Uri DeezerWebsiteLink { get; }
+        Uri WebsiteLink { get; }
+
+        bool CanFavourite { get; }
+        bool IsFavourited { get; }
+        void ToggleFavourited();
 
         EFetchState AlbumFetchState { get; }
         IObservableCollection<IAlbumViewModel> Albums { get; }
@@ -48,6 +52,7 @@ namespace E.ExploreDeezer.Core.Common
                                              IArtistOverviewViewModel
                         
     {
+        private readonly IFavouritesService favouritesService;
         private readonly IArtistOverviewDataController dataController;
         private readonly MainThreadObservableCollectionAdapter<IAlbumViewModel> albums;
         private readonly MainThreadObservableCollectionAdapter<ITrackViewModel> topTracks;
@@ -57,6 +62,8 @@ namespace E.ExploreDeezer.Core.Common
         private Uri websiteLink;
         private string artistName;
         private string artistImage;
+        private bool canFavourite;
+        private bool isFavourited;
         private uint numberOfFans;
         private uint numberOfAlbums;
         private EFetchState albumFetchState;
@@ -67,10 +74,13 @@ namespace E.ExploreDeezer.Core.Common
         
 
         public ArtistOverviewViewModel(IPlatformServices platformServices,
+                                       IArtistOverviewDataController dataController,
+                                       IFavouritesService favouritesService,
                                        ArtistOverviewViewModelParams p)
             : base(platformServices)
         {
-            this.dataController = ServiceRegistry.GetService<IArtistOverviewDataController>();
+            this.dataController = dataController;
+            this.favouritesService = favouritesService;
 
             this.albums = new MainThreadObservableCollectionAdapter<IAlbumViewModel>(this.dataController.Albums,
                                                                                      PlatformServices.MainThreadDispatcher);
@@ -86,6 +96,8 @@ namespace E.ExploreDeezer.Core.Common
 
             // TODO: Default artwork for artist...
             // NEEDS to be done before the fetch status changed is added, as event will fire before we've set fallback
+            this.ArtistId = p.ArtistId;
+
             this.ArtistImage = "ms-appx:///Assets/StoreLogo.png";
 
 
@@ -95,12 +107,16 @@ namespace E.ExploreDeezer.Core.Common
             this.dataController.OnRelatedArtistFetchStateChanged += OnRelatedArtistFetchStateChanged;
             this.dataController.OnCompleteArtistFetchStateChanged += OnCompleteArtistFetchStateChanged;
 
+            this.dataController.FetchOverviewAsync(this.ArtistId);
 
-            this.dataController.FetchOverviewAsync(p.ArtistId);
+            UpdateFavouriteState();
+            this.favouritesService.OnFavouritesChanged += OnFavouritesChanged;
         }
 
 
         // IArtistOverviewViewModel
+        public ulong ArtistId { get; }
+
         public string ArtistName 
         {
             get => this.artistName;
@@ -125,11 +141,25 @@ namespace E.ExploreDeezer.Core.Common
             private set => SetProperty(ref this.numberOfAlbums, value);
         }
 
-        public Uri DeezerWebsiteLink
+        public Uri WebsiteLink
         {
             get => this.websiteLink;
             private set => SetProperty(ref this.websiteLink, value);
         }
+
+
+        public bool CanFavourite
+        {
+            get => this.canFavourite;
+            private set => SetProperty(ref this.canFavourite, value);
+        }
+
+        public bool IsFavourited
+        {
+            get => this.isFavourited;
+            private set => SetProperty(ref this.isFavourited, value);
+        }
+
 
         public EFetchState HeaderFetchState
         {
@@ -181,6 +211,10 @@ namespace E.ExploreDeezer.Core.Common
         public IObservableCollection<IArtistViewModel> RelatedArtists => this.relatedArtists;
 
 
+        public void ToggleFavourited()
+            => this.favouritesService.ToggleFavourited(this.ArtistId, EFavouriteType.Artist);
+
+
         private void OnPlaylistFetchStateChanged(object sender, FetchStateChangedEventArgs e)
             => this.FeaturedPlaylistFetchState = e.NewValue;
 
@@ -209,14 +243,25 @@ namespace E.ExploreDeezer.Core.Common
 
                 this.NumberOfFans = artist.NumberOfFans;
                 this.NumberOfAlbums = artist.NumberOfAlbums;
-                this.DeezerWebsiteLink = new Uri(artist.WebsiteLink);
+                this.WebsiteLink = new Uri(artist.WebsiteLink);
             }
             else
             {
                 this.NumberOfFans = 0;
                 this.NumberOfAlbums = 0;
-                this.DeezerWebsiteLink = null;
+                this.WebsiteLink = null;
             }
+        }
+
+
+        private void OnFavouritesChanged(object sender)
+            => UpdateFavouriteState();
+
+
+        private void UpdateFavouriteState()
+        {
+            CanFavourite = this.favouritesService.CanFavourite(this.ArtistId, EFavouriteType.Artist);
+            IsFavourited = this.favouritesService.IsFavourited(this.ArtistId, EFavouriteType.Artist);
         }
 
 
@@ -229,6 +274,8 @@ namespace E.ExploreDeezer.Core.Common
                 this.dataController.OnPlaylistFetchStateChanged -= OnPlaylistFetchStateChanged;
                 this.dataController.OnRelatedArtistFetchStateChanged -= OnRelatedArtistFetchStateChanged;
                 this.dataController.OnCompleteArtistFetchStateChanged -= OnCompleteArtistFetchStateChanged;
+
+                this.favouritesService.OnFavouritesChanged -= OnFavouritesChanged;
 
                 this.albums.Dispose();
                 this.topTracks.Dispose();

@@ -62,10 +62,12 @@
                             Orientation="Vertical"
                             Spacing="5">
 
-                    <Button HorizontalAlignment="Right"
+                    <Button x:Name="FavouriteButton"
+                            HorizontalAlignment="Right"
                             Visibility="{Binding CanFavourite}"
                             Background="Transparent">
-                        <SymbolIcon Symbol="{Binding IsFavourited, Converter={StaticResource FavouriteIconConverter}}" />
+                        <SymbolIcon Foreground="{ThemeResource SystemAccentColor}"
+                                    Symbol="{Binding IsFavourited, Converter={StaticResource FavouriteIconConverter}}" />
                     </Button>
 
                     <HyperlinkButton Content="View on Deezer"
@@ -73,8 +75,6 @@
                     
                 </StackPanel>
                 
-
-
             </Grid>
 
             

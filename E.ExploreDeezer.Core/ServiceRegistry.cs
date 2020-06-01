@@ -52,7 +52,7 @@ namespace E.ExploreDeezer.Core
             Register<ITracklistDataController>(new TracklistDataController(DeezerSession));
             Register<IArtistOverviewDataController>(new ArtistOverviewDataController(DeezerSession));
             Register<IUserOverviewDataController>(new UserOverviewDataController(DeezerSession));
-            Register<IMyDeezerDataController>(new MyDeezerDataController(DeezerSession, AuthenticationService));
+            Register<IMyDeezerDataController>(new MyDeezerDataController(DeezerSession, AuthenticationService, FavouritesService));
 
 
 

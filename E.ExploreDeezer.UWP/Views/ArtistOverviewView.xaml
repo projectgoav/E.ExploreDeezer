@@ -57,11 +57,23 @@
                            Foreground="White"
                            FontSize="18"/>
 
-                <HyperlinkButton Grid.Column="1"
-                                 Margin="5,0,0,0"
-                                 Content="View on Deezer"
-                                 NavigateUri="{Binding DeezerWebsiteLink}" />
-                       
+                <StackPanel Grid.Column="1"
+                            Margin="5,0,0,0"
+                            Orientation="Vertical"
+                            Spacing="5">
+
+                    <Button HorizontalAlignment="Right"
+                            Visibility="{Binding CanFavourite}"
+                            Background="Transparent">
+                        <SymbolIcon Foreground="{ThemeResource SystemAccentColor}"
+                                    Symbol="{Binding IsFavourited, Converter={StaticResource FavouriteIconConverter}}" />
+                    </Button>
+
+                    <HyperlinkButton Content="View on Deezer"
+                                     NavigateUri="{Binding WebsiteLink}"/>
+
+                </StackPanel>
+
             </Grid>
             
 

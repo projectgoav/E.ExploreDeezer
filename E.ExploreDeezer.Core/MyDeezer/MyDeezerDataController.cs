@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 using E.Deezer;
 using E.Deezer.Api;
+
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Collections;
 using E.ExploreDeezer.Core.Extensions;
+using E.ExploreDeezer.Core.Common;
 
 namespace E.ExploreDeezer.Core.MyDeezer
 {
@@ -33,6 +35,7 @@ namespace E.ExploreDeezer.Core.MyDeezer
                                             IDisposable
     {
         private readonly IDeezerSession session;
+        private readonly IFavouritesService favouritesService;
         private readonly IAuthenticationService authService;
         private readonly UpdatableFetchState trackFetchState;
         private readonly UpdatableFetchState albumsFetchState;
@@ -43,10 +46,12 @@ namespace E.ExploreDeezer.Core.MyDeezer
 
 
         public MyDeezerDataController(IDeezerSession session,
-                                      IAuthenticationService authService)
+                                      IAuthenticationService authService,
+                                      IFavouritesService favouritesService)
         {
             this.session = session;
             this.authService = authService;
+            this.favouritesService = favouritesService;
 
             this.trackFetchState = new UpdatableFetchState();
             this.albumsFetchState = new UpdatableFetchState();
@@ -57,7 +62,9 @@ namespace E.ExploreDeezer.Core.MyDeezer
             this.favouriteArtists = new PagedObservableCollection<IArtistViewModel>();
 
             this.authService.OnAuthenticationStatusChanged += OnAuthenticationStateChanged;
+            this.favouritesService.OnFavouritesChanged += OnFavouritesChanged;
         }
+
 
 
         // IMyDeezerDataController
@@ -212,6 +219,19 @@ namespace E.ExploreDeezer.Core.MyDeezer
         }
 
 
+        private void OnFavouritesChanged(object sender)
+        {
+            if (this.IsLoggedIn)
+            {
+                UpdateCollectionsWhenAuthenticated();
+            }
+            else
+            {
+                UpdateCollectionsWhenNotAuthenticated();
+            }
+        }
+
+
         public void Dispose()
         {
             this.Dispose(true);
@@ -222,6 +242,9 @@ namespace E.ExploreDeezer.Core.MyDeezer
         {
             if (disposing)
             {
+                this.favouritesService.OnFavouritesChanged -= OnFavouritesChanged;
+                this.authService.OnAuthenticationStatusChanged -= OnAuthenticationStateChanged;
+
                 this.trackFetchState.Dispose();
                 this.albumsFetchState.Dispose();
                 this.artistFetchState.Dispose();

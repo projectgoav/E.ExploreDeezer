@@ -31,7 +31,7 @@ namespace E.ExploreDeezer.UWP.Views
         }
 
 
-        public ITracklistViewModel ViewModel => this.DataContext as ITracklistViewModel;
+        public ITracklistViewModel ViewModel { get; private set; }
 
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -39,18 +39,25 @@ namespace E.ExploreDeezer.UWP.Views
             base.OnNavigatedTo(e);
 
             Assert.ObjectOfType<TracklistViewModelParams>(e.Parameter);
-            this.DataContext = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel((TracklistViewModelParams)e.Parameter);
+            this.ViewModel = ServiceRegistry.ViewModelFactory.CreateTracklistViewModel((TracklistViewModelParams)e.Parameter);
+            this.DataContext = this.ViewModel;
 
             this.SubtitleButton.Click += OnSubtitleClicked;
+            this.FavouriteButton.Click += OnFavouriteButtonClicked;
         }
+
+        private void OnFavouriteButtonClicked(object sender, RoutedEventArgs e)
+            => this.ViewModel.ToggleFavourited();
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
 
             this.SubtitleButton.Click -= OnSubtitleClicked;
+            this.FavouriteButton.Click -= OnFavouriteButtonClicked;
 
-            (this.ViewModel as IDisposable)?.Dispose();
+            this.ViewModel.Dispose();
+            this.DataContext = null;
         }
 
 

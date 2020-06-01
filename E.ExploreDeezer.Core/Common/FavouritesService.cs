@@ -8,43 +8,42 @@ using E.Deezer;
 
 using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.MyDeezer;
-using E.ExploreDeezer.Core.ViewModels;
-using System.Threading;
-using System.Diagnostics;
+using E.ExploreDeezer.Core.Extensions;
 
 namespace E.ExploreDeezer.Core.Common
 {
+    public enum EFavouriteType : byte
+    {
+        Album,
+        Track,
+        Artist,
+        Playlist,
+        Unknown = byte.MaxValue,
+    };
+
     public delegate void OnFavouritesChangedHandler(object sender);
 
     public interface IFavouritesService
     {
         bool IsLoggedIn { get; }
 
-        bool CanFavourite(ulong itemId);
-        bool CanFavourite(ITrackViewModel track);
-        bool CanFavourite(IAlbumViewModel album);
-        bool CanFavourite(IArtistViewModel artist);
-        bool CanFavourite(IPlaylistViewModel playlist);
+        bool CanFavourite(ulong itemId, EFavouriteType type = EFavouriteType.Unknown);
 
+        bool IsFavourited(ulong itemId, EFavouriteType type = EFavouriteType.Unknown);
 
-        bool IsFavourited(ulong itemId);
-        bool IsFavourited(ITrackViewModel track);
-        bool IsFavourited(IAlbumViewModel album);
-        bool IsFavourited(IArtistViewModel artist);
-        bool IsFavourited(IPlaylistViewModel playlist);
+        Task<bool> ToggleFavourited(ulong itemId, EFavouriteType type);
 
         event OnFavouritesChangedHandler OnFavouritesChanged;
     }
 
 
     internal class FavouritesService : IFavouritesService,
-                                              IDisposable
+                                       IDisposable
     {
         private const int DOWNLOAD_CHUNK_SIZE = 100;
         private const int MIN_THROTTLE_MS = 50;
         private const int MAX_THROTTLE_MS = 500;
 
-        private readonly Random rand;
         private readonly IDeezerSession session;
         private readonly HashSet<ulong> userPlaylists;
         private readonly HashSet<ulong> favouriteTracks;
@@ -56,14 +55,13 @@ namespace E.ExploreDeezer.Core.Common
 
 
         public FavouritesService(IDeezerSession session,
-                                        IAuthenticationService authService)
+                                 IAuthenticationService authService)
         {
-            Debug.Assert(MIN_THROTTLE_MS < MAX_THROTTLE_MS, "Invalid throttle values set.");
+            Assert.That(MIN_THROTTLE_MS < MAX_THROTTLE_MS, "Invalid throttle values set.");
 
             this.session = session;
             this.authService = authService;
 
-            this.rand = new Random();
             this.userPlaylists = new HashSet<ulong>();
             this.favouriteTracks = new HashSet<ulong>();
             this.favouriteAlbums = new HashSet<ulong>();
@@ -80,41 +78,215 @@ namespace E.ExploreDeezer.Core.Common
         // IFavouritesDataController
         public bool IsLoggedIn { get; private set; }
 
-        public bool CanFavourite(ulong itemId)
+        public bool CanFavourite(ulong itemId, EFavouriteType type = EFavouriteType.Unknown)
             => this.IsLoggedIn && !this.userPlaylists.Contains(itemId);
 
-        public bool CanFavourite(ITrackViewModel track)
-            => track != null && this.IsLoggedIn;
-
-        public bool CanFavourite(IAlbumViewModel album)
-            => album != null && this.IsLoggedIn;
-
-        public bool CanFavourite(IArtistViewModel artist)
-            => artist != null && this.IsLoggedIn;
-
-        public bool CanFavourite(IPlaylistViewModel playlist)
-            => playlist != null && this.IsLoggedIn && !this.userPlaylists.Contains(playlist.ItemId);
-
-
-        public bool IsFavourited(ulong itemId)
+        public bool IsFavourited(ulong itemId, EFavouriteType type = EFavouriteType.Unknown)
         {
-            return this.favouriteTracks.Contains(itemId)
-                    || this.favouriteAlbums.Contains(itemId)
-                    || this.favouriteArtists.Contains(itemId)
-                    || this.favouritePlaylists.Contains(itemId);
+            switch(type)
+            {
+                case EFavouriteType.Album:
+                    return this.favouriteAlbums.Contains(itemId);
+
+                case EFavouriteType.Track:
+                    return this.favouriteTracks.Contains(itemId);
+
+                case EFavouriteType.Artist:
+                    return this.favouriteArtists.Contains(itemId);
+
+                case EFavouriteType.Playlist:
+                    return this.favouritePlaylists.Contains(itemId);
+
+                default:
+                    return this.favouriteTracks.Contains(itemId)
+                            || this.favouriteAlbums.Contains(itemId)
+                            || this.favouriteArtists.Contains(itemId)
+                            || this.favouritePlaylists.Contains(itemId);
+            }
         }
 
-        public bool IsFavourited(ITrackViewModel track)
-            => track != null && this.favouriteTracks.Contains(track.ItemId);
 
-        public bool IsFavourited(IAlbumViewModel album)
-            => album != null && this.favouriteAlbums.Contains(album.ItemId);
+        public Task<bool> ToggleFavourited(ulong itemId, EFavouriteType type)
+        {
+            switch(type)
+            {
+                case EFavouriteType.Album:
+                    return ToggleAlbumFavourite(itemId);
 
-        public bool IsFavourited(IArtistViewModel artist)
-            => artist != null && this.favouriteArtists.Contains(artist.ItemId);
+                case EFavouriteType.Track:
+                    return ToggleTrackFavourite(itemId);
 
-        public bool IsFavourited(IPlaylistViewModel playlist)
-            => playlist != null && this.favouritePlaylists.Contains(playlist.ItemId);
+                case EFavouriteType.Artist:
+                    return ToggleArtistFavourite(itemId);
+
+                case EFavouriteType.Playlist:
+                    return TogglePlaylistFavourite(itemId);
+
+                default:
+                    throw new ArgumentException("Invalid type.");
+            }
+        }
+
+
+        private Task<bool> ToggleAlbumFavourite(ulong itemId)
+        { 
+            if (this.favouriteAlbums.Contains(itemId))
+            {
+                return this.session.User.UnfavouriteAlbum(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteAlbums.Remove(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+            else
+            {
+                return this.session.User.FavouriteAlbum(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteAlbums.Add(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+        }
+
+        private Task<bool> ToggleTrackFavourite(ulong itemId)
+        {
+            if (this.favouriteTracks.Contains(itemId))
+            {
+                return this.session.User.UnfavouriteTrack(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteTracks.Remove(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+            else
+            {
+                return this.session.User.FavouriteTrack(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteTracks.Add(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+        }
+
+        private Task<bool> ToggleArtistFavourite(ulong itemId)
+        {
+            if (this.favouriteArtists.Contains(itemId))
+            {
+                return this.session.User.UnfavouriteArtist(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteArtists.Remove(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+            else
+            {
+                return this.session.User.FavouriteArtist(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouriteArtists.Add(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+        }
+
+        private Task<bool> TogglePlaylistFavourite(ulong itemId)
+        {
+            if (this.favouritePlaylists.Contains(itemId))
+            {
+                return this.session.User.UnfavouritePlaylist(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouritePlaylists.Remove(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+            else
+            {
+                return this.session.User.FavouritePlaylist(itemId, this.tokenSource.Token)
+                                        .ContinueWhenNotCancelled(t =>
+                                        {
+                                            if (t.IsFaulted)
+                                                return false;
+
+                                            if (t.Result)
+                                            {
+                                                this.favouritePlaylists.Add(itemId);
+                                                this.OnFavouritesChanged?.Invoke(this);
+                                            }
+
+                                            return t.Result;
+
+                                        }, this.tokenSource.Token);
+            }
+        }
 
 
         public event OnFavouritesChangedHandler OnFavouritesChanged;
@@ -123,6 +295,8 @@ namespace E.ExploreDeezer.Core.Common
         private void OnAuthStateChanged(object sender, OnAuthenticationStatusChangedEventArgs e)
         {
             this.IsLoggedIn = e.IsAuthenticated;
+
+            this.tokenSource.Reset();
 
             if (this.IsLoggedIn)
             {
@@ -305,6 +479,7 @@ namespace E.ExploreDeezer.Core.Common
             {
                 this.authService.OnAuthenticationStatusChanged -= OnAuthStateChanged;
 
+                this.tokenSource.Cancel();
                 this.tokenSource.Dispose();
             }
         }
