@@ -16,6 +16,9 @@ namespace E.ExploreDeezer.Core.Common
         string Subtitle { get; }
         string ArtworkUri { get; }
 
+        bool CanFavourite { get; }
+        bool IsFavourited { get; }
+
         EFetchState HeaderFetchState { get; }
 
         uint NumberOfFans { get; }
@@ -54,6 +57,7 @@ namespace E.ExploreDeezer.Core.Common
     internal class TracklistViewModel : ViewModelBase,
                                         ITracklistViewModel
     {
+        private readonly IFavouritesService favouritesService;
         private readonly ITracklistDataController dataController;
         private readonly MainThreadObservableCollectionAdapter<ITrackViewModel> tracklist;
 
@@ -61,6 +65,8 @@ namespace E.ExploreDeezer.Core.Common
         private string title;
         private string subtitle;
         private Uri websiteLink;
+        private bool canFavourite;
+        private bool isFavourited;
         private string artworkUri;
         private uint numberOfFans;
         private uint numberOfTracks;
@@ -69,14 +75,18 @@ namespace E.ExploreDeezer.Core.Common
 
 
         public TracklistViewModel(IPlatformServices platformServices,
+                                  ITracklistDataController dataController,
+                                  IFavouritesService favouritesService,
                                   TracklistViewModelParams p)
             : base(platformServices)
         {
-            this.dataController = ServiceRegistry.GetService<ITracklistDataController>();
+            this.dataController = dataController;
+            this.favouritesService = favouritesService;
 
             this.tracklist = new MainThreadObservableCollectionAdapter<ITrackViewModel>(this.dataController.Tracklist,
                                                                                         PlatformServices.MainThreadDispatcher);
 
+            this.ItemId = p.ItemId;
             this.Type = p.Type;
 
             this.Title = string.Empty;
@@ -84,23 +94,41 @@ namespace E.ExploreDeezer.Core.Common
             this.ArtworkUri = "ms-appx://Assets/StoreLogo.png";
             this.WebsiteLink = null;
 
-            switch(this.Type)
+            switch (this.Type)
             {
                 case ETracklistViewModelType.Album:
-                    this.dataController.FetchTracklistAsync(ETracklistType.Album, p.ItemId);
+                    this.dataController.FetchTracklistAsync(ETracklistType.Album, this.ItemId);
                     break;
 
                 case ETracklistViewModelType.Playlist:
-                    this.dataController.FetchTracklistAsync(ETracklistType.Playlist, p.ItemId);
+                    this.dataController.FetchTracklistAsync(ETracklistType.Playlist, this.ItemId);
                     break;
             }
 
             this.dataController.OnTracklistFetchStateChanged += OnFetchStateChanged;
             this.dataController.OnCompleteItemFetchStateChanged += OnHeaderFetchStateChanged;
+
+            this.favouritesService.OnFavouritesChanged += OnFavouritesChanged;
+
+            UpdateFavouriteState();
         }
 
+
         // ITracklistViewModel
+        public ulong ItemId { get; }
         public ETracklistViewModelType Type { get; }
+
+        public bool CanFavourite
+        {
+            get => this.canFavourite;
+            private set => SetProperty(ref this.canFavourite, value);
+        }
+
+        public bool IsFavourited
+        {
+            get => this.isFavourited;
+            private set => SetProperty(ref this.isFavourited, value);
+        }
 
         public string Title
         {
@@ -222,12 +250,24 @@ namespace E.ExploreDeezer.Core.Common
         }
 
 
+        private void OnFavouritesChanged(object sender)
+            => UpdateFavouriteState();
+
+        private void UpdateFavouriteState()
+        {
+            CanFavourite = this.favouritesService.CanFavourite(this.ItemId);
+            IsFavourited = this.favouritesService.IsFavourited(this.ItemId);
+        }
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
                 this.dataController.OnTracklistFetchStateChanged -= OnFetchStateChanged;
                 this.dataController.OnCompleteItemFetchStateChanged -= OnHeaderFetchStateChanged;
+
+                this.favouritesService.OnFavouritesChanged -= OnFavouritesChanged;
 
                 this.tracklist.Dispose();
             }

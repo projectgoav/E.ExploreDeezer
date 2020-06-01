@@ -147,6 +147,7 @@
       <DependentUpon>TrackList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Secrets.cs" />
+    <Compile Include="ValueConverters\FavouriteIconConverter.cs" />
     <Compile Include="ValueConverters\FetchStateVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

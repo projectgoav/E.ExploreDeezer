@@ -34,7 +34,7 @@ namespace E.ExploreDeezer.Core.Common
         public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(IArtistViewModel artistViewModel)
         {
             Assert.That(artistViewModel != null);
-            return CreateArtistOverviewViewModelParams(artistViewModel.Id);
+            return CreateArtistOverviewViewModelParams(artistViewModel.ItemId);
         }
 
         public static ArtistOverviewViewModelParams CreateArtistOverviewViewModelParams(ulong artistId)

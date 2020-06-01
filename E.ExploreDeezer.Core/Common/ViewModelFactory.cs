@@ -51,6 +51,8 @@ namespace E.ExploreDeezer.Core.Common
 
         public ITracklistViewModel CreateTracklistViewModel(TracklistViewModelParams p)
             => new TracklistViewModel(ServiceRegistry.PlatformServices,
+                                      ServiceRegistry.GetService<ITracklistDataController>(),
+                                      ServiceRegistry.FavouritesService,
                                       p);
 
         public IUserOverviewViewModel CreateUserOverviewViewModel(UserOverviewViewModelParams p)

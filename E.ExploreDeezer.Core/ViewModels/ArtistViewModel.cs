@@ -10,7 +10,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 {
     public interface IArtistViewModel
     {
-        ulong Id { get; }
+        ulong ItemId { get; }
         string Name { get; }
         string ArtworkUri { get; }
     }
@@ -32,7 +32,7 @@ namespace E.ExploreDeezer.Core.ViewModels
     {
         public ArtistViewModel(IArtist artist)
         {
-            Id = artist?.Id ?? 0u;
+            ItemId = artist?.Id ?? 0u;
             Name = artist?.Name ?? string.Empty;
             ArtworkUri = artist?.Pictures.Medium ?? "ms-appx:///Assets/StoreLogo.png"; //TODO: Fallback artwork
 
@@ -45,7 +45,7 @@ namespace E.ExploreDeezer.Core.ViewModels
 
 
         // IArtistViewModel
-        public ulong Id { get; }
+        public ulong ItemId { get; }
         public string Name { get; }
         public bool IsPresent { get; }
 

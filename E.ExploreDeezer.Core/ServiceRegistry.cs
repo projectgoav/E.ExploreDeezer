@@ -42,6 +42,8 @@ namespace E.ExploreDeezer.Core
             AuthenticationService = new AuthenticationService(DeezerSession,
                                                               platformServices.SecureStorage);
 
+            FavouritesService = new FavouritesService(DeezerSession, AuthenticationService);
+
             // TODO: Need to work out how to dispose of services when they are dying off
             Register<IGenreListDataController>(new GenreListDataController(DeezerSession));
             Register<IWhatsNewDataController>(new WhatsNewDataController(DeezerSession));
@@ -64,6 +66,7 @@ namespace E.ExploreDeezer.Core
         public static IDeezerSession DeezerSession { get; private set; }
         public static IPlatformServices PlatformServices { get; private set; }
         public static IViewModelFactory ViewModelFactory { get; private set; }
+        public static IFavouritesService FavouritesService { get; private set; }
         public static IAuthenticationService AuthenticationService { get; private set; }
 
 

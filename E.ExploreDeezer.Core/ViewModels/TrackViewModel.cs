@@ -25,6 +25,7 @@ namespace E.ExploreDeezer.Core.ViewModels
         ETrackLHSMode LHSMode { get; }
         ETrackArtistMode ArtistMode { get; }
 
+        ulong ItemId { get; }
         string Title { get; }
         string Artist { get; }
         ulong ArtistId { get; }
@@ -42,11 +43,10 @@ namespace E.ExploreDeezer.Core.ViewModels
                               ETrackLHSMode lhsMode,
                               ETrackArtistMode artistMode)
         {
-            this.IsPresent = track != null;
-
             this.LHSMode = lhsMode;
             this.ArtistMode = artistMode;
 
+            this.ItemId = track?.Id ?? 0u;
             this.Title = track?.Title ?? string.Empty;
             this.Artist = track?.ArtistName ?? string.Empty;
             this.ArtistId = track?.Artist?.Id ?? 0u;
@@ -60,11 +60,10 @@ namespace E.ExploreDeezer.Core.ViewModels
 
 
         // ITrackViewModel  
-        public bool IsPresent { get; }
-
         public ETrackLHSMode LHSMode { get; }
         public ETrackArtistMode ArtistMode { get; }
 
+        public ulong ItemId { get; }
         public string Title { get; }
         public string Artist { get; }
         public ulong ArtistId { get; }

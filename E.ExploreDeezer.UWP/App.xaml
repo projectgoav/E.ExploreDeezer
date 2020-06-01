@@ -17,6 +17,8 @@
 
         <converters:NumberFormatValueConverter x:Key="NumberFormatter" />
 
+        <converters:FavouriteIconConverter x:Key="FavouriteIconConverter" />
+
 
         <!-- Colours -->
         <media:AcrylicBrush x:Key="HeaderAcrylicBrush" 
