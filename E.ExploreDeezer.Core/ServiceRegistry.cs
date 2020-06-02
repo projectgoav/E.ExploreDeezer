@@ -70,10 +70,6 @@ namespace E.ExploreDeezer.Core
         public static IAuthenticationService AuthenticationService { get; private set; }
 
 
-        /* TODO: This *could* disappear and rely on the ViewModel layer
-         * to plub the showing / closing of ViewModels? 
-         * 
-         * Instead, we can just rely on the View layer implement all it requires. */
         public static void Register<TService>(TService service)
             => additionalServices.Add(typeof(TService), service);
 

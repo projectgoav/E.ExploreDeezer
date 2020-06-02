@@ -8,7 +8,6 @@ namespace E.ExploreDeezer.Core.Mvvm
 {
     public interface IPlatformServices
     {
-        IPresenter Presenter { get; }
         ISecureStorage SecureStorage { get; }
         IMainThreadDispatcher MainThreadDispatcher { get; }
     }
@@ -18,12 +17,6 @@ namespace E.ExploreDeezer.Core.Mvvm
     {
         void ExecuteOnMainThread(Action action);
         Task ExecuteOnMainThreadAsync(Action action);
-    }
-
-
-    public interface IPresenter
-    {
-        void ShowViewModel(IViewModel viewModelToShow);
     }
 
     public interface ISecureStorage

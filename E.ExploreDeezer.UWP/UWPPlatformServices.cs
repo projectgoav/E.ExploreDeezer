@@ -34,9 +34,6 @@ namespace E.ExploreDeezer.UWP
 
         public IMainThreadDispatcher MainThreadDispatcher => this;
 
-        public IPresenter Presenter { get; } = null;
-
-
         // IMainThreadDispatcher
         public void ExecuteOnMainThread(Action action)
         {
@@ -93,7 +90,7 @@ namespace E.ExploreDeezer.UWP
                            });
         }
 
-        private static ApplicationDataContainer GetSettings()
+        private ApplicationDataContainer GetSettings()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
 

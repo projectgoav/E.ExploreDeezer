@@ -297,6 +297,11 @@ namespace E.ExploreDeezer.Core.Search
             {
                 this.tokenSource.Dispose();
 
+                this.albumResults.Dispose();
+                this.trackResults.Dispose();
+                this.artistResults.Dispose();
+                this.playlistResults.Dispose();
+
                 this.albumsFetchState.Dispose();
                 this.tracksFetchState.Dispose();
                 this.artistsFetchState.Dispose();

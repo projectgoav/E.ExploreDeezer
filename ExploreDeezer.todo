@@ -15,7 +15,7 @@ Core/ViewModels:
    ☐ Duration
  ✔ Information data controllers @done (20-04-08 13:30)
  ✔ Fetch status for data controllers @done (20-04-14 16:16)
- ☐ Implement deep linking, allowing info pages to link to artist & user pages?
+ ✔ Implement deep linking, allowing info pages to link to artist & user pages? @done (20-06-02 13:38)
    Done for lists of tracks throughout the app.
    Info page has been removed for now, so will keep this task around to track that
  ✔ Genre data controller @done (20-04-08 13:41)
@@ -24,13 +24,13 @@ Core/ViewModels:
  ✔ Convert over the data controllers to use the helpful task extensions to avoid writing all the same continuation and error checking nonsense @done (20-05-27 10:42)
  ✔ User page (ViewModel & DataController) @done (20-04-20 20:34)
  ✔ Improve how deep-linking will work with tracks in albums, playlists & track lists for charts etc @done (20-04-21 13:54)
- ☐ Ability to login via OAuth and store the provided token for later use 
+ ✔ Ability to login via OAuth and store the provided token for later use @done (20-06-02 13:38)
    Need to re-read the docs on this to see if we can get a AT & RT, not just an AT from Deezer
  ☐ Favouriting
-   ☐ Albums
-   ☐ Artists
+   ✔ Albums @done (20-06-02 13:38)
+   ✔ Artists @done (20-06-02 13:38)
    ☐ Tracks
-   ☐ Playlists
+   ✔ Playlists @done (20-06-02 13:38)
  ☐ Playlist support
    ☐ Add tracks
    ☐ Create new with selected tracks
@@ -62,17 +62,17 @@ Views:
   ✔ Integrate fetch status to pages @done (20-04-14 16:16)
   ✔ Implement deep linking. See ViewModel task for this, as work migh be required in View layer @done (20-04-21 13:54)
   ☐ Radio support
-  ☐ Add external link icon to links that open out-with the app
+  ✔ Add external link icon to links that open out-with the app @done (20-06-02 13:38)
   ☐ Split out the Headers for Artist and Tracklist into a control to allow for the use of x:Bind
      Their data context can be added in the code-behind or view a deadicated binding with an Information / Header ViewModel property exposed
   ✔ Witcher 3 OST only shows 25 tracks instead of the full 55 @done (20-04-16 15:53)
   ✔ User page @done (20-04-20 20:34)
-  ☐ OAuth login
+  ✔ OAuth login @done (20-06-02 13:38)
   ✔ User favourite view @done (20-05-28 15:28)
   ☐ Add to playlist view
   ☐ Create new playlist view (Might be combined with the above?)
   ☐ Modify/Edit playlist view
   ☐ User favourite Radio
-  ☐ Move all views over to use the common Album/Artist/Track grid
-  ☐ Create common playlist grid (is this required??)
+  ✔ Move all views over to use the common Album/Artist/Track grid @done (20-06-02 13:38)
+  ✔ Create common playlist grid (is this required??) @done (20-06-02 13:38)
 

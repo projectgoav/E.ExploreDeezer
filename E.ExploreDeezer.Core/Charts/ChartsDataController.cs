@@ -274,7 +274,18 @@ namespace E.ExploreDeezer.Core.Charts
         {
             if (disposing)
             {
+                this.tokenSource.Cancel();
+                this.tokenSource.Dispose();
 
+                this.albums.Dispose();
+                this.tracks.Dispose();
+                this.artists.Dispose();
+                this.playlists.Dispose();
+
+                this.albumFetchState.Dispose();
+                this.trackFetchState.Dispose();
+                this.artistFetchState.Dispose();
+                this.playlistFetchState.Dispose();
             }
         }
     }

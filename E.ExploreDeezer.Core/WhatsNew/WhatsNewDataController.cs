@@ -178,6 +178,9 @@ namespace E.ExploreDeezer.Core.WhatsNew
             {
                 this.tokenSource.Dispose();
 
+                this.newReleases.Dispose();
+                this.deezerPicks.Dispose();
+
                 this.newReleaseFetchState.Dispose();
                 this.deezerPicksFetchState.Dispose();
             }

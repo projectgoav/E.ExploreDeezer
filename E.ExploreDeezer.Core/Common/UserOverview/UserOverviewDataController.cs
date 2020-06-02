@@ -12,6 +12,7 @@ using E.ExploreDeezer.Core.Util;
 using E.ExploreDeezer.Core.ViewModels;
 using E.ExploreDeezer.Core.Extensions;
 using E.ExploreDeezer.Core.Collections;
+using Microsoft.Win32.SafeHandles;
 
 namespace E.ExploreDeezer.Core.Common
 {
@@ -243,6 +244,9 @@ namespace E.ExploreDeezer.Core.Common
             if (disposing)
             {
                 this.tokenSource.Dispose();
+
+                this.flow.Dispose();
+                this.playlists.Dispose();
 
                 this.flowFetchState.Dispose();
                 this.playlistsFetchState.Dispose();

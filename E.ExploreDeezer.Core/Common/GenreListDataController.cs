@@ -108,9 +108,10 @@ namespace E.ExploreDeezer.Core.Common
         {
             if (disposing)
             {
-                this.genreList.ClearContents();
-
                 this.tokenSource.Dispose();
+
+                this.genreList.Dispose();
+
                 this.fetchState.Dispose();
             }
         }
