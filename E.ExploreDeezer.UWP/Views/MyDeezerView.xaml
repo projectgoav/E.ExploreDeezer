@@ -36,8 +36,10 @@
                 <LineBreak />
                 <Run Text="- Access to your favourites" />
                 <LineBreak />
-                <Run Text="- Playlist management" />
-                <LineBreak />
+                <Run Text="- Add/Remove from your favourites" />
+                <!-- Not yet ;) -->
+                <!--<Run Text="- Playlist management" />
+                <LineBreak />-->
             </TextBlock>
 
             <Button x:Name="LoginButton"

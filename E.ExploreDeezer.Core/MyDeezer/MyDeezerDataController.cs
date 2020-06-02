@@ -221,7 +221,7 @@ namespace E.ExploreDeezer.Core.MyDeezer
 
         private void OnFavouritesChanged(object sender)
         {
-            if (this.IsLoggedIn)
+            if (this.favouritesService.IsLoggedIn)
             {
                 UpdateCollectionsWhenAuthenticated();
             }
