@@ -25,6 +25,8 @@ namespace E.ExploreDeezer.UWP.ViewModels
     internal class ContentUserControlViewModel<TCollection> : ViewModelBase,
                                                               IContentUserControlViewModel<TCollection>
     {
+        private const string ALL_PROPERTIES_CHANGED = "";
+
         private readonly IViewModel parentViewModel;
         private readonly string collectionPropertyName;
         private readonly string fetchStatePropertyName;
@@ -68,6 +70,12 @@ namespace E.ExploreDeezer.UWP.ViewModels
 
             else if (e.PropertyName == this.collectionPropertyName)
                 base.RaisePropertyChangedSafe(nameof(Collection));
+
+            else if (e.PropertyName == ALL_PROPERTIES_CHANGED)
+            {
+                base.RaisePropertyChangedSafe(nameof(FetchState));
+                base.RaisePropertyChangedSafe(nameof(Collection));
+            }
         }
 
 

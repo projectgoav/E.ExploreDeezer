@@ -14,19 +14,15 @@ namespace E.ExploreDeezer.Core.Search
 {
     internal interface ISearchDataController
     {
-        EFetchState AlbumResultsFetchState { get; }
         IObservableCollection<IAlbumViewModel> AlbumResults { get; }
         event FetchStateChangedEventHandler OnAlbumResultsFetchStateChanged;
 
-        EFetchState ArtistResultsFetchState { get; }
         IObservableCollection<IArtistViewModel> ArtistResults { get; }
         event FetchStateChangedEventHandler OnArtistResultsFetchStateChanged;
 
-        EFetchState TrackResultsFetchState { get; }
         IObservableCollection<ITrackViewModel> TrackResults { get; }
         event FetchStateChangedEventHandler OnTrackResultsFetchStateChanged;
 
-        EFetchState PlaylistResultFetchState { get; }
         IObservableCollection<IPlaylistViewModel> PlaylistResults { get; }
         event FetchStateChangedEventHandler OnPlaylistResultsFetchStateChanged;
 
@@ -74,8 +70,6 @@ namespace E.ExploreDeezer.Core.Search
 
 
         //ISearchDataController
-        public EFetchState AlbumResultsFetchState => this.albumsFetchState.CurrentState;
-
         public IObservableCollection<IAlbumViewModel> AlbumResults => this.albumResults;
 
         public event FetchStateChangedEventHandler OnAlbumResultsFetchStateChanged
@@ -84,8 +78,6 @@ namespace E.ExploreDeezer.Core.Search
             remove => this.albumsFetchState.OnFetchStateChanged -= value;
         }
 
-
-        public EFetchState ArtistResultsFetchState => this.artistsFetchState.CurrentState;
 
         public IObservableCollection<IArtistViewModel> ArtistResults => this.artistResults;
 
@@ -96,8 +88,6 @@ namespace E.ExploreDeezer.Core.Search
         }
 
 
-        public EFetchState TrackResultsFetchState => this.tracksFetchState.CurrentState;
-
         public IObservableCollection<ITrackViewModel> TrackResults => this.trackResults;
 
         public event FetchStateChangedEventHandler OnTrackResultsFetchStateChanged
@@ -106,8 +96,6 @@ namespace E.ExploreDeezer.Core.Search
             remove => this.tracksFetchState.OnFetchStateChanged -= value;
         }
 
-
-        public EFetchState PlaylistResultFetchState => this.playlistsFetchState.CurrentState;
 
         public IObservableCollection<IPlaylistViewModel> PlaylistResults => this.playlistResults;
 

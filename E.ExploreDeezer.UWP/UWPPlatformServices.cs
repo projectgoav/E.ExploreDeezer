@@ -11,7 +11,6 @@ using Windows.Security.Cryptography.DataProtection;
 using System.Runtime.InteropServices.WindowsRuntime;
 
 using E.ExploreDeezer.Core.Mvvm;
-using Windows.UI.Xaml.Controls.Primitives;
 
 namespace E.ExploreDeezer.UWP
 {

@@ -72,6 +72,11 @@ namespace E.ExploreDeezer.UWP.ValueConverters
         { }
     }
 
+    /* To make things a little less complex on the UI size of things
+     * we've treated 'Empty' and 'Error' fetch states to be the same.
+     * 
+     * TODO: 'Error' could have a retry option for transient issues
+     *       that may occur. */
     public class EmptyOrErrorFetchStateVisibilityConverter : FetchStateVisibilityConverter
     {
         public EmptyOrErrorFetchStateVisibilityConverter()

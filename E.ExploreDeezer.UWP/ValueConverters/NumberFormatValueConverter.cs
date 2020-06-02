@@ -27,7 +27,9 @@ namespace E.ExploreDeezer.UWP.ValueConverters
             }
 
 
-
+            //TODO: We really should provide cases for short and bytes
+            //      but since the application doesn't use them we can 
+            //      happily ignore them!
             if (value is int intValue)
             {
                 return intValue.ToString("N", this.numberFormatInfo);

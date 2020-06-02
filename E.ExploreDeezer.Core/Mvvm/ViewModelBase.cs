@@ -5,22 +5,26 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using System.Threading;
+using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core.Mvvm
 {
+    /* ViewModels
+     * 
+     * A very basic ViewModel implementation. Provides the
+     * INotifyPropertyChanged interface and will fire that
+     * event from the UI thread. */
     public interface IViewModel : INotifyPropertyChanged
-    {
-
-    }
+    { }
 
 
     public abstract class ViewModelBase : IViewModel,
-                                            IDisposable
+                                          IDisposable
     {
         private static CancellationToken PRE_CANCELLED_TOKEN = new CancellationToken(canceled: true);
 
         private readonly object lockObject;
-        private readonly CancellationTokenSource cancellationTokenSource;
+        private readonly ResetableCancellationTokenSource cancellationTokenSource;
 
 
         public ViewModelBase(IPlatformServices platformServices)
@@ -28,14 +32,11 @@ namespace E.ExploreDeezer.Core.Mvvm
             this.PlatformServices = platformServices;
 
             this.lockObject = new object();
-            this.cancellationTokenSource = new CancellationTokenSource();
+            this.cancellationTokenSource = new ResetableCancellationTokenSource();
         }
 
         // ViewModelBase
         protected IPlatformServices PlatformServices { get; }
-
-        protected CancellationToken CancellationToken => this.cancellationTokenSource.IsCancellationRequested ? PRE_CANCELLED_TOKEN
-                                                                                                              : this.cancellationTokenSource.Token;
 
 
         public bool SetProperty<T>(ref T storage, T newValue, [CallerMemberName] string propertyName = null)
@@ -58,7 +59,7 @@ namespace E.ExploreDeezer.Core.Mvvm
                 .MainThreadDispatcher
                 .ExecuteOnMainThread(() =>
             {
-                if (!this.CancellationToken.IsCancellationRequested)
+                if (!this.cancellationTokenSource.Token.IsCancellationRequested)
                 {
                     this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
                 }

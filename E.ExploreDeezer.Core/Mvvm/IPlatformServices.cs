@@ -13,12 +13,15 @@ namespace E.ExploreDeezer.Core.Mvvm
     }
 
 
+    /* As it says, a way for things to be run on the UI thread */
     public interface IMainThreadDispatcher
     {
         void ExecuteOnMainThread(Action action);
         Task ExecuteOnMainThreadAsync(Action action);
     }
 
+    /* A platform specific way to securely store values.
+     * This is used to keep the user's OAuth token safe! */
     public interface ISecureStorage
     {
         Task<string> ReadValue(string key);

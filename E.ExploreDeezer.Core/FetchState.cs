@@ -3,13 +3,27 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-using E.Deezer;
-
-using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core
 {
-    // Fetch Status
+    /* FetchState
+     * 
+     * Since the majority of collections require some sort of
+     * network request to be made in order to populate them we
+     * assign a number of states to this interaction. 
+     * 
+     * The 4 states we have:
+     *  - Loading
+     *      Network request has been made. Waiting for response,
+     *      parsing and collections updates
+     *  - Error
+     *      Network request failed or something went wrong when
+     *      parsing the response
+     *  - Empty
+     *      The API returned no more data
+     *  - Available
+     *      Request was successful, response parsed and collection
+     *      now has some contents to display. */
     public enum EFetchState
     {
         Loading,
@@ -35,6 +49,14 @@ namespace E.ExploreDeezer.Core
     internal delegate void FetchStateChangedEventHandler(object sender, FetchStateChangedEventArgs e);
 
 
+    /* UpdatableFetchState
+     * 
+     * Wrapper class around a FetchStateChanged event to help
+     * manage the transitions between each state. 
+     * 
+     * This call will also automatically fire the event for any
+     * new subscriber to avoid ViewModels having to query the
+     * value once subscribed to avoid missed changes. */
     internal class UpdatableFetchState : IDisposable
     {
         public UpdatableFetchState(EFetchState initialStatus = EFetchState.Loading)
@@ -57,7 +79,7 @@ namespace E.ExploreDeezer.Core
         }
 
 
-        // Internal event. We create a wrapper so that anyone whom registers an event handler is instantly called
+        // Internal event. We create a wrapper so that anyone who registers an event handler is instantly called
         // with the most up-to-date value
         private event FetchStateChangedEventHandler OnFetchStateChangedInternal;
 

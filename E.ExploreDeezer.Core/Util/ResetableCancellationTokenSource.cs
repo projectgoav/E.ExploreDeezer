@@ -6,6 +6,17 @@ using System.Threading;
 
 namespace E.ExploreDeezer.Core.Util
 {
+    /* Util: ResetableCancellationTokenSource
+     * 
+     * Normal token sources will throw if you try and access the token
+     * once they have been disposed. This class helps manage this by
+     * providing a pre-cancelled token in this instance so that we will
+     * not throw. 
+     * 
+     * Most data controllers were also having to cancel a token source then
+     * construct a new one in order to cancel previous fetches and start
+     * new ones. Logic to cancel, dispose and re-create sources is wrapped
+     * in this class as well :) */
     internal class ResetableCancellationTokenSource : IDisposable
     {
         private static readonly CancellationToken CANCELLED_TOKEN = new CancellationToken(canceled: true);
