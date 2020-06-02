@@ -11,5 +11,4 @@ namespace E.ExploreDeezer.Core.Collections
 
         public const int NOT_FOUND_INDEX = -1;
     }
-
 }

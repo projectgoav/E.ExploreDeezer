@@ -12,6 +12,32 @@ using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core.Collections
 {
+    /* CutomCollections: PagedObservableCollection
+     * 
+     * This observable collection incrementally loads a set
+     * number of items in 'pages' until there is nothing else
+     * available.
+     * 
+     * The size of the 'page' and when the next 'page' should
+     * be loaded are configurable via the constructor. 
+     * 
+     * Owners must provide an 'ItemFetcher' delegate which when
+     * called will return a Task returning up to the number of
+     * items requested starting from the given offset. 
+     * 
+     * Should you wish the contents to change in the collection
+     * you must provide a new 'ItemFetcher'. Internally the current
+     * contents will be cleared and new ones will be fetched.
+     * 
+     * This emits the following events:
+     * - NotifyCollectionChanged->Reset
+     *      When a new 'ItemFetcher' is set, this event will occur in
+     *      order for controls to clear all existing contents
+     *      
+     * - NotifyCollectionChanged->Add
+     *      When a new 'page' of items has been fetched and added
+     *      to the collection.
+     */
     internal delegate Task<IEnumerable<T>> ItemFetcher<T>(int startingIndex,
                                                           int numberOfItems,
                                                           CancellationToken cancellationToken);

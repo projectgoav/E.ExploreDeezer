@@ -11,6 +11,21 @@ using E.ExploreDeezer.Core.Util;
 
 namespace E.ExploreDeezer.Core.Collections
 {
+    /* CustomCollections: MainThreadObservableCollectionAdapter
+     * 
+     * Since most UI components backed by a collection of items require
+     * updates to be carried out on the main thread, this adapter class
+     * can be used to marshall events onto the UI thread.
+     * 
+     * Once this class has been disposed, any pending and future raises
+     * of events will not be executed. 
+     * 
+     * NOTE: Class could be improved slightly by keep a queue of all
+     * events that occur while waiting for the main thread to execute
+     * them. If there are any duplicated events in that time period we'd
+     * only have to execute one of them. However, as the collections in this
+     * application don't update that frequently the complexity in managing
+     * that is a little OTT */
     internal class MainThreadObservableCollectionAdapter<T> : ObservableCollectionBase<T>
     {
         private readonly IObservableCollection<T> collection;

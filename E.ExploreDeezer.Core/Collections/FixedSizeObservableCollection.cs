@@ -6,6 +6,15 @@ using System.Collections.Specialized;
 
 namespace E.ExploreDeezer.Core.Collections
 {
+    /* Custom Collections: FixedSizeObservableCollection
+     * 
+     * This observable collection requires all it's contents to
+     * be set or cleared in one go and therefore will only emit
+     * NotifyCollectionChanged->Reset actions. 
+     * 
+     * This is ideal for a small number of items. Larger collections
+     * should use the 'Paged' varient which supports incremental
+     * loading. */
     internal class FixedSizeObservableCollection<T> : ObservableCollectionBase<T>
     {
         private static readonly List<T> EMPTY = new List<T>(0);
