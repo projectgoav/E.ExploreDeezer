@@ -1,6 +1,6 @@
 ## ExploreDeezer
 
-A demo UWP application showing the use of my .NET Deezer API wrapper: E.Deezer. 
+A demo UWP application showing the use of my .NET Deezer API wrapper: [E.Deezer](https://github.com/projectgoav/E.Deezer) 
 
 ### Features
 - Browse new releases for each genre
@@ -10,7 +10,7 @@ A demo UWP application showing the use of my .NET Deezer API wrapper: E.Deezer.
 - Search Deezer's catalog
 - Login to view and manage your favourites (Requires additional configuration. See section below)
 
-**Please Note:** Playback of tracks or track previews is not supported. 
+***Please Note: Playback of tracks or track previews is not supported.*** 
 
 
 ## Build & Run
@@ -23,9 +23,9 @@ You should simply be able to clone this repository, open the solution and run it
 
 To enable login you must first register as a Deezer developer on their website. Once you have an account you can create an OAuth application which will provide you with an *AppId*, *AppSecret* and a *Redirect URI*. Instructions on how to do this can be found on the Deezer developer site. 
 
-You must add these values to the 'Secrets.cs' file in the root of 'E.ExploreDeezer.UWP' project. Once preset, they will be used to provide the OAuth login. 
+You must add these values to the `Secrets.cs` file in the root of `E.ExploreDeezer.UWP` project. Once preset, they will be used to provide the OAuth login. 
 
-**Please Note:** This application will request the 'OfflineAccess' permission from accounts that login in order to receive a token that never expires. This is simply to avoid having to deal with token expiry. Any real application should only request permissions it actually requires and handle token expiry. 
+**Please Note:** *This application will request the `OfflineAccess` permission from accounts that login in order to receive a token that never expires. This is simply to avoid having to deal with token expiry. Any real application should only request permissions it actually requires and handle token expiry.*
 
 
 ## Design & Implementation
@@ -49,7 +49,7 @@ A UWP implementation of the 'IPlatformServices' interface provides a helper to e
 
 ## Future Work & Goals
 
-Below is a short list of things I'd like to work on at somepoint in time. A more details list can be found in the '.todo' file in the root of the repo.
+Below is a short list of things I'd like to work on at somepoint in time. A more details list can be found in the `.todo` file in the root of the repo.
 
 - Proper app icons
 - Support for radios & podcasts
@@ -64,5 +64,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
