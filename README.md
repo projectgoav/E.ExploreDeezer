@@ -12,7 +12,6 @@ A demo UWP application showing the use of my .NET Deezer API wrapper: [E.Deezer]
 
 ***Please Note: Playback of tracks or track previews is not supported.*** 
 
-
 ## Build & Run
 
 Project has been developed using VS2019 and targets a minimum version of Windows 10 v1803.
@@ -64,3 +63,23 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+## Screengrabs
+
+### Whats New
+
+![WhatsNewPage](https://github.com/projectgoav/E.ExploreDeezer/blob/master/Screengrabs/WhatsNew.png)
+
+
+### Charts
+
+![ChartsPage](https://github.com/projectgoav/E.ExploreDeezer/blob/master/Screengrabs/Charts.png)
+
+### Search Results
+
+![SearchPage](https://github.com/projectgoav/E.ExploreDeezer/blob/master/Screengrabs/Search.png)
+
+### Artist Details
+
+![ArtistDetailsPage](https://github.com/projectgoav/E.ExploreDeezer/blob/master/Screengrabs/ArtistOverview.png)
